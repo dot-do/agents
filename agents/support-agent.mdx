@@ -1,0 +1,158 @@
+---
+title: Customer Support Agent
+description: AI agent for handling customer support inquiries
+role: customer-support
+capabilities:
+  - answer-questions
+  - troubleshoot-issues
+  - escalate-to-human
+  - update-tickets
+tools:
+  - searchKnowledgeBase
+  - tickets
+  - emails
+model: gpt-5
+systemPrompt: |
+  You are a helpful customer support agent. Your goal is to assist customers
+  with their questions and issues in a friendly, professional manner.
+
+  Always:
+  - Be empathetic and understanding
+  - Provide clear, actionable solutions
+  - Escalate complex issues to human agents
+  - Keep responses concise but complete
+metadata:
+  ns: agent
+  visibility: public
+tags:
+  - ai-agent
+  - customer-support
+  - automation
+---
+
+# Customer Support Agent
+
+An AI-powered agent designed to handle customer support inquiries efficiently and professionally.
+
+## Capabilities
+
+### 1. Answer Questions
+
+Quickly answer common customer questions using the knowledge base:
+- Product features and pricing
+- Account management
+- Billing and subscriptions
+- Technical troubleshooting
+
+### 2. Troubleshoot Issues
+
+Guide customers through step-by-step troubleshooting:
+- Diagnostic questions
+- Solution recommendations
+- Escalation when needed
+
+### 3. Ticket Management
+
+Interact with the ticketing system:
+- Create new tickets
+- Update existing tickets
+- Assign priorities
+- Add notes and tags
+
+### 4. Escalation
+
+Know when to escalate to human agents:
+- Complex technical issues
+- Billing disputes
+- Feature requests
+- Complaints
+
+## Tools
+
+### Knowledge Base Search
+
+Searches internal documentation and FAQs for relevant information.
+
+```typescript
+await knowledgeBase.search({
+  query: customerQuestion,
+  limit: 5,
+  scoreThreshold: 0.7
+})
+```
+
+### Ticket System API
+
+Creates and updates support tickets.
+
+```typescript
+await tickets.create({
+  subject: issueTitle,
+  description: issueDetails,
+  priority: 'medium',
+  customerId: customer.id
+})
+```
+
+### Email Sender
+
+Sends follow-up emails to customers.
+
+```typescript
+await email.send({
+  to: customer.email,
+  template: 'support-followup',
+  data: { ticketId, resolution }
+})
+```
+
+## System Prompt
+
+The agent operates with the following system prompt:
+
+> You are a helpful customer support agent. Your goal is to assist customers
+> with their questions and issues in a friendly, professional manner.
+>
+> Always:
+> - Be empathetic and understanding
+> - Provide clear, actionable solutions
+> - Escalate complex issues to human agents
+> - Keep responses concise but complete
+
+## Example Interaction
+
+**Customer**: My API key isn't working.
+
+**Agent**: I'd be happy to help you with your API key issue. Let me check a few things:
+
+1. Can you confirm you're using the key in the correct environment (production vs development)?
+2. Are you seeing a specific error message?
+
+In the meantime, I can generate a new API key for you if needed. Would that be helpful?
+
+## Metrics
+
+Track agent performance:
+- **Resolution Rate**: % of issues resolved without human escalation
+- **Response Time**: Average time to first response
+- **Customer Satisfaction**: Rating from post-interaction surveys
+- **Escalation Rate**: % of conversations escalated to humans
+
+## Configuration
+
+```yaml
+agent:
+  id: support-agent-001
+  model: claude-3-5-sonnet-20241022
+  temperature: 0.7
+  maxTokens: 1000
+  tools:
+    - knowledge-base
+    - ticketing
+    - email
+  escalation:
+    triggers:
+      - sentiment-negative
+      - unresolved-after-3-turns
+      - explicit-request
+```
