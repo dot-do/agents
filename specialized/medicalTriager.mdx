@@ -1,0 +1,319 @@
+---
+title: Medical Triage Agent
+$type: Agent
+name: Medical Triage Agent
+description: Assesses patient symptoms and routes to appropriate care level
+
+capabilities:
+  - symptom-assessment
+  - urgency-determination
+  - care-routing
+  - vital-sign-monitoring
+  - red-flag-detection
+
+model:
+  provider: anthropic
+  model: claude-3-5-sonnet-20241022
+  temperature: 0.1
+
+systemPrompt: |
+  You are a medical triage agent that helps assess patient symptoms and route to appropriate care. Your job is to:
+  1. Gather symptom information systematically
+  2. Assess severity using standardized protocols
+  3. Identify red flag symptoms requiring immediate care
+  4. Route patients to appropriate care level
+  5. Provide clear guidance and next steps
+
+  Triage Levels:
+  - Emergency (911) - Life-threatening, immediate care needed
+  - Urgent Care - Same-day appointment required
+  - Primary Care - Schedule within days/weeks
+  - Self-Care - Home treatment with guidance
+
+  Always consider:
+  - Red flag symptoms (chest pain, difficulty breathing, stroke signs)
+  - Patient age, medical history, medications
+  - Duration and progression of symptoms
+  - Vital signs if available
+  - When in doubt, err on side of caution
+
+functions:
+  - assess-symptoms
+  - calculate-acuity-score
+  - identify-red-flags
+  - route-to-care
+
+memory:
+  type: conversation
+  maxTokens: 10000
+---
+
+# Medical Triage Agent
+
+An AI agent that performs initial symptom assessment and routes patients to appropriate care levels.
+
+## Core Capabilities
+
+### Symptom Assessment
+
+The agent uses systematic questioning:
+
+**Chief Complaint:**
+- What is the main concern?
+- When did it start?
+- How severe is it (1-10 scale)?
+
+**Associated Symptoms:**
+- Other symptoms present?
+- Progression over time?
+- Aggravating/alleviating factors?
+
+**Medical History:**
+- Chronic conditions?
+- Current medications?
+- Allergies?
+- Recent surgeries or procedures?
+
+**Vital Signs (if available):**
+- Temperature
+- Blood pressure
+- Heart rate
+- Respiratory rate
+- Oxygen saturation
+
+### Acuity Scoring
+
+The agent calculates urgency using Emergency Severity Index (ESI):
+
+**Level 1 - Resuscitation (CALL 911):**
+- Life-threatening condition
+- Requires immediate intervention
+- Examples: cardiac arrest, stroke, severe trauma
+
+**Level 2 - Emergent (EMERGENCY DEPARTMENT):**
+- High-risk situation
+- Needs urgent evaluation
+- Examples: chest pain, difficulty breathing, severe bleeding
+
+**Level 3 - Urgent (URGENT CARE or ED):**
+- Moderate symptoms
+- Needs timely care (same day)
+- Examples: possible fracture, moderate pain, fever
+
+**Level 4 - Less Urgent (PRIMARY CARE):**
+- Stable, non-urgent
+- Can wait days for appointment
+- Examples: minor rash, mild cold, routine follow-up
+
+**Level 5 - Non-Urgent (SELF-CARE):**
+- Very stable
+- Can manage at home
+- Examples: minor scrape, slight headache
+
+### Red Flag Detection
+
+The agent identifies critical symptoms:
+
+**Cardiovascular Red Flags:**
+- 🚨 Chest pain with radiation to arm/jaw
+- 🚨 Severe shortness of breath
+- 🚨 Irregular heartbeat with dizziness
+- 🚨 Sudden severe headache
+
+**Neurological Red Flags:**
+- 🚨 Sudden weakness or numbness (stroke signs)
+- 🚨 Confusion or altered mental status
+- 🚨 Severe headache ("worst of life")
+- 🚨 Vision changes or loss
+- 🚨 Difficulty speaking
+
+**Respiratory Red Flags:**
+- 🚨 Severe difficulty breathing
+- 🚨 Bluish lips or face
+- 🚨 Stridor (high-pitched breathing sound)
+- 🚨 Unable to speak in full sentences
+
+**Abdominal Red Flags:**
+- 🚨 Sudden severe abdominal pain
+- 🚨 Rigid abdomen
+- 🚨 Vomiting blood
+- 🚨 Signs of shock (pale, sweaty, weak pulse)
+
+**Pediatric Red Flags:**
+- 🚨 Infant under 3 months with fever >100.4°F
+- 🚨 Difficulty breathing or blue color
+- 🚨 Inconsolable crying
+- 🚨 Not responding normally
+- 🚨 Dehydration signs (no tears, dry mouth, no urine)
+
+### Care Routing
+
+Based on assessment, the agent routes to:
+
+**1. Emergency (911):**
+- Activate emergency services immediately
+- Provide pre-arrival instructions
+- Do not transport yourself
+
+**2. Emergency Department:**
+- Go to nearest ED
+- Bring medications and medical records
+- Have someone drive you
+
+**3. Urgent Care:**
+- Schedule same-day appointment
+- List of nearby urgent care centers
+- What to bring
+
+**4. Primary Care:**
+- Schedule appointment within week
+- Self-care until appointment
+- Watch for worsening symptoms
+
+**5. Self-Care:**
+- Home treatment recommendations
+- Over-the-counter medications
+- When to seek care if worsens
+
+## Triage Protocols
+
+### Chest Pain Protocol
+
+**Questions:**
+1. Location and type of pain?
+2. Radiation to arm, jaw, back?
+3. Associated symptoms (sweating, nausea, shortness of breath)?
+4. History of heart disease?
+5. Duration and onset?
+
+**Decision Tree:**
+- Crushing chest pain + arm radiation → **CALL 911**
+- Chest pain + shortness of breath → **ED NOW**
+- Chest pain + normal vitals → **Urgent Care**
+- Mild discomfort, no red flags → **Primary Care**
+
+### Fever Protocol
+
+**Questions:**
+1. Temperature reading?
+2. Duration of fever?
+3. Associated symptoms?
+4. Age and medical history?
+5. Recent travel or exposures?
+
+**Decision Tree:**
+- Fever + altered mental status → **ED**
+- Infant <3 months + fever >100.4°F → **ED**
+- High fever + rash + stiff neck → **ED**
+- Fever 3+ days or >103°F → **Urgent Care**
+- Mild fever, improving → **Self-Care**
+
+### Abdominal Pain Protocol
+
+**Questions:**
+1. Location and type of pain?
+2. Onset (sudden vs gradual)?
+3. Associated symptoms (vomiting, diarrhea, fever)?
+4. Medical history (previous surgeries)?
+5. Pain scale (1-10)?
+
+**Decision Tree:**
+- Sudden severe pain + rigid abdomen → **CALL 911**
+- Severe pain + vomiting blood → **ED**
+- Moderate pain, stable vitals → **Urgent Care**
+- Mild pain, improving → **Primary Care**
+
+## Use Cases
+
+### After-Hours Triage
+**Scenario:** Patient calls at 11 PM with symptoms
+
+**Agent Process:**
+1. Assess symptoms systematically
+2. Determine urgency level
+3. Recommend appropriate care
+4. Provide self-care if suitable
+5. Document interaction
+
+### Pre-Appointment Screening
+**Scenario:** Patient books appointment, needs screening
+
+**Agent Process:**
+1. Gather symptom details
+2. Determine if urgent
+3. Escalate if needed
+4. Prepare provider with info
+
+### Self-Service Portal
+**Scenario:** Patient using symptom checker online
+
+**Agent Process:**
+1. Interactive questionnaire
+2. Risk assessment
+3. Care recommendations
+4. Option to schedule appointment
+
+## Example Interaction
+
+**Patient:** "I have chest pain that started 30 minutes ago."
+
+**Agent:**
+```
+⚠️  POTENTIAL EMERGENCY - Please answer carefully:
+
+1. On a scale of 1-10, how severe is the pain?
+   → 8/10
+
+2. Does the pain spread to your arm, jaw, or back?
+   → Yes, my left arm
+
+3. Are you experiencing:
+   - Shortness of breath? → Yes
+   - Sweating? → Yes
+   - Nausea? → Yes
+
+🚨 CALL 911 IMMEDIATELY
+
+This could be a heart attack. Do not drive yourself.
+Call 911 now or have someone call for you.
+
+While waiting:
+- Sit down and rest
+- Chew aspirin if available and not allergic
+- Loosen tight clothing
+- Do not eat or drink
+```
+
+## Integration Points
+
+- **Patient Database:** Uses [[patient-record-schema.mdx|Patient Records]]
+- **Care Workflow:** Triggers [[assess-patient-workflow.mdx|Patient Assessment Workflow]]
+- **Nurse Agent:** Escalates to registered nurse if needed
+- **EHR System:** Documents triage interaction
+
+## Safety & Limitations
+
+**Not a Substitute for Medical Care:**
+- Agent provides guidance only
+- Not personalized medical advice
+- Cannot diagnose conditions
+- Use clinical judgment to override if needed
+
+**When to Override Agent:**
+- Patient appears more ill than assessed
+- Vital signs concerning despite low score
+- Provider intuition suggests urgency
+- Communication barriers prevent accurate assessment
+
+**Liability Protection:**
+- Document all interactions
+- Include disclaimers
+- Maintain human oversight
+- Regular protocol audits
+
+## Related
+
+- [[pharmacy-checker-agent.mdx|Pharmacy Checker Agent]]
+- [[assess-patient-workflow.mdx|Patient Assessment Workflow]]
+- [[dispense-medication-workflow.mdx|Medication Dispensing Workflow]]
+- [[patient-record-schema.mdx|Patient Records Schema]]

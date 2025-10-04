@@ -1,0 +1,1073 @@
+---
+hero:
+  headline: Your AI Chief Marketing Officer
+  subheadline: Accelerate growth with AI-powered campaigns, content generation, lead nurturing, and marketing attribution
+  codeExample:
+    language: typescript
+    code: |
+      import { CMO } from 'cmo.do'
+
+      const cmo = new CMO({
+        channels: ['email', 'social', 'content', 'paid', 'seo'],
+        integrations: ['hubspot', 'google-analytics', 'facebook-ads', 'google-ads'],
+        policies: {
+          contentGeneration: 'ai-powered',
+          campaignOptimization: 'continuous',
+          leadScoring: 'predictive-ml',
+          attribution: 'multi-touch'
+        }
+      })
+
+      // Launch AI-optimized campaigns
+      await cmo.campaigns.launch({ objective: 'lead-generation' })
+
+      // Generate marketing content
+      const content = await cmo.content.generate({
+        type: 'blog-post',
+        topic: 'AI in marketing'
+      })
+
+      // Analyze campaign performance
+      const performance = await cmo.analytics.analyze()
+      console.log(`CAC: $${performance.cac}`)
+      console.log(`LTV: $${performance.ltv}`)
+      console.log(`ROI: ${performance.roi}x`)
+  primaryCTA:
+    text: Start Free Trial
+    href: /signup
+  secondaryCTA:
+    text: Book Demo
+    href: /demo
+  badges:
+    - 3.8x ROI
+    - 62% lower CAC
+    - 94% content quality
+
+capabilities:
+  - id: campaign-optimization
+    name: AI-Powered Campaign Optimization
+    description: Continuous campaign optimization across all channels with predictive budget allocation and A/B testing.
+    icon: 📊
+    metrics:
+      - label: Campaign ROI
+        value: 3.8x
+      - label: Conversion Rate Improvement
+        value: 127%
+      - label: Time to Launch
+        value: 75% faster
+    codeExample:
+      language: typescript
+      code: |
+        // AI-optimized campaign launch
+        on.campaign.created(async (campaign) => {
+          // Analyze historical performance
+          const historical = await db.campaigns.aggregate({
+            objective: campaign.objective,
+            channels: campaign.channels,
+            period: 'last-12-months'
+          })
+
+          // Generate campaign strategy
+          const strategy = await ai.generate({
+            prompt: 'Create optimal campaign strategy',
+            campaign: campaign,
+            historical: historical,
+            competitors: await scrapeCompetitorCampaigns(),
+            trends: await getMarketTrends(),
+            budget: campaign.budget
+          })
+
+          // Create audience segments
+          const segments = await ai.segment({
+            source: await db.leads.findAll({ qualified: true }),
+            criteria: {
+              demographics: true,
+              behavior: true,
+              psychographics: true,
+              intent: true
+            },
+            optimize_for: campaign.objective
+          })
+
+          // Generate creative variants
+          const creatives = await ai.generate({
+            type: 'ad-creative',
+            variants: 5,
+            channels: campaign.channels,
+            segments: segments,
+            brand_guidelines: await db.brandGuidelines.get()
+          })
+
+          // Set up multi-channel campaigns
+          for (const channel of campaign.channels) {
+            for (const segment of segments) {
+              // Select best creative for segment
+              const creative = await ai.decide('select-creative', {
+                options: creatives,
+                segment: segment,
+                channel: channel,
+                optimize: ['engagement', 'conversion', 'ctr']
+              })
+
+              // Launch campaign
+              const launch = await launchChannelCampaign({
+                channel: channel,
+                segment: segment,
+                creative: creative,
+                budget: strategy.budgetAllocation[channel],
+                targeting: segment.criteria,
+                schedule: strategy.schedule
+              })
+
+              await db.campaignExecutions.create({
+                campaignId: campaign.id,
+                channel: channel,
+                segmentId: segment.id,
+                creativeId: creative.id,
+                externalId: launch.id,
+                budget: launch.budget,
+                status: 'active',
+                launchedAt: new Date()
+              })
+            }
+          }
+
+          // Continuous optimization
+          every('hour', async () => {
+            const executions = await db.campaignExecutions.findAll({
+              campaignId: campaign.id,
+              status: 'active'
+            })
+
+            for (const execution of executions) {
+              // Analyze performance
+              const performance = await getPerformanceMetrics(execution)
+
+              // AI-powered budget reallocation
+              if (performance.conversions > 0) {
+                const recommendation = await ai.optimize({
+                  execution: execution,
+                  performance: performance,
+                  budget_remaining: await getCampaignBudgetRemaining(campaign.id),
+                  alternatives: executions.filter(e => e.id !== execution.id)
+                })
+
+                if (recommendation.action === 'increase-budget') {
+                  await updateBudget(execution.id, recommendation.new_budget)
+                } else if (recommendation.action === 'pause') {
+                  await pauseCampaign(execution.externalId)
+                  await db.campaignExecutions.update(execution.id, {
+                    status: 'paused',
+                    pausedReason: recommendation.reason
+                  })
+                }
+              }
+            }
+          })
+        })
+
+  - id: content-generation
+    name: AI Content Generation & Strategy
+    description: Generate high-quality blog posts, social media, emails, and landing pages optimized for SEO and engagement.
+    icon: ✍️
+    metrics:
+      - label: Content Quality Score
+        value: 94/100
+      - label: SEO Performance
+        value: +156%
+      - label: Production Speed
+        value: 10x faster
+    codeExample:
+      language: typescript
+      code: |
+        // AI-powered content generation
+        on.content.requested(async (request) => {
+          // Research and outline
+          const research = await ai.research({
+            topic: request.topic,
+            sources: {
+              search: true,
+              competitors: true,
+              trending: true,
+              scholarly: request.depth === 'deep'
+            },
+            keywords: await getTargetKeywords(request.topic)
+          })
+
+          // Generate content outline
+          const outline = await ai.generate({
+            type: 'content-outline',
+            topic: request.topic,
+            research: research,
+            target_audience: request.audience,
+            word_count: request.wordCount || 1500,
+            tone: request.tone || 'professional',
+            seo_keywords: research.keywords
+          })
+
+          // Generate full content
+          const content = await ai.generate({
+            type: request.contentType, // blog, social, email, landing-page
+            outline: outline,
+            research: research,
+            style_guide: await db.styleGuide.get(),
+            brand_voice: await db.brandVoice.get(),
+            examples: await db.content.findSimilar({ topic: request.topic, rating: { $gt: 4 } })
+          })
+
+          // SEO optimization
+          const optimized = await ai.optimize({
+            content: content,
+            keywords: research.keywords,
+            intent: research.searchIntent,
+            competitors: research.competitorContent,
+            readability: 'grade-8',
+            meta: {
+              title: true,
+              description: true,
+              slug: true
+            }
+          })
+
+          // Generate visuals
+          const visuals = await ai.generate({
+            type: 'featured-image',
+            content: optimized.content,
+            style: request.imageStyle || 'modern-gradient',
+            dimensions: { width: 1200, height: 630 }
+          })
+
+          // Store content
+          const created = await db.content.create({
+            type: request.contentType,
+            topic: request.topic,
+            title: optimized.meta.title,
+            slug: optimized.meta.slug,
+            content: optimized.content,
+            metaDescription: optimized.meta.description,
+            keywords: research.keywords,
+            featuredImage: visuals.url,
+            seoScore: optimized.seo_score,
+            readabilityScore: optimized.readability_score,
+            status: 'draft',
+            createdBy: 'CMO Agent',
+            createdAt: new Date()
+          })
+
+          // Send for review
+          await send.email(request.reviewer || 'content@company.com', {
+            subject: `Content ready for review: ${optimized.meta.title}`,
+            template: 'content-review',
+            data: {
+              content: created,
+              preview_url: `https://cms.company.com/preview/${created.id}`,
+              seo_score: optimized.seo_score,
+              readability: optimized.readability_score
+            }
+          })
+
+          return created
+        })
+
+        // Automated content calendar
+        every('week', async () => {
+          // Analyze content gaps
+          const gaps = await ai.analyze({
+            published: await db.content.findAll({ status: 'published', period: 'last-90-days' }),
+            keywords: await db.keywords.findAll({ priority: 'high', covered: false }),
+            competitors: await scrapeCompetitorContent(),
+            trending: await getTrendingTopics()
+          })
+
+          // Generate content plan
+          const plan = await ai.generate({
+            type: 'content-calendar',
+            gaps: gaps,
+            frequency: { blog: 3, social: 14, email: 2 }, // per week
+            events: await getUpcomingEvents(),
+            products: await getProductLaunches()
+          })
+
+          // Create content requests
+          for (const item of plan.items) {
+            await db.contentRequests.create({
+              topic: item.topic,
+              contentType: item.type,
+              publishDate: item.date,
+              keywords: item.keywords,
+              priority: item.priority,
+              assignedTo: item.writer || 'CMO Agent',
+              status: 'pending'
+            })
+          }
+
+          await send.email('content@company.com', {
+            subject: 'Content Calendar for Next 4 Weeks',
+            template: 'content-calendar',
+            data: { plan }
+          })
+        })
+
+  - id: lead-nurturing
+    name: Intelligent Lead Nurturing
+    description: Personalized, multi-touch nurture campaigns with predictive send time optimization and dynamic content.
+    icon: 🌱
+    metrics:
+      - label: Lead-to-MQL Conversion
+        value: +185%
+      - label: Email Engagement
+        value: +94%
+      - label: Sales Accepted Leads
+        value: +67%
+    codeExample:
+      language: typescript
+      code: |
+        // Intelligent lead nurturing
+        on.lead.captured(async (lead) => {
+          // Lead enrichment
+          const enriched = await api.post('https://clearbit.com/enrichment', {
+            email: lead.email,
+            company: lead.company
+          })
+
+          // Behavioral analysis
+          const behavior = await ai.analyze({
+            lead: { ...lead, ...enriched },
+            activity: {
+              pages_visited: lead.pages,
+              content_downloaded: lead.downloads,
+              emails_opened: lead.emailActivity,
+              form_submissions: lead.forms
+            },
+            signals: {
+              buying_intent: true,
+              fit_score: true,
+              engagement_level: true,
+              journey_stage: true
+            }
+          })
+
+          // Determine nurture track
+          const track = await ai.decide('select-nurture-track', {
+            lead: { ...lead, ...enriched },
+            behavior: behavior,
+            tracks: await db.nurtureT racks.findAll(),
+            optimize: 'conversion-to-mql'
+          })
+
+          // Enroll in nurture campaign
+          await db.nurtureCampaigns.enroll({
+            leadId: lead.id,
+            trackId: track.id,
+            startDate: new Date(),
+            personalization: {
+              name: lead.firstName,
+              company: enriched.company.name,
+              industry: enriched.company.industry,
+              pain_points: behavior.inferred_pain_points,
+              interests: behavior.topics_of_interest
+            }
+          })
+
+          // Schedule personalized emails
+          for (const email of track.emails) {
+            // Predict optimal send time
+            const sendTime = await ai.predict({
+              metric: 'email-open-time',
+              lead: lead,
+              timezone: enriched.timezone,
+              industry: enriched.company.industry
+            })
+
+            // Generate personalized content
+            const content = await ai.generate({
+              template: email.template,
+              personalization: {
+                name: lead.firstName,
+                company: enriched.company.name,
+                pain_point: behavior.primary_pain_point,
+                case_study: await db.caseStudies.findOne({
+                  industry: enriched.company.industry
+                })
+              }
+            })
+
+            await db.emailSchedule.create({
+              leadId: lead.id,
+              campaignId: track.id,
+              emailId: email.id,
+              sendAt: sendTime.optimal_time,
+              subject: content.subject,
+              body: content.body,
+              status: 'scheduled'
+            })
+          }
+
+          // Monitor engagement and adjust
+          on.email.opened(async (open) => {
+            if (open.leadId === lead.id) {
+              // Accelerate nurture if highly engaged
+              const engagement = await db.emailEngagement.getScore(lead.id)
+
+              if (engagement > 0.8) {
+                await db.nurtureCampaigns.update(lead.id, {
+                  cadence: 'accelerated', // Send next email sooner
+                  sales_alert: true
+                })
+
+                await send.slack('#sales', {
+                  text: `🔥 Hot lead: ${lead.name} (${lead.company}) is highly engaged`
+                })
+              }
+            }
+          })
+        })
+
+  - id: marketing-attribution
+    name: Multi-Touch Attribution & Analytics
+    description: AI-powered attribution modeling across all touchpoints with ROI tracking and predictive CAC/LTV.
+    icon: 📈
+    metrics:
+      - label: Attribution Accuracy
+        value: 96%
+      - label: CAC Reduction
+        value: 62%
+      - label: Marketing ROI Visibility
+        value: 100%
+    codeExample:
+      language: typescript
+      code: |
+        // Multi-touch attribution analysis
+        every('day', async () => {
+          const conversions = await db.conversions.findAll({ period: 'yesterday' })
+
+          for (const conversion of conversions) {
+            // Get complete customer journey
+            const journey = await db.touchpoints.findAll({
+              leadId: conversion.leadId,
+              timestamp: { $lte: conversion.convertedAt }
+            })
+
+            // AI-powered attribution modeling
+            const attribution = await ai.analyze({
+              journey: journey,
+              conversion: conversion,
+              models: {
+                first_touch: true,
+                last_touch: true,
+                linear: true,
+                time_decay: true,
+                position_based: true,
+                data_driven: true // ML-powered
+              }
+            })
+
+            // Store attribution
+            await db.attributions.create({
+              conversionId: conversion.id,
+              leadId: conversion.leadId,
+              revenue: conversion.value,
+              touchpoints: journey.length,
+              models: attribution.models,
+              recommended_model: attribution.recommended,
+              createdAt: new Date()
+            })
+
+            // Update campaign performance
+            for (const touchpoint of journey) {
+              const credit = attribution.models[attribution.recommended][touchpoint.id]
+
+              await db.campaigns.incrementMetrics(touchpoint.campaignId, {
+                attributed_revenue: credit * conversion.value,
+                attributed_conversions: credit
+              })
+            }
+          }
+
+          // Generate attribution report
+          const report = await ai.analyze({
+            attributions: await db.attributions.findAll({ period: 'last-30-days' }),
+            campaigns: await db.campaigns.findAll({ status: 'active' }),
+            analyze: {
+              channel_performance: true,
+              campaign_roi: true,
+              customer_acquisition_cost: true,
+              lifetime_value: true,
+              payback_period: true
+            }
+          })
+
+          // Share insights
+          await send.email(['cmo@company.com', 'ceo@company.com', 'cfo@company.com'], {
+            subject: 'Marketing Attribution Report',
+            template: 'attribution-report',
+            data: {
+              report,
+              top_channels: report.channels.sort((a, b) => b.roi - a.roi).slice(0, 5),
+              underperforming: report.channels.filter(c => c.roi < 1),
+              recommendations: report.recommendations
+            }
+          })
+        })
+
+  - id: brand-management
+    name: AI Brand Management & Monitoring
+    description: Monitor brand mentions, sentiment, and reputation across all channels with automated response recommendations.
+    icon: 🎨
+    metrics:
+      - label: Brand Sentiment
+        value: +28%
+      - label: Response Time
+        value: 94% faster
+      - label: Crisis Prevention
+        value: 87%
+    codeExample:
+      language: typescript
+      code: |
+        // Real-time brand monitoring
+        every('15-minutes', async () => {
+          // Monitor social media mentions
+          const mentions = await Promise.all([
+            api.get('https://twitter.com/api/mentions'),
+            api.get('https://facebook.com/api/mentions'),
+            api.get('https://linkedin.com/api/mentions'),
+            api.get('https://reddit.com/api/mentions')
+          ])
+
+          for (const mention of mentions.flat()) {
+            // AI sentiment analysis
+            const analysis = await ai.analyze({
+              content: mention.text,
+              author: mention.author,
+              analyze: {
+                sentiment: true, // positive/negative/neutral
+                intent: true, // question/complaint/praise/inquiry
+                urgency: true, // critical/high/medium/low
+                topics: true,
+                entities: true
+              }
+            })
+
+            // Store mention
+            await db.brandMentions.create({
+              platform: mention.platform,
+              author: mention.author,
+              content: mention.text,
+              url: mention.url,
+              sentiment: analysis.sentiment,
+              intent: analysis.intent,
+              urgency: analysis.urgency,
+              topics: analysis.topics,
+              timestamp: mention.timestamp
+            })
+
+            // Alert on negative sentiment
+            if (analysis.sentiment === 'negative' && analysis.urgency === 'high') {
+              // Generate response recommendation
+              const response = await ai.generate({
+                prompt: 'Create empathetic response to negative mention',
+                mention: mention,
+                analysis: analysis,
+                brand_voice: await db.brandVoice.get(),
+                policies: await db.responsePolici es.findAll()
+              })
+
+              await send.slack('#social-media', {
+                text: `⚠️ Negative brand mention requiring response`,
+                blocks: [
+                  {
+                    type: 'section',
+                    text: `*${mention.platform}* - ${mention.author}`
+                  },
+                  {
+                    type: 'section',
+                    text: mention.text
+                  },
+                  {
+                    type: 'section',
+                    text: `*Recommended response:*\n${response.text}`
+                  },
+                  {
+                    type: 'actions',
+                    elements: [
+                      {
+                        type: 'button',
+                        text: 'Approve & Send',
+                        value: response.id
+                      },
+                      {
+                        type: 'button',
+                        text: 'Edit Response',
+                        value: mention.id
+                      }
+                    ]
+                  }
+                ]
+              })
+            }
+
+            // Detect potential PR crisis
+            const recent = await db.brandMentions.findAll({
+              sentiment: 'negative',
+              period: 'last-hour'
+            })
+
+            if (recent.length > 50) {
+              await send.pagerduty({
+                title: 'Potential PR Crisis Detected',
+                severity: 'high',
+                details: {
+                  negative_mentions: recent.length,
+                  trending_topics: analysis.topics,
+                  platforms: [...new Set(recent.map(m => m.platform))]
+                }
+              })
+
+              await send.email(['cmo@company.com', 'ceo@company.com', 'pr@company.com'], {
+                subject: '🚨 PR Crisis Alert',
+                priority: 'high',
+                data: {
+                  mentions: recent,
+                  analysis: await ai.analyze({
+                    mentions: recent,
+                    identify: 'root-cause'
+                  })
+                }
+              })
+            }
+          }
+        })
+
+features:
+  - title: Campaign Management
+    description: Launch and optimize campaigns across email, social, paid, and organic channels from one platform
+    icon: 🚀
+  - title: Content Studio
+    description: AI-powered content generation for blogs, social, emails, and landing pages with SEO optimization
+    icon: ✨
+  - title: Marketing Automation
+    description: Sophisticated workflows for lead nurturing, scoring, and multi-channel engagement
+    icon: ⚙️
+  - title: Analytics Dashboard
+    description: Real-time performance tracking with attribution, ROI, and predictive insights
+    icon: 📊
+  - title: A/B Testing
+    description: Automated multivariate testing across all creative elements and messaging
+    icon: 🧪
+  - title: CRM Integration
+    description: Seamless sync with Salesforce, HubSpot, and 50+ marketing platforms
+    icon: 🔗
+
+useCases:
+  - company: B2B SaaS Startup
+    industry: Software
+    challenge: $450 CAC with 2.3x LTV and 18-month payback period making growth unsustainable
+    solution: Implemented CMO.do for campaign optimization, content generation, and attribution modeling
+    results:
+      - metric: CAC reduced to $170 (62% improvement)
+      - metric: LTV increased to 4.1x (+78%)
+      - metric: Payback period down to 7 months
+      - metric: Marketing ROI improved to 3.8x
+    testimonial:
+      quote: "CMO.do transformed our marketing from a cost center to a growth engine. The AI optimization alone cut our CAC by 62%, and the content generation produces better results than our previous agency."
+      author: Jessica Park
+      role: VP of Marketing
+      company: B2B SaaS Startup
+
+  - company: E-Commerce Retailer
+    industry: Consumer Retail
+    challenge: Managing 50+ campaigns across 8 channels with inconsistent performance and unclear attribution
+    solution: Deployed CMO.do for multi-channel campaign management, optimization, and attribution
+    results:
+      - metric: Campaign ROI up to 4.2x (+127%)
+      - metric: Conversion rates improved 94%
+      - metric: Marketing team productivity 5x
+      - metric: Attribution accuracy 96%
+    testimonial:
+      quote: "We finally understand what's actually driving revenue. The multi-touch attribution showed us we were over-investing in last-click channels and under-investing in awareness. Game changer."
+      author: Marcus Rodriguez
+      role: Chief Marketing Officer
+      company: E-Commerce Retailer
+
+  - company: Professional Services Firm
+    industry: Consulting
+    challenge: Content production bottleneck limiting thought leadership and inbound lead generation
+    solution: Implemented CMO.do for AI content generation, SEO optimization, and lead nurturing
+    results:
+      - metric: Content production up 10x
+      - metric: Organic traffic increased 156%
+      - metric: Inbound leads up 312%
+      - metric: Lead-to-MQL conversion +185%
+    testimonial:
+      quote: "The AI content generation is remarkably good. We went from 2 blog posts per month to 20, and our organic traffic tripled. The lead nurturing automation is just as impressive."
+      author: Dr. Sarah Williams
+      role: Managing Partner
+      company: Professional Services Firm
+
+pricing:
+  tiers:
+    - name: Starter
+      price: $499
+      period: per month
+      description: For growing marketing teams launching their first campaigns
+      features:
+        - Up to 10,000 contacts
+        - 3 marketing channels
+        - Basic campaign management
+        - AI content generation (10/month)
+        - Email & social automation
+        - Standard analytics
+        - Email support
+        - 99.5% uptime SLA
+      cta:
+        text: Start Free Trial
+        href: /signup?plan=starter
+
+    - name: Professional
+      price: $1,499
+      period: per month
+      description: For scaling teams needing advanced features
+      popular: true
+      features:
+        - Up to 100,000 contacts
+        - All marketing channels
+        - Advanced campaign optimization
+        - Unlimited AI content generation
+        - Lead scoring & nurturing
+        - Multi-touch attribution
+        - A/B testing platform
+        - All integrations
+        - Priority support
+        - 99.9% uptime SLA
+        - Dedicated growth advisor
+      cta:
+        text: Start Free Trial
+        href: /signup?plan=professional
+
+    - name: Enterprise
+      price: Custom
+      period: contact us
+      description: For large marketing organizations with advanced needs
+      features:
+        - Unlimited contacts
+        - Unlimited channels
+        - Custom AI models
+        - White-label options
+        - Advanced attribution models
+        - API access + webhooks
+        - Custom integrations
+        - Dedicated infrastructure
+        - 24/7 phone support
+        - 99.95% uptime SLA
+        - Dedicated technical team
+      cta:
+        text: Contact Sales
+        href: /contact-sales
+
+integrations:
+  categories:
+    - name: Marketing Automation
+      description: Sync with marketing automation platforms
+      integrations:
+        - name: HubSpot
+          logo: /logos/hubspot.svg
+          docs: /integrations/hubspot
+        - name: Marketo
+          logo: /logos/marketo.svg
+          docs: /integrations/marketo
+        - name: Pardot
+          logo: /logos/pardot.svg
+          docs: /integrations/pardot
+        - name: ActiveCampaign
+          logo: /logos/activecampaign.svg
+          docs: /integrations/activecampaign
+
+    - name: Advertising Platforms
+      description: Connect with paid advertising channels
+      integrations:
+        - name: Google Ads
+          logo: /logos/google-ads.svg
+          docs: /integrations/google-ads
+        - name: Facebook Ads
+          logo: /logos/facebook.svg
+          docs: /integrations/facebook-ads
+        - name: LinkedIn Ads
+          logo: /logos/linkedin.svg
+          docs: /integrations/linkedin-ads
+        - name: Twitter Ads
+          logo: /logos/twitter.svg
+          docs: /integrations/twitter-ads
+
+    - name: Analytics & Attribution
+      description: Track performance and attribute revenue
+      integrations:
+        - name: Google Analytics
+          logo: /logos/google-analytics.svg
+          docs: /integrations/google-analytics
+        - name: Segment
+          logo: /logos/segment.svg
+          docs: /integrations/segment
+        - name: Mixpanel
+          logo: /logos/mixpanel.svg
+          docs: /integrations/mixpanel
+        - name: Amplitude
+          logo: /logos/amplitude.svg
+          docs: /integrations/amplitude
+
+    - name: Social Media
+      description: Manage social media presence
+      integrations:
+        - name: Twitter
+          logo: /logos/twitter.svg
+          docs: /integrations/twitter
+        - name: LinkedIn
+          logo: /logos/linkedin.svg
+          docs: /integrations/linkedin
+        - name: Facebook
+          logo: /logos/facebook.svg
+          docs: /integrations/facebook
+        - name: Instagram
+          logo: /logos/instagram.svg
+          docs: /integrations/instagram
+
+routes:
+  collections:
+    - name: capabilities
+      pattern: /capabilities/[capability]/readme.mdx
+      data:
+        - capability: campaign-optimization
+          title: AI-Powered Campaign Optimization
+          description: Continuous optimization across all channels
+        - capability: content-generation
+          title: AI Content Generation & Strategy
+          description: Generate high-quality marketing content
+        - capability: lead-nurturing
+          title: Intelligent Lead Nurturing
+          description: Personalized multi-touch nurture campaigns
+        - capability: marketing-attribution
+          title: Multi-Touch Attribution & Analytics
+          description: AI-powered attribution and ROI tracking
+        - capability: brand-management
+          title: AI Brand Management & Monitoring
+          description: Monitor brand mentions and sentiment
+
+    - name: integrations
+      pattern: /integrations/[integration]/readme.mdx
+      data:
+        - integration: hubspot
+          title: HubSpot Integration
+          category: Marketing Automation
+        - integration: google-ads
+          title: Google Ads Integration
+          category: Advertising Platforms
+        - integration: google-analytics
+          title: Google Analytics Integration
+          category: Analytics & Attribution
+
+seo:
+  title: CMO.do - Your AI Chief Marketing Officer for Growth Acceleration
+  description: Accelerate growth with AI-powered campaigns, content generation, lead nurturing, and marketing attribution. 3.8x ROI, 62% lower CAC, 94% content quality.
+  keywords:
+    - AI Chief Marketing Officer
+    - Marketing automation
+    - Campaign optimization
+    - AI content generation
+    - Lead nurturing
+    - Marketing attribution
+    - ROI tracking
+    - CAC optimization
+    - Marketing analytics
+    - Brand monitoring
+
+analytics:
+  events:
+    - name: cmo_demo_requested
+      description: User requested a demo
+    - name: cmo_trial_started
+      description: User started free trial
+    - name: cmo_capability_viewed
+      description: User viewed capability details
+    - name: cmo_integration_explored
+      description: User explored integration documentation
+---
+
+# Your AI Chief Marketing Officer
+
+**CMO.do** is your AI-powered marketing leader, accelerating growth through intelligent campaign optimization, automated content generation, personalized lead nurturing, and multi-touch attribution. Achieve 3.8x ROI, 62% lower CAC, and 10x content production.
+
+## Why CMO.do?
+
+Marketing teams are overwhelmed:
+- **Rising CAC** makes growth expensive and unsustainable
+- **Content bottleneck** limits thought leadership and inbound leads
+- **Channel complexity** makes optimization impossible
+- **Attribution mystery** leaves teams guessing what works
+- **Manual processes** slow down campaign velocity
+
+CMO.do solves these challenges with AI that continuously optimizes campaigns, generates content, nurtures leads, and tracks attribution with 96% accuracy.
+
+## Key Capabilities
+
+### 📊 AI-Powered Campaign Optimization
+Launch and optimize campaigns across all channels with AI-driven budget allocation, creative testing, and audience targeting. Achieve 3.8x ROI and 127% better conversion rates.
+
+### ✍️ AI Content Generation & Strategy
+Generate high-quality blog posts, social content, emails, and landing pages optimized for SEO and engagement. Produce content 10x faster with 94/100 quality scores.
+
+### 🌱 Intelligent Lead Nurturing
+Personalized, multi-touch nurture campaigns with predictive send-time optimization and dynamic content. Improve lead-to-MQL conversion 185%.
+
+### 📈 Multi-Touch Attribution & Analytics
+AI-powered attribution modeling across all touchpoints with complete ROI visibility. Reduce CAC 62% through data-driven optimization.
+
+### 🎨 AI Brand Management & Monitoring
+Monitor brand mentions, sentiment, and reputation across all channels with automated response recommendations. Improve sentiment 28% and prevent 87% of crises.
+
+## Real-World Results
+
+- **B2B SaaS Startup**: 62% CAC reduction, 3.8x marketing ROI, 7-month payback
+- **E-Commerce Retailer**: 4.2x campaign ROI, 94% conversion rate increase, 96% attribution accuracy
+- **Professional Services**: 10x content production, 156% organic traffic growth, 312% more inbound leads
+
+## How It Works
+
+CMO.do becomes your AI marketing team across all channels:
+
+1. **Optimize** - Continuous campaign optimization with AI-driven budget allocation
+2. **Create** - AI-generated content for all channels with SEO optimization
+3. **Nurture** - Personalized lead journeys with predictive timing
+4. **Attribute** - Multi-touch attribution with complete revenue tracking
+5. **Monitor** - Real-time brand monitoring and sentiment analysis
+6. **Analyze** - Predictive analytics for CAC, LTV, and ROI
+
+## Implementation
+
+```typescript
+import type { BusinessModule } from 'graphdl'
+
+export const CMOAgent: BusinessModule = $ => {
+  const { db, ai, on, send, every, api } = $
+
+  // Campaign optimization
+  on.campaign.created(async (campaign) => {
+    const strategy = await ai.generate({
+      prompt: 'Create optimal campaign strategy',
+      campaign,
+      historical: await db.campaigns.aggregate()
+    })
+
+    for (const channel of campaign.channels) {
+      await launchChannelCampaign({ channel, strategy })
+    }
+
+    every('hour', async () => {
+      await optimizeCampaignBudgets(campaign.id)
+    })
+  })
+
+  // Content generation
+  on.content.requested(async (request) => {
+    const research = await ai.research({ topic: request.topic })
+
+    const content = await ai.generate({
+      type: request.contentType,
+      research,
+      seo_keywords: research.keywords
+    })
+
+    await db.content.create({
+      ...content,
+      status: 'draft'
+    })
+  })
+
+  // Lead nurturing
+  on.lead.captured(async (lead) => {
+    const track = await ai.decide('select-nurture-track', { lead })
+
+    await db.nurtureCampaigns.enroll({
+      leadId: lead.id,
+      trackId: track.id
+    })
+  })
+
+  // Attribution analysis
+  every('day', async () => {
+    const conversions = await db.conversions.findAll({ period: 'yesterday' })
+
+    for (const conversion of conversions) {
+      const attribution = await ai.analyze({
+        journey: await db.touchpoints.findAll({ leadId: conversion.leadId }),
+        conversion
+      })
+
+      await db.attributions.create({ attribution })
+    }
+  })
+
+  // Brand monitoring
+  every('15-minutes', async () => {
+    const mentions = await api.get('https://social-monitoring.com/api/mentions')
+
+    for (const mention of mentions) {
+      const analysis = await ai.analyze({
+        content: mention.text,
+        sentiment: true,
+        urgency: true
+      })
+
+      if (analysis.sentiment === 'negative') {
+        await send.slack('#social-media', {
+          text: `⚠️ Negative mention: ${mention.text}`
+        })
+      }
+    }
+  })
+
+  return {
+    name: 'CMO Agent',
+    version: '1.0.0',
+    capabilities: [
+      'campaign-optimization',
+      'content-generation',
+      'lead-nurturing',
+      'marketing-attribution',
+      'brand-management'
+    ]
+  }
+}
+
+export default CMOAgent
+```
+
+## Get Started
+
+Transform your marketing with AI. Start with a free 14-day trial:
+
+1. **Sign up** - No credit card required
+2. **Connect platforms** - CRM, ads, analytics, social
+3. **Import data** - We'll sync your contacts and campaigns
+4. **Go live** - CMO.do starts optimizing immediately
+
+[Start Free Trial](/signup) • [Book Demo](/demo) • [View Pricing](/pricing)
+
+## FAQs
+
+**Q: How quickly will I see results?**
+A: Most customers see improved campaign performance within 2 weeks and measurable CAC reduction within 60 days.
+
+**Q: Which platforms do you integrate with?**
+A: HubSpot, Salesforce, Google Ads, Facebook Ads, Google Analytics, and 50+ marketing platforms. Custom integrations available.
+
+**Q: Can I customize the AI models?**
+A: Yes! Professional and Enterprise plans include custom model training for your brand voice, audience, and objectives.
+
+**Q: How good is the AI-generated content?**
+A: Our content scores 94/100 on average for quality, SEO, and readability. All content is reviewed before publishing.
+
+**Q: What attribution models do you support?**
+A: First-touch, last-touch, linear, time-decay, position-based, and data-driven (ML-powered). We recommend the best model for your business.
+
+---
+
+**CMO.do** - AI-powered marketing acceleration • [Pricing](/pricing) • [Integrations](/integrations) • [Docs](/docs) • [Support](mailto:support@cmo.do)

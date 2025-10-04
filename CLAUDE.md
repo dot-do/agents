@@ -2,11 +2,55 @@
 
 ## Project Overview
 
-The **agents repository** stores **AI agent definitions** as MDX files with Zod schema validation via Velite, enabling bidirectional synchronization with the PostgreSQL database.
+The **agents repository** stores **33 production AI agent definitions** as MDX files with Zod schema validation via Velite, enabling bidirectional synchronization with the PostgreSQL database.
 
 **Purpose**: Define and manage AI agent entities as version-controlled MDX files that sync automatically to the database.
 
 **Position**: 📝 **Content Layer** - Content source that syncs to db layer
+
+## Repository Structure
+
+```
+agents/
+├── named/           # 7 named persona agents (Amy, Alex, Morgan, Riley, Jordan, Taylor, Sam)
+│   ├── amy.do.mdx
+│   ├── alex.do.mdx
+│   ├── morgan.do.mdx
+│   ├── riley.do.mdx
+│   ├── jordan.do.mdx
+│   ├── taylor.do.mdx
+│   └── sam.do.mdx
+├── roles/           # 8 C-suite role agents (CTO, CFO, COO, CSO, CCO, CISO, CMO, CLO)
+│   ├── cto.do.mdx
+│   ├── cfo.do.mdx
+│   ├── coo.do.mdx
+│   ├── cso.do.mdx
+│   ├── cco.do.mdx
+│   ├── ciso.do.mdx
+│   ├── cmo.do.mdx
+│   └── clo.do.mdx
+└── specialized/     # 18 specialized function agents
+    ├── bugTriager.mdx
+    ├── codeReviewer.mdx
+    ├── contentWriter.mdx
+    ├── contractReviewer.mdx
+    ├── documentationWriter.mdx
+    ├── financialAdvisor.mdx
+    ├── inventoryClerk.mdx
+    ├── legalResearcher.mdx
+    ├── medicalTriager.mdx
+    ├── orderProcessor.mdx
+    ├── pharmacyChecker.mdx
+    ├── rentalAgent.mdx
+    ├── salesAgent.mdx
+    ├── securityAuditor.mdx
+    ├── shippingCoordinator.mdx
+    ├── supportAgent.mdx
+    ├── taxAdvisor.mdx
+    └── testGenerator.mdx
+```
+
+**Total:** 33 agents (7 named + 8 roles + 18 specialized)
 
 ## Schema
 

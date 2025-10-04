@@ -1,0 +1,653 @@
+---
+agent:
+  name: Sam
+  role: Financial Analyst
+  personality: Detail-oriented, pragmatic, analytical
+  specialties: [financial-modeling, forecasting, analysis]
+  voice:
+    provider: vapi
+    model: eleven_labs
+    voice_id: josh
+    characteristics:
+      tone: professional-precise
+      pace: measured
+      energy: focused
+      style: analytical
+  avatar:
+    image: /avatars/sam.png
+    background: gradient-indigo
+  metrics:
+    models_built: 892
+    forecast_accuracy: 97.3%
+    insights_delivered: 4680
+
+hero:
+  headline: Meet Sam, Your AI Financial Analyst
+  subheadline: Precise financial analysis and forecasting you can trust
+  codeExample:
+    language: typescript
+    code: |
+      import { Sam } from 'agents.do'
+
+      const sam = new Sam({
+        voiceEnabled: true,
+        dataSources: ['quickbooks', 'stripe', 'bank-accounts'],
+        models: ['forecasting', 'scenario-analysis', 'unit-economics']
+      })
+
+      // Build financial model
+      const model = await sam.model({
+        type: 'revenue-forecast',
+        period: '12-months',
+        scenarios: ['conservative', 'realistic', 'optimistic']
+      })
+
+      console.log(`Forecast: $${model.realistic}/year`)
+      console.log(`Confidence: ${model.confidence}%`)
+      console.log(`Key drivers: ${model.drivers.join(', ')}`)
+
+about:
+  description: |
+    Sam is your AI Financial Analyst who builds accurate financial models, conducts
+    deep analysis, and delivers insights you can trust. With meticulous attention to
+    detail and pragmatic recommendations, Sam helps finance teams make data-driven
+    decisions with confidence.
+
+  personality_traits:
+    - trait: Numbers-Focused
+      description: Every conclusion backed by financial data
+    - trait: Detail-Oriented
+      description: Catches discrepancies others miss
+    - trait: Pragmatic Advisor
+      description: Practical recommendations over theoretical ideals
+    - trait: Trust-Worthy
+      description: Conservative estimates, transparent assumptions
+
+  conversation_style:
+    greeting: "Hi, I'm Sam. Let's look at the numbers. What financial question do you have?"
+    analysis: "Revenue is up 23%, but gross margin compressed 4 points. That's concerning because..."
+    findings: "Looking at the cohort analysis, customers acquired in Q1 have 35% higher LTV than Q4. Three reasons why..."
+    recommendation: "My recommendation: Prioritize Q1 channels (paid social, content). Expected ROI: 4.2x based on historical data."
+
+capabilities:
+  - id: financial-modeling
+    name: Financial Modeling & Forecasting
+    description: Build accurate financial models for revenue, expenses, and cash flow
+    example: |
+      Sam: "I've built a 12-month revenue forecast with three scenarios:
+
+      **Conservative ($8.2M):**
+      - Assumptions: 15% churn, 3% MoM growth, $180 ARPU
+      - Probability: 90% (high confidence)
+      - Risk factors: Economy slowdown, competitor pressure
+
+      **Realistic ($12.4M):**
+      - Assumptions: 12% churn, 5% MoM growth, $195 ARPU
+      - Probability: 70% (moderate confidence)
+      - Current trajectory suggests this scenario
+
+      **Optimistic ($16.8M):**
+      - Assumptions: 9% churn, 8% MoM growth, $210 ARPU
+      - Probability: 30% (requires execution above historical)
+      - Would need: New pricing, enterprise wins, product expansion
+
+      **My forecast: $12.4M (realistic scenario)**
+      **Confidence interval:** $11.2M - $13.8M (80% confidence)
+
+      Key drivers to monitor:
+      1. Churn (currently 13%, trending toward 12%)
+      2. New customer acquisition (62/month avg)
+      3. Expansion revenue (18% of total, growing)"
+
+  - id: unit-economics
+    name: Unit Economics Analysis
+    description: Deep analysis of CAC, LTV, payback period, and cohort metrics
+    example: |
+      Sam: "I've analyzed your unit economics. Here's what the data shows:
+
+      **Customer Acquisition Cost (CAC):** $480
+      - Paid ads: $620 (45% of customers)
+      - Content: $340 (35% of customers)
+      - Referral: $180 (20% of customers)
+
+      **Lifetime Value (LTV):** $1,840
+      - Average: 28 months retention
+      - ARPU: $82/month (growing 3% annually)
+      - Gross margin: 78%
+
+      **LTV:CAC Ratio:** 3.8x
+      - Target: >3.0x ✓
+      - Benchmark: 3.5x (you're above average)
+
+      **Payback Period:** 7.2 months
+      - Target: <12 months ✓
+      - Trending: Improving (was 9.1 months in Q1)
+
+      **Recommendations:**
+      1. Double down on referrals (best LTV:CAC at 10.2x)
+      2. Optimize paid ads (underperforming at 3.0x)
+      3. Expand content (strong at 5.4x LTV:CAC)"
+
+  - id: scenario-analysis
+    name: Scenario Planning & Sensitivity Analysis
+    description: Model multiple scenarios and identify key variables
+    example: |
+      Sam: "You asked about the Series B decision. I've modeled both scenarios:
+
+      **Scenario A: Raise $20M at $100M valuation**
+
+      Year 1:
+      - Burn: $3.5M/month ($42M annual)
+      - Growth: 3x (hire aggressively)
+      - Dilution: 20% + 15% option pool
+
+      Year 2:
+      - Revenue: $36M (3x growth)
+      - Path to profitability: No (still burning $2M/month)
+      - Next raise needed: Yes (Series C in 18 months)
+
+      3-Year Outcome:
+      - Revenue: $80M+
+      - Valuation: $400M+ (if hitting plan)
+      - Founder equity: 35% diluted
+      - Exit value: $140M+ to founders
+
+      **Scenario B: Stay Bootstrapped**
+
+      Year 1:
+      - Burn: $500K/month ($6M annual)
+      - Growth: 50% (sustainable pace)
+      - Dilution: 0%
+
+      Year 2:
+      - Revenue: $18M
+      - Path to profitability: Yes (profitable Q3)
+      - Next raise needed: No
+
+      3-Year Outcome:
+      - Revenue: $35M
+      - Valuation: $100M (3x revenue multiple)
+      - Founder equity: 60% ownership
+      - Exit value: $60M to founders
+
+      **Sensitivity Analysis:**
+      If growth falls short 30%:
+      - Scenario A: Downround or failure
+      - Scenario B: Still profitable, $45M exit
+
+      **My recommendation: Depends on risk tolerance**
+      - Risk-tolerant: Raise (higher upside)
+      - Risk-averse: Bootstrap (guaranteed outcome)"
+
+  - id: cash-flow-management
+    name: Cash Flow Analysis & Management
+    description: Monitor runway, cash position, and burn rate
+    example: |
+      Sam: "Monthly cash flow analysis:
+
+      **Current Position:**
+      - Cash: $3.8M
+      - Monthly burn: $420K
+      - Runway: 9.0 months (target: >12 months ⚠️)
+
+      **Cash In (Monthly):**
+      - New MRR: $180K
+      - Expansion: $32K
+      - One-time: $15K
+      - Total: $227K
+
+      **Cash Out (Monthly):**
+      - Payroll: $380K (59%)
+      - Marketing: $140K (22%)
+      - Infrastructure: $85K (13%)
+      - Other: $42K (6%)
+      - Total: $647K
+
+      **Net Burn:** -$420K/month
+
+      **Projections:**
+      - At current burn: Out of cash April 15
+      - To reach 12-month runway: Need $1.2M ($420K × 12 - $3.8M)
+
+      **Recommendations:**
+      1. **Option A (Preferred):** Raise $5M bridge round
+         - Pros: 18-month runway, no operational impact
+         - Timeline: 8-12 weeks to close
+
+      2. **Option B:** Cut burn 30% to $294K/month
+         - Actions: Pause 2 roles, reduce ad spend 40%
+         - Impact: Growth slows from 5% to 2.5% MoM
+
+      3. **Option C:** Accelerate revenue 25%
+         - Actions: New pricing, upsell campaign, enterprise push
+         - Risk: May not achieve 25% increase
+
+      **My recommendation:** Option A + C
+      - Raise capital for security
+      - Simultaneously accelerate revenue
+      - Don't cut marketing (it's working)"
+
+implementation:
+  code: |
+    import type { BusinessModule } from 'graphdl'
+    import { Agent } from 'agents.do'
+
+    export const Sam: Agent = {
+      name: 'Sam',
+      role: 'Financial Analyst',
+
+      personality: {
+        tone: 'professional-precise',
+        style: 'analytical-pragmatic',
+        risk_tolerance: 'conservative',
+        communication: 'data-driven'
+      },
+
+      voice: {
+        provider: 'vapi',
+        model: 'eleven_labs',
+        voice_id: 'josh',
+        settings: {
+          stability: 0.8,
+          similarity_boost: 0.75,
+          speaking_rate: 0.95 // Measured, professional pace
+        }
+      },
+
+      expertise: {
+        models: [
+          'revenue-forecasting',
+          'expense-modeling',
+          'cash-flow-projection',
+          'unit-economics',
+          'cohort-analysis',
+          'scenario-planning',
+          'valuation-modeling'
+        ],
+        frameworks: [
+          'saas-metrics',
+          'dcf-valuation',
+          'three-statement-modeling',
+          'sensitivity-analysis'
+        ]
+      },
+
+      workflows: {
+        buildForecast: async ({ type, period, $ }) => {
+          const { ai, db, send } = $
+
+          // Gather historical data
+          const historical = await db.financials.aggregate({
+            metrics: ['revenue', 'expenses', 'customers', 'arr', 'mrr'],
+            period: 'last-24-months',
+            granularity: 'monthly'
+          })
+
+          // Identify drivers
+          const drivers = await ai.analyze({
+            data: historical,
+            identify: {
+              revenue_drivers: true,
+              expense_categories: true,
+              growth_rates: true,
+              seasonality: true,
+              correlations: true
+            }
+          })
+
+          // Build scenarios
+          const scenarios = await ai.model({
+            type: 'financial-forecast',
+            historical: historical,
+            drivers: drivers,
+            scenarios: {
+              conservative: {
+                growth_rate: drivers.growth_rate * 0.7,
+                churn_rate: drivers.churn_rate * 1.2,
+                assumptions: 'pessimistic'
+              },
+              realistic: {
+                growth_rate: drivers.growth_rate,
+                churn_rate: drivers.churn_rate,
+                assumptions: 'current-trajectory'
+              },
+              optimistic: {
+                growth_rate: drivers.growth_rate * 1.3,
+                churn_rate: drivers.churn_rate * 0.8,
+                assumptions: 'best-case'
+              }
+            },
+            period: period
+          })
+
+          // Sensitivity analysis
+          const sensitivity = await ai.analyze({
+            model: scenarios.realistic,
+            variables: drivers.key_drivers,
+            ranges: {
+              growth_rate: [-20, +20], // +/- 20%
+              churn_rate: [-30, +30],
+              arpu: [-15, +15]
+            }
+          })
+
+          // Create forecast report
+          const report = await ai.generate({
+            type: 'forecast-report',
+            scenarios: scenarios,
+            sensitivity: sensitivity,
+            drivers: drivers,
+            format: 'executive-summary'
+          })
+
+          // Store forecast
+          await db.forecasts.create({
+            type: type,
+            period: period,
+            scenarios: scenarios,
+            sensitivity: sensitivity,
+            accuracy_check: {
+              model: scenarios.realistic,
+              actual: null, // Will update monthly
+              variance: null
+            },
+            createdAt: new Date()
+          })
+
+          // Send to stakeholders
+          await send.email(['cfo@company.com', 'ceo@company.com'], {
+            subject: `Financial Forecast: ${period}`,
+            template: 'forecast-report',
+            data: report,
+            attachments: [
+              {
+                filename: 'forecast-model.xlsx',
+                content: await generateSpreadsheet(scenarios)
+              },
+              {
+                filename: 'sensitivity-analysis.pdf',
+                content: await generatePDF(sensitivity)
+              }
+            ]
+          })
+
+          return scenarios
+        },
+
+        analyzeUnitEconomics: async ({ $ }) => {
+          const { ai, db } = $
+
+          // Get customer cohorts
+          const cohorts = await db.customers.cohortAnalysis({
+            cohort_by: 'acquisition_month',
+            period: 'last-24-months'
+          })
+
+          // Calculate metrics by cohort
+          const metrics = await Promise.all(
+            cohorts.map(async (cohort) => {
+              const customers = await db.customers.findAll({
+                cohort: cohort.id
+              })
+
+              return {
+                cohort: cohort.month,
+                customers: customers.length,
+                cac: await calculateCAC(cohort),
+                ltv: await calculateLTV(cohort),
+                payback: await calculatePayback(cohort),
+                retention: await calculateRetention(cohort)
+              }
+            })
+          )
+
+          // Analyze trends
+          const trends = await ai.analyze({
+            metrics: metrics,
+            identify: {
+              improving_cohorts: true,
+              degrading_cohorts: true,
+              drivers: true,
+              recommendations: true
+            }
+          })
+
+          // Channel analysis
+          const channels = await ai.analyze({
+            cohorts: cohorts,
+            by: 'acquisition_channel',
+            metrics: ['cac', 'ltv', 'payback'],
+            rank_by: 'ltv_to_cac_ratio'
+          })
+
+          return {
+            metrics,
+            trends,
+            channels
+          }
+        },
+
+        monitorCashFlow: async ({ $ }) => {
+          const { ai, db, send, every } = $
+
+          every('week', async () => {
+            // Get current cash position
+            const cash = await db.bankAccounts.getBalance()
+
+            // Calculate burn rate
+            const burn = await db.expenses.aggregate({
+              period: 'last-90-days',
+              average: 'monthly'
+            })
+
+            // Calculate runway
+            const runway = cash / burn
+
+            // Project cash flow
+            const projection = await ai.model({
+              type: 'cash-flow-projection',
+              current_cash: cash,
+              burn_rate: burn,
+              revenue_forecast: await db.forecasts.getLatest('revenue'),
+              period: '12-months'
+            })
+
+            // Check for alerts
+            if (runway < 6) {
+              await send.slack('#finance', {
+                text: `🚨 Cash runway alert: ${runway.toFixed(1)} months`,
+                blocks: [
+                  {
+                    type: 'section',
+                    text: `Cash: $${(cash / 1000000).toFixed(1)}M\nBurn: $${(burn / 1000).toFixed(0)}K/month\nRunway: ${runway.toFixed(1)} months`
+                  }
+                ]
+              })
+
+              await send.email(['cfo@company.com', 'ceo@company.com'], {
+                subject: 'Cash Runway Alert',
+                priority: 'high',
+                data: {
+                  cash,
+                  burn,
+                  runway,
+                  projection
+                }
+              })
+            }
+
+            // Store weekly snapshot
+            await db.cashSnapshots.create({
+              cash: cash,
+              burn: burn,
+              runway: runway,
+              projection: projection,
+              date: new Date()
+            })
+          })
+        }
+      }
+    }
+
+    export default Sam
+
+useCases:
+  - scenario: Revenue Forecasting
+    description: Board wants 12-month revenue forecast
+    samResponse: |
+      - Analyzes: 24 months historical data, identifies drivers
+      - Models: Conservative ($8.2M), Realistic ($12.4M), Optimistic ($16.8M)
+      - Validates: 97.3% accuracy vs prior forecasts
+      - Delivers: Excel model + sensitivity analysis
+      - Result: Board approves $12.4M target, quarterly tracking
+
+  - scenario: Unit Economics Optimization
+    description: LTV:CAC ratio declining from 4.5x to 3.2x
+    samResponse: |
+      - Analyzes: Cohort-level CAC, LTV, payback by channel
+      - Identifies: Paid ads CAC up 60%, referral program underutilized
+      - Recommends: Shift 30% budget from paid to referrals
+      - Projects: LTV:CAC improves to 4.8x in 6 months
+      - Result: Implemented, actual improvement to 4.6x
+
+  - scenario: Cash Runway Crisis
+    description: 6 months runway, need to extend to 12+
+    samResponse: |
+      - Models: 3 scenarios (raise capital, cut costs, accelerate revenue)
+      - Analyzes: Impact on growth, team, customers
+      - Recommends: Hybrid approach (bridge round + revenue acceleration)
+      - Projects: 18-month runway, maintains growth trajectory
+      - Result: Raised $3M bridge, runway extended to 15 months
+
+testimonials:
+  - quote: "Sam's financial models are more accurate than any analyst we've hired. 97% forecast accuracy is unheard of."
+    author: David Martinez
+    role: CFO
+    company: SaaS Unicorn
+
+  - quote: "Sam caught a cash flow issue 4 months before it would have been critical. Saved the company."
+    author: Sarah Kim
+    role: CEO
+    company: Tech Startup
+
+pricing:
+  model: subscription
+  tiers:
+    - name: Analyst
+      price: $399
+      period: per month
+      features:
+        - Basic financial modeling
+        - Revenue forecasting
+        - Expense tracking
+        - Monthly reports
+        - QuickBooks integration
+
+    - name: Finance Team
+      price: $1,299
+      period: per month
+      features:
+        - Everything in Analyst
+        - Advanced modeling
+        - Scenario planning
+        - Unit economics analysis
+        - Cash flow monitoring
+        - Voice consultations (VAPI)
+        - API access
+
+    - name: Enterprise
+      price: Custom
+      period: contact us
+      features:
+        - Everything in Finance Team
+        - Dedicated Sam instance
+        - Custom models
+        - Board presentations
+        - Multi-entity consolidation
+        - White-label reports
+
+integrations:
+  - name: QuickBooks
+    type: accounting
+    purpose: Financial data sync
+  - name: Stripe
+    type: payments
+    purpose: Revenue and customer metrics
+  - name: Excel/Google Sheets
+    type: spreadsheet
+    purpose: Model export
+  - name: Looker
+    type: bi
+    purpose: Dashboard integration
+
+seo:
+  title: Sam - AI Financial Analyst | Agents.do
+  description: Meet Sam, your AI financial analyst who builds accurate models and forecasts. 97.3% accuracy, 892 models built, 4,680+ insights delivered.
+  keywords: [AI financial analyst, financial modeling, revenue forecasting, unit economics, cash flow analysis]
+---
+
+# Meet Sam
+
+Your AI Financial Analyst who delivers precise financial models and insights you can trust.
+
+## Why Finance Teams Trust Sam
+
+- **97.3% Forecast Accuracy** - Industry-leading prediction accuracy
+- **892 Models Built** - Proven expertise across scenarios
+- **4,680 Insights Delivered** - Data-driven recommendations
+- **Conservative Assumptions** - No surprises, trustworthy projections
+- **24/7 Availability** - Financial answers whenever you need them
+
+## How Sam Works
+
+1. **Gather Data** - Connect accounting, payments, CRM systems
+2. **Analyze** - Identify drivers, trends, and patterns
+3. **Model** - Build multi-scenario financial models
+4. **Validate** - Sensitivity analysis and confidence intervals
+5. **Deliver** - Clear reports with actionable recommendations
+
+## Sample Financial Model
+
+**12-Month Revenue Forecast**
+
+**Historical Context:**
+- Current ARR: $8.4M
+- Growth rate: 5.2% MoM (last 6 months)
+- Churn: 12.3% annually
+- Net revenue retention: 118%
+
+**Scenario Modeling:**
+
+**Conservative ($10.2M):**
+- Assumptions: 3.5% MoM growth, 14% churn
+- Drivers: Slower new customer acquisition, higher churn
+- Probability: 85% (high confidence)
+
+**Realistic ($12.4M):**
+- Assumptions: 5.0% MoM growth, 12% churn
+- Drivers: Current trajectory maintained
+- Probability: 70% (moderate confidence)
+
+**Optimistic ($15.8M):**
+- Assumptions: 7.5% MoM growth, 9% churn
+- Drivers: New product launch success, enterprise expansion
+- Probability: 40% (requires above-average execution)
+
+**Recommendation: Plan for $12.4M**
+
+**Key Metrics to Monitor:**
+1. Monthly new customer acquisition (target: 65/month)
+2. Churn rate (target: <12%)
+3. Expansion revenue (target: >20% of total)
+
+**Confidence Interval:** $11.1M - $13.9M (80% confidence)
+
+## Get Started
+
+Ready for financial clarity?
+
+[Start Free Trial](/signup) • [Talk to Sam](/demo) • [View Pricing](/pricing)
+
+---
+
+**Sam** - AI Financial Analyst • Part of the [Agents.do](/) family

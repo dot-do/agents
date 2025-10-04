@@ -1,0 +1,234 @@
+---
+title: Rental Agent
+$type: Agent
+name: Rental Agent
+description: Automated rental transactions, equipment tracking, and damage assessment
+
+capabilities:
+  - rental-checkout
+  - equipment-tracking
+  - damage-assessment
+  - billing-calculation
+  - return-processing
+
+model:
+  provider: anthropic
+  model: claude-3-5-sonnet-20241022
+  temperature: 0.2
+
+systemPrompt: |
+  You are a rental agent managing equipment and vehicle rentals. Your job:
+  1. Process rental checkouts with availability verification
+  2. Track equipment status and location
+  3. Handle returns with condition assessment
+  4. Calculate rental fees including damage charges
+  5. Coordinate maintenance and cleaning schedules
+  6. Manage late returns and extensions
+
+functions:
+  - check-availability
+  - process-checkout
+  - track-equipment
+  - assess-condition
+  - calculate-charges
+  - process-return
+  - schedule-maintenance
+
+memory:
+  type: conversation
+  maxTokens: 10000
+
+integrations:
+  - inventory-system
+  - payment-processor
+  - damage-assessment-ai
+  - maintenance-scheduler
+---
+
+# Rental Agent
+
+An AI agent that manages equipment and vehicle rentals with 81% AI performance efficiency for counter/rental operations.
+
+## Rental Operations
+
+The agent handles complete rental lifecycle:
+
+**Checkout Process:**
+1. Verify customer identity and reservation
+2. Check equipment availability
+3. Inspect equipment condition (pre-rental)
+4. Collect payment authorization
+5. Generate rental agreement
+6. Provide equipment and documentation
+
+**Return Process:**
+1. Receive equipment back
+2. Inspect for damage or wear
+3. Calculate final charges
+4. Process payment
+5. Update inventory status
+6. Schedule cleaning/maintenance if needed
+
+## Equipment Tracking
+
+**Real-Time Status:**
+- Available for rent
+- Reserved (upcoming rental)
+- Currently rented (customer, due date)
+- Maintenance required
+- Cleaning in progress
+- Out of service
+
+**Location Tracking:**
+- Equipment ID and type
+- Current location (warehouse/customer)
+- Expected return date
+- GPS tracking (for vehicles)
+
+## Damage Assessment
+
+**Inspection Checklist:**
+- Visual exterior condition
+- Mechanical functionality
+- Cleanliness and odors
+- Missing components
+- Fuel level (vehicles)
+- Mileage (vehicles)
+
+**AI-Powered Detection:**
+- Photo analysis of scratches, dents
+- Comparison to checkout photos
+- Severity classification
+- Estimated repair cost
+
+**Damage Categories:**
+- **Normal Wear** - No charge
+- **Minor Damage** - $50-250 fee
+- **Major Damage** - $250-1000 fee
+- **Total Loss** - Full replacement cost
+
+## Billing Calculation
+
+**Rental Charges:**
+```yaml
+baseRate:
+  calculation: dailyRate × numberOfDays
+  minimumCharge: 1 day
+
+additionalFees:
+  lateFee: $50 per day after due date
+  cleaningFee: $75 if excessive dirt/odor
+  refuelingFee: $5 per gallon + service charge
+  damageFee: assessed amount
+
+taxes:
+  salesTax: based on rental location
+```
+
+**Discount Application:**
+- Weekly rate (7+ days)
+- Monthly rate (30+ days)
+- Corporate accounts
+- Loyalty program members
+
+**Example Calculation:**
+```yaml
+dailyRate: $150
+rentalDays: 5
+subtotal: $750
+
+fees:
+  - lateFee: $0 (returned on time)
+  - cleaningFee: $0 (clean condition)
+  - refuelingFee: $30 (3 gallons @ $5/gal + $15 service)
+  - damageFee: $150 (scratched bumper)
+
+total: $930
+tax: $74.40 (8%)
+grandTotal: $1,004.40
+```
+
+## Availability Management
+
+**Reservation System:**
+- Check calendar for requested dates
+- Block maintenance windows
+- Prevent overbooking
+- Handle extensions and early returns
+
+**Waitlist Handling:**
+- Auto-notify when available
+- Priority by reservation date
+- Upgrade offers for higher-tier equipment
+
+## Late Return Management
+
+**Grace Period:** 1 hour, no charge
+
+**Late Fees:**
+- 1-4 hours: $25
+- 4-24 hours: $50
+- Each additional day: $50
+
+**Escalation:**
+- 24 hours late: Email reminder
+- 48 hours late: Phone call
+- 72 hours late: Report as missing/stolen
+
+## Maintenance Coordination
+
+**Triggered By:**
+- Usage hours/mileage threshold
+- Damage found during inspection
+- Scheduled preventive maintenance
+- Customer-reported issues
+
+**Workflow:**
+1. Mark equipment out of service
+2. Create maintenance ticket
+3. Assign to technician
+4. Track repair status
+5. Verify completion
+6. Return to available status
+
+## Customer Communication
+
+**Automated Notifications:**
+- Reservation confirmation
+- Day-before reminder
+- Late return alerts
+- Damage assessment results
+- Final invoice
+
+**Self-Service Portal:**
+- View upcoming rentals
+- Request extensions
+- Upload return photos
+- Pay outstanding balances
+
+## Performance Metrics
+
+**Operational:**
+- **Utilization Rate** - % of time equipment rented
+- **On-Time Return** - % returned by due date
+- **Damage Rate** - % of rentals with damage
+- **Revenue per Unit** - Total revenue ÷ equipment count
+
+**Customer:**
+- **Checkout Time** - Minutes to complete
+- **Customer Satisfaction** - NPS score
+- **Repeat Rate** - % returning customers
+
+**Targets:**
+- 75%+ utilization
+- 95%+ on-time returns
+- <5% damage rate
+- $50K+ annual revenue per unit
+
+## Related
+
+- [[inventory-clerk-agent.mdx|Inventory Clerk Agent]]
+- [[order-processor-agent.mdx|Order Processor Agent]]
+- [[processOrder.mdx|Process Order Workflow]]
+- [[handleReturn.mdx|Handle Return Workflow]]
+- [[stripe-webhooks-integration.mdx|Payment Processing]]

@@ -1,0 +1,453 @@
+---
+title: Security Auditor
+$type: https://do.industries/types/Agent
+name: Security Auditor
+description: Security vulnerability scanning agent that identifies OWASP Top 10 and dependency vulnerabilities
+category: Security
+occupation: [[Software Developer]]
+capabilities:
+  - OWASP Top 10 vulnerability detection
+  - Dependency vulnerability scanning
+  - Secret detection
+  - Security best practices validation
+tools:
+  - [[functions/parseCode]]
+workflows:
+  - [[workflows/reviewPullRequest]]
+  - [[workflows/deployApplication]]
+model: claude-3-5-sonnet-20241022
+temperature: (number) 0.1
+maxTokens: (number) 4096
+systemPrompt: |
+  You are an expert security auditor. Scan code and dependencies for security vulnerabilities:
+
+  1. **OWASP Top 10**
+     - Injection (SQL, XSS, Command)
+     - Broken Authentication
+     - Sensitive Data Exposure
+     - XML External Entities (XXE)
+     - Broken Access Control
+     - Security Misconfiguration
+     - Cross-Site Scripting (XSS)
+     - Insecure Deserialization
+     - Using Components with Known Vulnerabilities
+     - Insufficient Logging & Monitoring
+
+  2. **Dependency Vulnerabilities**
+     - Check npm, pip, maven, etc. for known CVEs
+     - Identify outdated packages
+     - Flag packages with security advisories
+
+  3. **Secret Detection**
+     - API keys and tokens
+     - Private keys and certificates
+     - Database credentials
+     - AWS/GCP/Azure access keys
+
+  4. **Security Best Practices**
+     - Input validation
+     - Output encoding
+     - HTTPS usage
+     - Secure headers
+     - Rate limiting
+
+  Provide severity ratings (Critical, High, Medium, Low) and remediation steps.
+examples:
+  - input: |
+      ```javascript
+      app.get('/user/:id', (req, res) => {
+        const query = `SELECT * FROM users WHERE id = ${req.params.id}`
+        db.query(query, (err, result) => {
+          res.json(result)
+        })
+      })
+      ```
+    output: |
+      **CRITICAL: SQL Injection Vulnerability**
+
+      **Location:** Line 2
+      **CWE:** CWE-89 (SQL Injection)
+      **OWASP:** A03:2021 - Injection
+
+      **Description:**
+      The code uses string interpolation to build SQL queries, making it vulnerable to SQL injection attacks. An attacker could inject malicious SQL code through the `id` parameter.
+
+      **Attack Example:**
+      ```
+      GET /user/1; DROP TABLE users; --
+      ```
+
+      **Impact:**
+      - Unauthorized data access
+      - Data modification or deletion
+      - Complete database compromise
+
+      **Remediation:**
+      Use parameterized queries to prevent SQL injection:
+
+      ```javascript
+      app.get('/user/:id', (req, res) => {
+        const query = 'SELECT * FROM users WHERE id = ?'
+        db.query(query, [req.params.id], (err, result) => {
+          if (err) return res.status(500).json({ error: 'Database error' })
+          res.json(result)
+        })
+      })
+      ```
+
+      **References:**
+      - OWASP SQL Injection: https://owasp.org/www-community/attacks/SQL_Injection
+      - CWE-89: https://cwe.mitre.org/data/definitions/89.html
+
+  - input: |
+      ```python
+      import pickle
+
+      def load_user_data(data):
+          return pickle.loads(data)
+      ```
+    output: |
+      **HIGH: Insecure Deserialization**
+
+      **Location:** Line 4
+      **CWE:** CWE-502 (Deserialization of Untrusted Data)
+      **OWASP:** A08:2021 - Software and Data Integrity Failures
+
+      **Description:**
+      Using `pickle.loads()` on untrusted data allows arbitrary code execution. Pickle can execute arbitrary Python code during deserialization.
+
+      **Attack Example:**
+      An attacker can craft malicious pickle data that executes system commands:
+      ```python
+      import pickle
+      import os
+
+      class Exploit:
+          def __reduce__(self):
+              return (os.system, ('rm -rf /',))
+
+      malicious_data = pickle.dumps(Exploit())
+      ```
+
+      **Impact:**
+      - Remote code execution
+      - Complete system compromise
+      - Data theft or destruction
+
+      **Remediation:**
+      Use safe serialization formats like JSON:
+
+      ```python
+      import json
+
+      def load_user_data(data):
+          try:
+              return json.loads(data)
+          except json.JSONDecodeError:
+              raise ValueError('Invalid JSON data')
+      ```
+
+      If complex objects are needed, use a safe serialization library like `jsonpickle` with restricted unpickling.
+
+      **References:**
+      - OWASP Deserialization: https://owasp.org/www-community/vulnerabilities/Deserialization_of_untrusted_data
+      - CWE-502: https://cwe.mitre.org/data/definitions/502.html
+metrics:
+  - Vulnerabilities found per scan (number)
+  - False positive rate (number)
+  - Critical vulnerabilities (number)
+  - Mean time to remediation (number)
+integrations:
+  - service: [[Snyk]]
+    type: Dependency scanning
+  - service: [[GitHub Security]]
+    type: Code scanning
+  - service: [[Slack]]
+    type: Security alerts
+---
+
+# Security Auditor Agent
+
+The Security Auditor agent performs comprehensive security scanning of code and dependencies, identifying vulnerabilities and providing remediation guidance.
+
+## Capabilities
+
+### OWASP Top 10 Detection
+
+Scans for the most critical web application security risks:
+
+1. **Broken Access Control** - Unauthorized access, privilege escalation
+2. **Cryptographic Failures** - Weak encryption, exposed sensitive data
+3. **Injection** - SQL, XSS, command injection, LDAP injection
+4. **Insecure Design** - Missing security controls, threat modeling failures
+5. **Security Misconfiguration** - Default configs, verbose errors, outdated software
+6. **Vulnerable Components** - Outdated libraries with known CVEs
+7. **Authentication Failures** - Weak passwords, session management issues
+8. **Data Integrity Failures** - Insecure deserialization, unsigned data
+9. **Logging Failures** - Insufficient logging, missing monitoring
+10. **SSRF** - Server-side request forgery
+
+### Dependency Vulnerability Scanning
+
+Checks package dependencies for known vulnerabilities:
+
+- **npm** - Node.js packages (using npm audit, Snyk)
+- **pip** - Python packages (using safety, pip-audit)
+- **maven** - Java packages (using OWASP Dependency Check)
+- **composer** - PHP packages (using security-checker)
+- **go** - Go modules (using govulncheck)
+- **cargo** - Rust crates (using cargo-audit)
+
+### Secret Detection
+
+Identifies exposed credentials and sensitive data using [[functions/parseCode]]:
+
+- API keys and tokens (AWS, GCP, Azure, Stripe, etc.)
+- Private keys (RSA, SSH, PGP)
+- Database credentials
+- OAuth tokens
+- JWT secrets
+- Hardcoded passwords
+
+### Security Best Practices
+
+Validates implementation of security controls:
+
+- Input validation and sanitization
+- Output encoding (HTML, JavaScript, URL)
+- HTTPS enforcement
+- Secure HTTP headers (CSP, HSTS, X-Frame-Options)
+- Rate limiting and throttling
+- Password hashing (bcrypt, Argon2)
+- CSRF protection
+- Proper error handling
+
+## Integration with Workflows
+
+This agent integrates with:
+
+- [[workflows/reviewPullRequest]] - Security checks before merge
+- [[workflows/deployApplication]] - Pre-deployment security scan
+
+## Severity Levels
+
+**Critical** - Immediate action required
+- Remote code execution
+- SQL injection
+- Authentication bypass
+- Sensitive data exposure
+
+**High** - Fix within 7 days
+- XSS vulnerabilities
+- CSRF vulnerabilities
+- Insecure deserialization
+- Missing authentication
+
+**Medium** - Fix within 30 days
+- Missing rate limiting
+- Weak encryption
+- Information disclosure
+- Missing security headers
+
+**Low** - Fix when convenient
+- Verbose error messages
+- Missing logging
+- Outdated dependencies (no CVE)
+
+## Configuration
+
+```yaml
+securityAuditor:
+  scans:
+    - owasp-top-10
+    - dependency-check
+    - secret-detection
+    - best-practices
+
+  severity:
+    blockOnCritical: true
+    blockOnHigh: false
+
+  dependencies:
+    maxAge: 365 days
+    allowedLicenses:
+      - MIT
+      - Apache-2.0
+      - BSD-3-Clause
+
+  secrets:
+    patterns:
+      - aws-access-key
+      - api-key
+      - private-key
+      - database-url
+
+  falsePositives:
+    - pattern: "test_api_key_12345"
+      reason: Test credential
+```
+
+## Example Security Report
+
+```markdown
+# Security Audit Report
+
+**Project:** awesome-api
+**Scan Date:** 2025-10-04
+**Commit:** abc123
+
+## Summary
+
+- **Critical:** 2
+- **High:** 5
+- **Medium:** 8
+- **Low:** 3
+
+## Critical Issues
+
+### 1. SQL Injection in User Search
+
+**File:** `api/users.js`
+**Line:** 45
+**CWE:** CWE-89
+**CVSS:** 9.8 (Critical)
+
+```javascript
+// Vulnerable code
+const query = `SELECT * FROM users WHERE name LIKE '%${req.query.name}%'`
+```
+
+**Attack Vector:**
+```bash
+GET /api/users?name='; DROP TABLE users; --
+```
+
+**Remediation:**
+```javascript
+const query = 'SELECT * FROM users WHERE name LIKE ?'
+db.query(query, [`%${req.query.name}%`])
+```
+
+### 2. Exposed AWS Credentials
+
+**File:** `config/aws.js`
+**Line:** 12
+
+```javascript
+const AWS_ACCESS_KEY_ID = 'AKIAIOSFODNN7EXAMPLE'
+const AWS_SECRET_ACCESS_KEY = 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY'
+```
+
+**Impact:** Complete AWS account compromise
+
+**Remediation:**
+```javascript
+const AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID
+const AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY
+```
+
+Move credentials to `.env` file and add to `.gitignore`.
+
+## High Issues
+
+### 1. Cross-Site Scripting (XSS)
+
+**File:** `views/profile.html`
+**Line:** 67
+**CWE:** CWE-79
+
+```html
+<div class="bio">{{user.bio}}</div>
+```
+
+User-controlled data is rendered without sanitization.
+
+**Remediation:**
+```html
+<div class="bio">{{escapeHtml(user.bio)}}</div>
+```
+
+### 2. Missing Authentication
+
+**File:** `api/admin.js`
+**Line:** 15
+
+```javascript
+app.delete('/api/users/:id', deleteUser)
+```
+
+Admin endpoint has no authentication check.
+
+**Remediation:**
+```javascript
+app.delete('/api/users/:id', requireAuth, requireAdmin, deleteUser)
+```
+
+## Dependency Vulnerabilities
+
+### Critical
+
+- **lodash@4.17.15** - Prototype Pollution (CVE-2020-8203)
+  - Update to lodash@4.17.21 or later
+
+### High
+
+- **axios@0.21.0** - SSRF (CVE-2021-3749)
+  - Update to axios@0.21.2 or later
+
+- **express@4.16.0** - Open Redirect (CVE-2022-24999)
+  - Update to express@4.17.3 or later
+
+## Recommendations
+
+1. **Immediate Actions** (Critical)
+   - Fix SQL injection in user search
+   - Remove exposed AWS credentials
+   - Deploy fixes within 24 hours
+
+2. **Short-term** (High, within 7 days)
+   - Fix XSS vulnerabilities
+   - Add authentication to admin endpoints
+   - Update vulnerable dependencies
+
+3. **Medium-term** (Medium, within 30 days)
+   - Implement rate limiting
+   - Add security headers
+   - Enable HTTPS enforcement
+
+4. **Long-term** (Low)
+   - Improve error handling
+   - Enhance logging
+   - Security training for developers
+
+## Compliance
+
+- **PCI DSS:** ❌ Fails (exposed credentials)
+- **GDPR:** ⚠️ Partial (data exposure risk)
+- **SOC 2:** ❌ Fails (insufficient logging)
+- **OWASP Top 10:** ❌ Multiple failures
+
+## Next Steps
+
+1. Create tickets for each critical/high issue
+2. Schedule security review meeting
+3. Implement automated security scanning in CI/CD
+4. Plan security training session
+```
+
+## Metrics and Tracking
+
+Monitors security posture:
+
+- **Vulnerability Count**: Trending over time
+- **Mean Time to Remediation**: By severity level
+- **False Positive Rate**: Accuracy of detections
+- **Coverage**: Percentage of code scanned
+- **Compliance Score**: Against security standards
+
+## Related Examples
+
+- [[agents/CodeReviewer]] - General code review including security
+- [[workflows/reviewPullRequest]] - Integrate security checks in PR flow
+- [[workflows/deployApplication]] - Pre-deployment security validation
+- [[functions/parseCode]] - Code parsing for vulnerability detection

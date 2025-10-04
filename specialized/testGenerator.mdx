@@ -1,0 +1,500 @@
+---
+title: Test Generator
+$type: https://do.industries/types/Agent
+name: Test Generator
+description: Automated unit test generation agent that creates test cases and test data
+category: Testing
+occupation: [[Software Developer]]
+capabilities:
+  - Unit test generation
+  - Test data creation
+  - Code coverage analysis
+  - Edge case identification
+tools:
+  - [[functions/parseCode]]
+workflows:
+  - [[workflows/runTests]]
+  - [[workflows/fixBug]]
+model: claude-3-5-sonnet-20241022
+temperature: (number) 0.3
+maxTokens: (number) 4096
+systemPrompt: |
+  You are an expert test engineer. Generate comprehensive unit tests for code:
+
+  1. **Test Coverage**
+     - Test all public functions and methods
+     - Cover happy path scenarios
+     - Test error conditions
+     - Validate edge cases
+     - Aim for 80%+ code coverage
+
+  2. **Test Structure**
+     - Follow AAA pattern (Arrange, Act, Assert)
+     - Use descriptive test names
+     - One assertion per test when possible
+     - Group related tests in describe blocks
+
+  3. **Test Data**
+     - Generate realistic test data
+     - Cover boundary conditions
+     - Include valid and invalid inputs
+     - Use fixtures for complex data
+
+  4. **Assertions**
+     - Verify return values
+     - Check side effects
+     - Validate state changes
+     - Test error messages
+
+  Generate tests in the same framework as the existing test suite.
+examples:
+  - input: |
+      ```typescript
+      function calculateDiscount(price: number, discountPercent: number): number {
+        if (price < 0 || discountPercent < 0 || discountPercent > 100) {
+          throw new Error('Invalid input')
+        }
+        return price * (1 - discountPercent / 100)
+      }
+      ```
+    output: |
+      ```typescript
+      import { describe, it, expect } from 'vitest'
+      import { calculateDiscount } from './discount'
+
+      describe('calculateDiscount', () => {
+        describe('valid inputs', () => {
+          it('should calculate 10% discount correctly', () => {
+            const result = calculateDiscount(100, 10)
+            expect(result).toBe(90)
+          })
+
+          it('should calculate 50% discount correctly', () => {
+            const result = calculateDiscount(200, 50)
+            expect(result).toBe(100)
+          })
+
+          it('should handle 0% discount', () => {
+            const result = calculateDiscount(100, 0)
+            expect(result).toBe(100)
+          })
+
+          it('should handle 100% discount', () => {
+            const result = calculateDiscount(100, 100)
+            expect(result).toBe(0)
+          })
+
+          it('should handle decimal prices', () => {
+            const result = calculateDiscount(99.99, 10)
+            expect(result).toBeCloseTo(89.99, 2)
+          })
+        })
+
+        describe('invalid inputs', () => {
+          it('should throw error for negative price', () => {
+            expect(() => calculateDiscount(-100, 10))
+              .toThrow('Invalid input')
+          })
+
+          it('should throw error for negative discount', () => {
+            expect(() => calculateDiscount(100, -10))
+              .toThrow('Invalid input')
+          })
+
+          it('should throw error for discount over 100', () => {
+            expect(() => calculateDiscount(100, 101))
+              .toThrow('Invalid input')
+          })
+        })
+
+        describe('edge cases', () => {
+          it('should handle zero price', () => {
+            const result = calculateDiscount(0, 10)
+            expect(result).toBe(0)
+          })
+
+          it('should handle very large prices', () => {
+            const result = calculateDiscount(1000000, 10)
+            expect(result).toBe(900000)
+          })
+
+          it('should handle very small discounts', () => {
+            const result = calculateDiscount(100, 0.01)
+            expect(result).toBeCloseTo(99.99, 2)
+          })
+        })
+      })
+      ```
+
+  - input: |
+      ```python
+      def merge_sorted_lists(list1: list[int], list2: list[int]) -> list[int]:
+          result = []
+          i, j = 0, 0
+
+          while i < len(list1) and j < len(list2):
+              if list1[i] <= list2[j]:
+                  result.append(list1[i])
+                  i += 1
+              else:
+                  result.append(list2[j])
+                  j += 1
+
+          result.extend(list1[i:])
+          result.extend(list2[j:])
+          return result
+      ```
+    output: |
+      ```python
+      import pytest
+      from merge import merge_sorted_lists
+
+      class TestMergeSortedLists:
+          def test_merge_two_equal_lists(self):
+              """Should merge two lists of equal length."""
+              list1 = [1, 3, 5]
+              list2 = [2, 4, 6]
+              result = merge_sorted_lists(list1, list2)
+              assert result == [1, 2, 3, 4, 5, 6]
+
+          def test_merge_with_first_list_shorter(self):
+              """Should handle first list being shorter."""
+              list1 = [1, 5]
+              list2 = [2, 3, 4, 6]
+              result = merge_sorted_lists(list1, list2)
+              assert result == [1, 2, 3, 4, 5, 6]
+
+          def test_merge_with_second_list_shorter(self):
+              """Should handle second list being shorter."""
+              list1 = [1, 2, 3, 4]
+              list2 = [5, 6]
+              result = merge_sorted_lists(list1, list2)
+              assert result == [1, 2, 3, 4, 5, 6]
+
+          def test_merge_with_empty_first_list(self):
+              """Should handle empty first list."""
+              list1 = []
+              list2 = [1, 2, 3]
+              result = merge_sorted_lists(list1, list2)
+              assert result == [1, 2, 3]
+
+          def test_merge_with_empty_second_list(self):
+              """Should handle empty second list."""
+              list1 = [1, 2, 3]
+              list2 = []
+              result = merge_sorted_lists(list1, list2)
+              assert result == [1, 2, 3]
+
+          def test_merge_with_both_empty(self):
+              """Should handle both lists being empty."""
+              result = merge_sorted_lists([], [])
+              assert result == []
+
+          def test_merge_with_duplicates(self):
+              """Should handle duplicate values."""
+              list1 = [1, 3, 3, 5]
+              list2 = [2, 3, 4]
+              result = merge_sorted_lists(list1, list2)
+              assert result == [1, 2, 3, 3, 3, 4, 5]
+
+          def test_merge_with_negative_numbers(self):
+              """Should handle negative numbers."""
+              list1 = [-5, -1, 3]
+              list2 = [-3, 0, 2]
+              result = merge_sorted_lists(list1, list2)
+              assert result == [-5, -3, -1, 0, 2, 3]
+
+          @pytest.mark.parametrize("list1,list2,expected", [
+              ([1], [2], [1, 2]),
+              ([2], [1], [1, 2]),
+              ([1, 1], [1], [1, 1, 1]),
+              ([0], [0], [0, 0]),
+          ])
+          def test_merge_edge_cases(self, list1, list2, expected):
+              """Should handle various edge cases."""
+              result = merge_sorted_lists(list1, list2)
+              assert result == expected
+      ```
+metrics:
+  - Tests generated per day (number)
+  - Code coverage achieved (number)
+  - Test pass rate (number)
+integrations:
+  - service: [[Jest]]
+    type: JavaScript/TypeScript testing
+  - service: [[Pytest]]
+    type: Python testing
+  - service: [[JUnit]]
+    type: Java testing
+---
+
+# Test Generator Agent
+
+The Test Generator agent automatically creates comprehensive unit tests for source code, including test cases, test data, and assertions.
+
+## Capabilities
+
+### Unit Test Generation
+
+Uses [[functions/parseCode]] to analyze code structure and generate tests:
+
+- Parse function signatures and implementations
+- Identify code paths and branches
+- Generate test cases for all paths
+- Follow testing framework conventions
+- Use appropriate assertion libraries
+
+### Test Coverage Analysis
+
+Ensures comprehensive testing:
+
+- **Happy Path**: Test normal operation scenarios
+- **Error Cases**: Test error handling and exceptions
+- **Edge Cases**: Boundary conditions, empty inputs, null values
+- **Integration Points**: Mock external dependencies
+- **Performance**: Test with large datasets
+
+### Test Data Generation
+
+Creates realistic test data:
+
+- Valid inputs for happy path tests
+- Invalid inputs for error tests
+- Boundary values (0, -1, MAX_INT, etc.)
+- Random data for property-based testing
+- Fixtures for complex objects
+
+### Multiple Frameworks
+
+Supports popular testing frameworks:
+
+- **JavaScript/TypeScript**: Jest, Vitest, Mocha, Jasmine
+- **Python**: pytest, unittest
+- **Java**: JUnit, TestNG
+- **Go**: testing package
+- **Rust**: built-in test framework
+
+## Integration with Workflows
+
+This agent integrates with:
+
+- [[workflows/runTests]] - Execute generated tests
+- [[workflows/fixBug]] - Generate regression tests for bugs
+
+## Test Generation Strategy
+
+### 1. Code Analysis
+
+```typescript
+// Analyze function signature
+function calculateShipping(weight: number, distance: number): number
+
+// Identify:
+// - Parameters: weight (number), distance (number)
+// - Return type: number
+// - Possible errors: negative values, zero values
+// - Edge cases: very large values, decimal values
+```
+
+### 2. Test Case Identification
+
+```markdown
+Test Cases:
+1. Normal operation: positive weight and distance
+2. Edge case: zero weight
+3. Edge case: zero distance
+4. Error case: negative weight
+5. Error case: negative distance
+6. Edge case: very large values
+7. Edge case: decimal values
+```
+
+### 3. Test Generation
+
+```typescript
+describe('calculateShipping', () => {
+  it('should calculate shipping for normal values', () => {
+    expect(calculateShipping(10, 100)).toBe(50)
+  })
+
+  it('should handle zero weight', () => {
+    expect(calculateShipping(0, 100)).toBe(0)
+  })
+
+  // ... more tests
+})
+```
+
+## Configuration
+
+```yaml
+testGenerator:
+  frameworks:
+    javascript: vitest
+    python: pytest
+    java: junit5
+
+  coverage:
+    target: 80
+    includeEdgeCases: true
+    includeErrorCases: true
+
+  naming:
+    pattern: should_when_then
+    descriptive: true
+
+  testData:
+    realistic: true
+    includeFixtures: true
+    generateRandom: false
+```
+
+## Example: Complete Test Suite
+
+### Source Code
+
+```typescript
+class UserRepository {
+  constructor(private db: Database) {}
+
+  async findById(id: string): Promise<User | null> {
+    if (!id) {
+      throw new Error('User ID is required')
+    }
+
+    const user = await this.db.query('SELECT * FROM users WHERE id = ?', [id])
+    return user || null
+  }
+
+  async create(userData: UserData): Promise<User> {
+    if (!userData.email) {
+      throw new Error('Email is required')
+    }
+
+    if (!this.isValidEmail(userData.email)) {
+      throw new Error('Invalid email format')
+    }
+
+    const existingUser = await this.db.query(
+      'SELECT * FROM users WHERE email = ?',
+      [userData.email]
+    )
+
+    if (existingUser) {
+      throw new Error('Email already exists')
+    }
+
+    const user = await this.db.query(
+      'INSERT INTO users (email, name) VALUES (?, ?)',
+      [userData.email, userData.name]
+    )
+
+    return user
+  }
+
+  private isValidEmail(email: string): boolean {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+  }
+}
+```
+
+### Generated Tests
+
+```typescript
+import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { UserRepository } from './user-repository'
+import { Database } from './database'
+
+describe('UserRepository', () => {
+  let repository: UserRepository
+  let mockDb: Database
+
+  beforeEach(() => {
+    mockDb = {
+      query: vi.fn()
+    } as unknown as Database
+
+    repository = new UserRepository(mockDb)
+  })
+
+  describe('findById', () => {
+    it('should find user by valid ID', async () => {
+      const mockUser = { id: '123', email: 'user@example.com', name: 'John' }
+      vi.mocked(mockDb.query).mockResolvedValue(mockUser)
+
+      const user = await repository.findById('123')
+
+      expect(mockDb.query).toHaveBeenCalledWith(
+        'SELECT * FROM users WHERE id = ?',
+        ['123']
+      )
+      expect(user).toEqual(mockUser)
+    })
+
+    it('should return null when user not found', async () => {
+      vi.mocked(mockDb.query).mockResolvedValue(null)
+
+      const user = await repository.findById('999')
+
+      expect(user).toBeNull()
+    })
+
+    it('should throw error for empty ID', async () => {
+      await expect(repository.findById('')).rejects.toThrow('User ID is required')
+    })
+
+    it('should throw error for null ID', async () => {
+      await expect(repository.findById(null as any)).rejects.toThrow('User ID is required')
+    })
+  })
+
+  describe('create', () => {
+    it('should create user with valid data', async () => {
+      const userData = { email: 'new@example.com', name: 'Jane' }
+      const mockUser = { id: '456', ...userData }
+
+      vi.mocked(mockDb.query)
+        .mockResolvedValueOnce(null) // email check
+        .mockResolvedValueOnce(mockUser) // insert
+
+      const user = await repository.create(userData)
+
+      expect(user).toEqual(mockUser)
+    })
+
+    it('should throw error for missing email', async () => {
+      await expect(repository.create({ name: 'John' } as any))
+        .rejects.toThrow('Email is required')
+    })
+
+    it('should throw error for invalid email format', async () => {
+      await expect(repository.create({ email: 'invalid', name: 'John' }))
+        .rejects.toThrow('Invalid email format')
+    })
+
+    it('should throw error for duplicate email', async () => {
+      const existingUser = { id: '123', email: 'existing@example.com' }
+      vi.mocked(mockDb.query).mockResolvedValueOnce(existingUser)
+
+      await expect(repository.create({ email: 'existing@example.com', name: 'John' }))
+        .rejects.toThrow('Email already exists')
+    })
+  })
+})
+```
+
+## Metrics and Quality
+
+Tracks test generation quality:
+
+- **Coverage**: 85% average code coverage
+- **Test Quantity**: 5-10 tests per function
+- **Pass Rate**: 95%+ of generated tests pass
+- **Edge Cases**: 3+ edge case tests per function
+
+## Related Examples
+
+- [[functions/parseCode]] - Parse code for test generation
+- [[workflows/runTests]] - Execute generated tests
+- [[workflows/fixBug]] - Generate regression tests
+- [[agents/CodeReviewer]] - Review test quality

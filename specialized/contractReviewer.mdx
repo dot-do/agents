@@ -1,0 +1,407 @@
+---
+title: Contract Review Agent
+$type: Agent
+name: Contract Review Agent
+description: Analyzes contracts to identify risks, obligations, and suggest revisions
+
+capabilities:
+  - contract-analysis
+  - risk-identification
+  - obligation-extraction
+  - redline-generation
+  - clause-comparison
+
+model:
+  provider: anthropic
+  model: claude-3-5-sonnet-20241022
+  temperature: 0.15
+
+systemPrompt: |
+  You are a contract review agent specializing in commercial contracts. Your job is to:
+  1. Analyze contract terms and identify key provisions
+  2. Flag risks, unfavorable terms, and missing protections
+  3. Extract obligations and deadlines
+  4. Compare against standard industry terms
+  5. Generate redlines and suggest revisions
+
+  Focus areas:
+  - Payment terms and conditions
+  - Liability and indemnification clauses
+  - Termination and renewal provisions
+  - Intellectual property rights
+  - Confidentiality and data protection
+  - Dispute resolution mechanisms
+
+functions:
+  - extract-obligations
+  - identify-risks
+  - generate-redlines
+  - compare-to-template
+
+memory:
+  type: conversation
+  maxTokens: 25000
+---
+
+# Contract Review Agent
+
+An AI agent that reviews commercial contracts, identifies risks, and suggests improvements.
+
+## Core Capabilities
+
+### Contract Analysis
+
+The agent performs comprehensive contract review:
+
+**Key Provisions Extracted:**
+- **Parties** - Legal entity names and roles
+- **Term** - Start date, end date, renewal terms
+- **Scope** - Services, deliverables, specifications
+- **Payment** - Pricing, payment terms, invoicing
+- **Termination** - Exit provisions, notice periods
+- **Liability** - Caps, exclusions, indemnification
+- **IP Rights** - Ownership, licenses, restrictions
+- **Confidentiality** - NDA terms, data protection
+- **Dispute Resolution** - Arbitration, jurisdiction
+
+### Risk Identification
+
+The agent flags potential issues:
+
+**High-Risk Terms:**
+- 🔴 **Unlimited Liability** - No cap on damages
+- 🔴 **Unilateral Termination** - Other party can exit anytime
+- 🔴 **Unfavorable IP Terms** - Loss of ownership rights
+- 🔴 **No Limitation Period** - Claims allowed indefinitely
+- 🔴 **Onerous Indemnification** - Broad indemnity obligations
+
+**Medium-Risk Terms:**
+- 🟡 **Auto-Renewal** - Automatic extensions
+- 🟡 **Broad Warranties** - Extensive guarantees
+- 🟡 **Joint Liability** - Shared responsibility
+- 🟡 **High Termination Fees** - Expensive to exit
+
+**Low-Risk Items:**
+- 🟢 **Standard Boilerplate** - Normal legal provisions
+- 🟢 **Favorable Terms** - Protective language
+
+### Obligation Extraction
+
+The agent creates an obligation matrix:
+
+| Party | Obligation | Deadline | Risk if Missed |
+|-------|-----------|----------|----------------|
+| Company | Deliver services | Ongoing | Breach, damages |
+| Company | Maintain insurance | Annual | Contract voidable |
+| Client | Pay invoices | Net 30 | Late fees |
+| Client | Provide access | Upon request | Delay excusable |
+
+### Redline Generation
+
+The agent suggests specific revisions:
+
+**Original:**
+> "Client agrees to indemnify, defend, and hold harmless Company from any and all claims arising from this Agreement."
+
+**Suggested Revision:**
+> "Each party agrees to indemnify the other for claims arising solely from such party's breach of this Agreement, subject to a cap equal to fees paid in the prior 12 months."
+
+**Rationale:** Limits indemnity to breaches (not all claims) and adds liability cap.
+
+## Review Process
+
+### Step 1: Document Intake
+1. Upload contract (PDF, Word, text)
+2. Identify contract type (NDA, MSA, SOW, etc.)
+3. Extract text and structure
+4. Identify parties and roles
+
+### Step 2: Provision Analysis
+1. Parse contract into sections
+2. Identify key clauses
+3. Categorize by importance
+4. Extract specific terms (dates, amounts)
+
+### Step 3: Risk Assessment
+1. Compare against best practices
+2. Identify unfavorable terms
+3. Calculate risk scores by category
+4. Prioritize issues (high/medium/low)
+
+### Step 4: Recommendations
+1. Generate redlines for high-risk items
+2. Suggest additional protective clauses
+3. Flag missing standard provisions
+4. Create negotiation strategy
+
+### Step 5: Report Generation
+1. Executive summary
+2. Detailed findings by category
+3. Redlined document
+4. Negotiation talking points
+
+## Contract Types Supported
+
+### Master Service Agreements (MSA)
+- Broad framework for ongoing relationship
+- Focuses on general terms and conditions
+- Supplements with SOWs for specific work
+
+### Statements of Work (SOW)
+- Specific deliverables and timelines
+- Pricing for particular projects
+- Acceptance criteria
+
+### Non-Disclosure Agreements (NDA)
+- Unilateral vs mutual
+- Definition of confidential information
+- Term and survival provisions
+
+### Software Licenses
+- Scope of license grant
+- Usage restrictions
+- Support and maintenance terms
+
+### Employment Agreements
+- Compensation and benefits
+- Non-compete and non-solicitation
+- IP assignment provisions
+
+## Example Review
+
+**Contract Type:** Software License Agreement
+
+**Key Findings:**
+
+**🔴 High Risk:**
+1. **Unlimited Liability** (Section 8.2)
+   - Current: "No limitation on liability"
+   - Risk: Unlimited damages exposure
+   - Suggest: Add cap at 12 months fees
+
+2. **Broad Indemnity** (Section 9.1)
+   - Current: Indemnify for "any claims"
+   - Risk: IP infringement liability
+   - Suggest: Limit to direct breaches only
+
+**🟡 Medium Risk:**
+3. **Auto-Renewal** (Section 2.3)
+   - Current: Automatic 1-year renewal
+   - Risk: Difficult to exit
+   - Suggest: Require affirmative consent
+
+**✅ Favorable:**
+4. **Limited Warranty** (Section 7.1)
+   - Reasonable warranty period
+   - Clear exclusions
+
+5. **Clear IP Rights** (Section 6.2)
+   - Client retains data ownership
+   - Limited license to provider
+
+## Integration Points
+
+- **Legal Database:** Connects to [[legal-case-schema.mdx|Legal Case Schema]]
+- **Research:** Works with [[legal-researcher-agent.mdx|Legal Research Agent]]
+- **Workflow:** Part of [[review-contract-workflow.mdx|Contract Review Workflow]]
+- **Compliance:** Uses [[check-compliance-function.mdx|Compliance Checker]]
+
+## Output Deliverables
+
+1. **Executive Summary** - 1-page overview of key risks
+2. **Detailed Review Memo** - Full analysis by section
+3. **Redlined Document** - Marked-up contract with suggested changes
+4. **Risk Matrix** - Categorized list of issues
+5. **Obligation Tracker** - Spreadsheet of all obligations
+
+## Limitations
+
+- Agent provides risk assessment, not legal advice
+- Cannot replace attorney review for complex matters
+- May miss industry-specific nuances
+- User must evaluate suggested changes
+
+## Related
+
+- [[legal-researcher-agent.mdx|Legal Research Agent]]
+- [[review-contract-workflow.mdx|Contract Review Workflow]]
+- [[legal-case-schema.mdx|Legal Case Schema]]
+- [[check-compliance-function.mdx|Compliance Checker]]
+
+## Implementation
+
+```typescript
+import type { BusinessModule } from 'graphdl'
+
+interface Contract {
+  id: string
+  title: string
+  parties: string[]
+  content: string
+  type: 'MSA' | 'SOW' | 'NDA' | 'License' | 'Employment'
+  uploadedBy: string
+  uploadedAt: Date
+}
+
+interface Risk {
+  severity: 'critical' | 'high' | 'medium' | 'low'
+  category: string
+  clause: string
+  issue: string
+  suggestion: string
+}
+
+/**
+ * Contract Reviewer - Automated contract analysis and risk identification
+ *
+ * Relationships:
+ * - Contract uploaded by Legal team or Business user
+ * - Contract analyzed by AI for risks and obligations
+ * - Risks classified by severity
+ * - Redlines generated with suggested revisions
+ * - Report created with findings and recommendations
+ */
+export const ContractReviewer: BusinessModule = $ => {
+  const { db, ai, send, on } = $
+
+  on.contract.uploaded(async (contract: Contract) => {
+    // Extract key contract provisions
+    const provisions = await ai.extract({
+      prompt: `Extract key provisions from this contract:\n\n${contract.content}`,
+      schema: {
+        parties: 'array<string>',
+        term: 'string',
+        paymentTerms: 'string',
+        liability: 'string',
+        termination: 'string',
+        ipRights: 'string',
+        confidentiality: 'string',
+      },
+    })
+
+    // Identify risks using AI
+    const riskAnalysis = await ai.extract({
+      prompt: `Analyze this contract for risks:\n\n${contract.content}\n\nIdentify unfavorable terms, missing protections, and liability issues.`,
+      schema: {
+        unlimitedLiability: 'boolean',
+        unilateralTermination: 'boolean',
+        unfavorableIP: 'boolean',
+        broadIndemnity: 'boolean',
+        autoRenewal: 'boolean',
+        highTerminationFees: 'boolean',
+        risks: 'array<{ severity: string, clause: string, issue: string, impact: string }>',
+      },
+    })
+
+    const risks: Risk[] = []
+
+    // High-risk flags
+    if (riskAnalysis.unlimitedLiability) {
+      risks.push({
+        severity: 'critical',
+        category: 'Liability',
+        clause: provisions.liability,
+        issue: 'Unlimited liability exposure with no cap on damages',
+        suggestion: 'Add liability cap: "Total liability limited to fees paid in prior 12 months"',
+      })
+    }
+
+    if (riskAnalysis.broadIndemnity) {
+      risks.push({
+        severity: 'critical',
+        category: 'Indemnification',
+        clause: provisions.liability,
+        issue: 'Broad indemnification for "any and all claims"',
+        suggestion: 'Limit to breaches only: "Each party indemnifies for claims arising solely from breach of this Agreement"',
+      })
+    }
+
+    // Convert AI-identified risks
+    riskAnalysis.risks?.forEach((risk: any) => {
+      const suggestion = await ai.generate({
+        prompt: `Suggest a revised clause to address this risk:\n\nIssue: ${risk.issue}\nClause: ${risk.clause}`,
+        maxTokens: 200,
+      })
+
+      risks.push({
+        severity: risk.severity as any,
+        category: 'General',
+        clause: risk.clause,
+        issue: risk.issue,
+        suggestion,
+      })
+    })
+
+    // Store review results
+    await db.contractReviews.create({
+      contractId: contract.id,
+      provisions,
+      risks,
+      reviewedAt: new Date(),
+    })
+
+    // Generate redline document
+    let redlinedContent = contract.content
+    for (const risk of risks) {
+      if (risk.severity === 'critical' || risk.severity === 'high') {
+        // Mark problematic clauses with redlines
+        redlinedContent = redlinedContent.replace(
+          risk.clause,
+          `[REDLINE] ${risk.clause}\n\n[SUGGESTED REVISION] ${risk.suggestion}`
+        )
+      }
+    }
+
+    await db.contractDocuments.create({
+      contractId: contract.id,
+      type: 'redline',
+      content: redlinedContent,
+    })
+
+    // Send report to uploader
+    const criticalRisks = risks.filter(r => r.severity === 'critical')
+    const highRisks = risks.filter(r => r.severity === 'high')
+
+    const reportHtml = `
+      <h2>Contract Review: ${contract.title}</h2>
+
+      <h3>Summary</h3>
+      <ul>
+        <li>${criticalRisks.length} Critical Risks</li>
+        <li>${highRisks.length} High Risks</li>
+        <li>${risks.length} Total Risks</li>
+      </ul>
+
+      <h3>Critical Risks</h3>
+      ${criticalRisks.map(r => `<div><strong>${r.category}:</strong> ${r.issue}<br/><em>Suggestion:</em> ${r.suggestion}</div>`).join('\n')}
+
+      <h3>Redlined Document</h3>
+      <p>View the redlined contract with suggested changes: <a href="https://contracts.example.com/${contract.id}/redline">View Redline</a></p>
+    `
+
+    await send.email(contract.uploadedBy, `Contract Review Complete: ${contract.title}`, {
+      html: reportHtml,
+    })
+
+    // Alert if critical risks
+    if (criticalRisks.length > 0) {
+      await send.slack('#legal', {
+        text: `⚠️ Contract with ${criticalRisks.length} critical risk(s) uploaded`,
+        fields: [
+          { title: 'Contract', value: contract.title },
+          { title: 'Uploaded By', value: contract.uploadedBy },
+          { title: 'Critical Risks', value: criticalRisks.map(r => r.issue).join('\n') },
+        ],
+      })
+    }
+  })
+
+  return {
+    async reviewContract(contractId: string) {
+      const contract = await db.contracts.findById(contractId)
+      await on.contract.uploaded(contract)
+      return contract
+    },
+  }
+}
+```

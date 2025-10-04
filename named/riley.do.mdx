@@ -1,0 +1,544 @@
+---
+agent:
+  name: Riley
+  role: Technical Support Specialist
+  personality: Patient, thorough, empathetic
+  specialties: [technical-support, troubleshooting, customer-success]
+  voice:
+    provider: vapi
+    model: eleven_labs
+    voice_id: emily
+    characteristics:
+      tone: calm-reassuring
+      pace: patient
+      energy: steady
+      style: explanatory
+  avatar:
+    image: /avatars/riley.png
+    background: gradient-green
+  metrics:
+    tickets_resolved: 18420
+    resolution_time: 12min avg
+    satisfaction_score: 4.8/5
+
+hero:
+  headline: Meet Riley, Your AI Support Specialist
+  subheadline: Patient, thorough technical support that actually solves problems
+  codeExample:
+    language: typescript
+    code: |
+      import { Riley } from 'agents.do'
+
+      const riley = new Riley({
+        voiceEnabled: true,
+        knowledgeBase: await loadDocs(),
+        products: ['api', 'dashboard', 'mobile-app'],
+        channels: ['chat', 'phone', 'email']
+      })
+
+      // Handle support ticket
+      const resolution = await riley.resolve({
+        ticket: {
+          customer: 'Sarah Chen',
+          issue: 'API returning 429 errors',
+          priority: 'high'
+        }
+      })
+
+      console.log(`Resolved in: ${resolution.timeToResolve}`)
+      console.log(`Steps: ${resolution.steps.length}`)
+
+about:
+  description: |
+    Riley is your AI Technical Support Specialist who excels at diagnosing issues,
+    explaining solutions clearly, and ensuring customers feel heard and helped.
+    With infinite patience and deep product knowledge, Riley turns frustrated
+    customers into satisfied advocates.
+
+  personality_traits:
+    - trait: Infinitely Patient
+      description: Never rushed, never frustrated, always calm
+    - trait: Crystal Clear Communicator
+      description: Explains technical concepts in simple terms
+    - trait: Empathetic Listener
+      description: Acknowledges frustration and validates feelings
+    - trait: Thorough Problem-Solver
+      description: Doesn't just fix symptoms—finds root causes
+
+  conversation_style:
+    greeting: "Hi! I'm Riley. I'm here to help. Tell me what's happening, and we'll figure this out together."
+    diagnosis: "Let me make sure I understand. You're seeing [X] when you try to [Y], is that right?"
+    explanation: "Here's what's happening: [technical explanation in simple terms]. To fix it, we'll..."
+    resolution: "That should do it! Let's test it together to make sure everything's working now."
+
+capabilities:
+  - id: troubleshooting
+    name: Expert Troubleshooting
+    description: Systematic diagnosis and resolution of technical issues
+    example: |
+      Customer: "The API keeps returning 429 errors!"
+
+      Riley: "I understand how frustrating that must be. Let's figure this out.
+      A 429 error means you're hitting our rate limit. Let me check your account...
+
+      I see you're making about 1,200 requests per minute. Your plan allows
+      1,000/minute. Here are three solutions:
+
+      1. Add a 10ms delay between requests (easiest fix)
+      2. Implement exponential backoff on retries
+      3. Upgrade to our Professional plan (5,000/min)
+
+      Which option works best for your use case?"
+
+  - id: product-guidance
+    name: Product Guidance & Training
+    description: Help customers get the most value from your product
+    example: |
+      Customer: "How do I set up webhooks?"
+
+      Riley: "Great question! Webhooks let you get real-time notifications
+      when things happen. I'll walk you through it step by step.
+
+      1. Go to Settings → Integrations
+      2. Click 'Add Webhook'
+      3. Enter your endpoint URL
+      4. Select which events to subscribe to
+      5. Test it with the 'Send Test' button
+
+      Let me know when you're at step 1, and I'll guide you through each one.
+      Should take about 2 minutes total."
+
+  - id: escalation-management
+    name: Smart Escalation
+    description: Know when to escalate and to whom
+    example: |
+      Riley: "I've diagnosed the issue—it's a bug in our latest release affecting
+      enterprise accounts using SSO. I'm escalating this to our engineering team
+      with priority 'urgent'.
+
+      Here's what happens next:
+      - Engineering will investigate within 1 hour
+      - I'll update you every 2 hours
+      - Expected fix: 4-6 hours
+      - Workaround: Use API keys temporarily
+
+      I'm adding you to the incident ticket. You'll get real-time updates."
+
+  - id: documentation
+    name: Documentation & Knowledge Base
+    description: Create and maintain helpful documentation
+    example: |
+      Riley: "I've noticed 5 customers this week asking about rate limits.
+      I'm creating a knowledge base article to help:
+
+      Title: Understanding API Rate Limits
+      - What rate limits are and why they exist
+      - Your plan's limits
+      - How to check current usage
+      - Best practices for staying under limits
+      - Code examples in Python, Node.js, Ruby
+
+      I'll also add a warning in the API docs and suggest it when relevant."
+
+implementation:
+  code: |
+    import type { BusinessModule } from 'graphdl'
+    import { Agent } from 'agents.do'
+
+    export const Riley: Agent = {
+      name: 'Riley',
+      role: 'Technical Support Specialist',
+
+      personality: {
+        tone: 'calm-reassuring',
+        style: 'patient-thorough',
+        empathy: 'very-high',
+        technical_depth: 'adaptable' // Matches customer's level
+      },
+
+      voice: {
+        provider: 'vapi',
+        model: 'eleven_labs',
+        voice_id: 'emily',
+        settings: {
+          stability: 0.85, // Very stable, calming
+          similarity_boost: 0.75,
+          speaking_rate: 0.9 // Slightly slower for clarity
+        }
+      },
+
+      knowledge: {
+        products: 'all-features-and-apis',
+        integrations: 'setup-and-troubleshooting',
+        common_issues: 'solutions-and-workarounds',
+        escalation_paths: 'when-and-to-whom'
+      },
+
+      workflows: {
+        resolveTicket: async ({ ticket, $ }) => {
+          const { ai, db, send } = $
+
+          // Acknowledge immediately
+          await send.email(ticket.customer.email, {
+            subject: `Re: ${ticket.subject}`,
+            template: 'support-acknowledged',
+            data: {
+              customer: ticket.customer,
+              ticketId: ticket.id,
+              estimatedResponse: '15 minutes'
+            }
+          })
+
+          // Analyze issue
+          const analysis = await ai.analyze({
+            ticket: ticket,
+            history: await db.tickets.findAll({
+              customerId: ticket.customerId,
+              period: 'last-90-days'
+            }),
+            similar: await db.tickets.findSimilar(ticket.description),
+            identify: {
+              issue_type: true,
+              severity: true,
+              root_cause: true,
+              affected_features: true,
+              requires_escalation: true
+            }
+          })
+
+          // Find solution
+          const solution = await ai.generate({
+            type: 'support-solution',
+            analysis: analysis,
+            knowledge_base: await db.knowledgeBase.search(analysis.issue_type),
+            product_docs: await db.docs.relevant(analysis.affected_features),
+            style: {
+              tone: 'empathetic-helpful',
+              complexity: ticket.customer.technicalLevel || 'intermediate',
+              format: 'step-by-step'
+            }
+          })
+
+          // Respond with solution
+          await send.email(ticket.customer.email, {
+            subject: `Re: ${ticket.subject}`,
+            template: 'support-solution',
+            data: {
+              customer: ticket.customer,
+              analysis: analysis,
+              solution: solution,
+              steps: solution.steps,
+              alternative: solution.alternativeSolutions
+            }
+          })
+
+          // Update ticket
+          await db.tickets.update(ticket.id, {
+            status: 'awaiting-customer',
+            analysis: analysis,
+            solution: solution,
+            respondedAt: new Date()
+          })
+
+          // Escalate if needed
+          if (analysis.requires_escalation) {
+            await escalateToEngineering(ticket, analysis)
+          }
+
+          // Follow up
+          await schedule({
+            delay: '4-hours',
+            action: async () => {
+              const updated = await db.tickets.findOne({ id: ticket.id })
+
+              if (updated.status === 'awaiting-customer') {
+                await send.email(ticket.customer.email, {
+                  subject: `Following up: ${ticket.subject}`,
+                  template: 'support-followup',
+                  data: {
+                    customer: ticket.customer,
+                    solution: solution
+                  }
+                })
+              }
+            }
+          })
+
+          return solution
+        },
+
+        provideTechnicalGuidance: async ({ question, customer, $ }) => {
+          const { ai, db } = $
+
+          // Search knowledge base
+          const articles = await db.knowledgeBase.search({
+            query: question,
+            limit: 5,
+            score_threshold: 0.7
+          })
+
+          // Generate guidance
+          const guidance = await ai.generate({
+            type: 'technical-guidance',
+            question: question,
+            articles: articles,
+            customer: customer,
+            style: {
+              tone: 'friendly-helpful',
+              detail_level: customer.technicalLevel,
+              include: {
+                explanation: true,
+                code_examples: true,
+                screenshots: true,
+                best_practices: true,
+                common_pitfalls: true
+              }
+            }
+          })
+
+          // Suggest related resources
+          const related = await ai.recommend({
+            current_topic: question,
+            customer_history: await db.interactions.findAll({
+              customerId: customer.id
+            }),
+            resources: await db.docs.findAll(),
+            limit: 3
+          })
+
+          return {
+            guidance,
+            related
+          }
+        },
+
+        handleEscalation: async ({ ticket, reason, $ }) => {
+          const { ai, db, send } = $
+
+          // Determine escalation path
+          const escalation = await ai.decide('escalation-path', {
+            ticket: ticket,
+            reason: reason,
+            options: {
+              engineering: 'Product bugs or feature requests',
+              billing: 'Payment or subscription issues',
+              security: 'Security concerns or vulnerabilities',
+              executive: 'High-value customer or critical issue'
+            }
+          })
+
+          // Create escalation
+          const escalated = await db.escalations.create({
+            ticketId: ticket.id,
+            escalatedTo: escalation.team,
+            reason: reason,
+            priority: ticket.priority,
+            context: await ai.generate({
+              type: 'escalation-summary',
+              ticket: ticket,
+              investigation: ticket.investigation,
+              urgency: escalation.urgency
+            }),
+            escalatedAt: new Date()
+          })
+
+          // Notify team
+          await send.slack(`#${escalation.team}`, {
+            text: `🚨 Escalated: ${ticket.subject}`,
+            blocks: [
+              {
+                type: 'section',
+                text: `*Customer:* ${ticket.customer.name}\n*Issue:* ${ticket.subject}\n*Priority:* ${ticket.priority}`
+              },
+              {
+                type: 'section',
+                text: `*Reason for escalation:*\n${reason}`
+              },
+              {
+                type: 'actions',
+                elements: [
+                  {
+                    type: 'button',
+                    text: 'View Ticket',
+                    url: `/tickets/${ticket.id}`
+                  },
+                  {
+                    type: 'button',
+                    text: 'Claim',
+                    value: escalated.id,
+                    style: 'primary'
+                  }
+                ]
+              }
+            ]
+          })
+
+          // Update customer
+          await send.email(ticket.customer.email, {
+            subject: `Update: ${ticket.subject}`,
+            template: 'escalation-notification',
+            data: {
+              customer: ticket.customer,
+              escalation: escalated,
+              nextSteps: escalation.customerMessage
+            }
+          })
+
+          return escalated
+        }
+      }
+    }
+
+    export default Riley
+
+useCases:
+  - scenario: API Integration Issue
+    description: Developer getting 500 errors on API calls
+    rileyResponse: |
+      - Diagnoses: Missing authentication header
+      - Provides: Clear explanation of auth flow
+      - Shares: Code examples in customer's language (Python)
+      - Tests: Confirms fix works with customer
+      - Documents: Adds to FAQ for future customers
+      - Result: Issue resolved in 8 minutes, 5-star rating
+
+  - scenario: Product Configuration
+    description: Customer confused about webhook setup
+    rileyResponse: |
+      - Asks: "What events do you want to track?"
+      - Provides: Step-by-step visual guide
+      - Offers: Screen share to walk through together
+      - Tests: Sends test webhook to verify setup
+      - Shares: Best practices and common pitfalls
+      - Result: Successful setup, customer now power user
+
+  - scenario: Critical Bug Escalation
+    description: Enterprise customer experiencing data loss
+    rileyResponse: |
+      - Immediately escalates to engineering (P0)
+      - Provides workaround to prevent further loss
+      - Updates customer every 30 minutes
+      - Coordinates between engineering and customer
+      - Confirms resolution and data recovery
+      - Result: Issue resolved in 3 hours, relationship saved
+
+testimonials:
+  - quote: "Riley turned our worst day into a great experience. Patient, knowledgeable, and genuinely cared about solving our problem."
+    author: David Park
+    role: Lead Developer
+    company: TechCorp
+
+  - quote: "I've never had better technical support. Riley explained everything clearly and made sure I understood, not just that it was fixed."
+    author: Lisa Chen
+    role: Product Manager
+    company: SaaS Startup
+
+pricing:
+  model: subscription
+  tiers:
+    - name: Support Agent
+      price: $199
+      period: per month
+      features:
+        - Up to 500 tickets/month
+        - Email & chat support
+        - Knowledge base access
+        - Standard response time
+        - Basic analytics
+
+    - name: Support Team
+      price: $699
+      period: per month
+      features:
+        - Everything in Support Agent
+        - Unlimited tickets
+        - Phone support (VAPI)
+        - Priority routing
+        - Advanced analytics
+        - Custom workflows
+        - API access
+
+    - name: Enterprise
+      price: Custom
+      period: contact us
+      features:
+        - Everything in Support Team
+        - Dedicated Riley instance
+        - Custom integrations
+        - White-label options
+        - SLA guarantees
+        - On-premise deployment
+
+integrations:
+  - name: Zendesk
+    type: helpdesk
+    purpose: Ticket management
+  - name: Intercom
+    type: chat
+    purpose: Live chat support
+  - name: Jira
+    type: ticketing
+    purpose: Engineering escalations
+  - name: Slack
+    type: communication
+    purpose: Team notifications
+
+seo:
+  title: Riley - AI Technical Support Specialist | Agents.do
+  description: Meet Riley, your AI support specialist who resolves issues patiently and thoroughly. 12min avg resolution, 4.8/5 satisfaction, 18,420+ tickets resolved.
+  keywords: [AI support agent, technical support, customer success, helpdesk automation, support chatbot]
+---
+
+# Meet Riley
+
+Your AI Technical Support Specialist who actually solves problems with patience and clarity.
+
+## Why Teams Love Riley
+
+- **12 Minute Average Resolution** - Fast, thorough problem-solving
+- **4.8/5 Satisfaction Score** - Customers love the experience
+- **18,420 Tickets Resolved** - Proven track record
+- **24/7 Availability** - Never offline, never overwhelmed
+- **Infinite Patience** - Every customer gets full attention
+
+## How Riley Works
+
+1. **Listen** - Understand the issue without rushing
+2. **Diagnose** - Systematic troubleshooting to find root cause
+3. **Explain** - Clear explanations in customer's language
+4. **Solve** - Step-by-step guidance to resolution
+5. **Verify** - Confirm issue is fully resolved
+6. **Document** - Update knowledge base for future customers
+
+## Sample Interaction
+
+**Customer:** "I keep getting 429 errors from your API!"
+
+**Riley:** "I understand how frustrating that must be, especially when you're trying to get your integration working. Let's figure this out together.
+
+A 429 error means you're hitting our rate limit. I checked your account and see you're making about 1,200 requests per minute, but your current plan allows 1,000/minute.
+
+Here are three ways we can fix this:
+
+1. **Quick fix (5 minutes):** Add a small delay between requests
+2. **Better solution (30 minutes):** Implement exponential backoff
+3. **Scale solution (instant):** Upgrade to Professional (5,000/min)
+
+Which approach makes the most sense for your use case?"
+
+**What Makes It Great:**
+- ✅ Empathizes with frustration
+- ✅ Explains technical issue clearly
+- ✅ Provides multiple solutions
+- ✅ Estimates time for each option
+- ✅ Lets customer choose best approach
+
+## Get Started
+
+Ready for support that actually helps?
+
+[Start Free Trial](/signup) • [Talk to Riley](/demo) • [View Pricing](/pricing)
+
+---
+
+**Riley** - AI Technical Support Specialist • Part of the [Agents.do](/) family

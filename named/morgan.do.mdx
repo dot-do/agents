@@ -1,0 +1,516 @@
+---
+agent:
+  name: Morgan
+  role: Content Strategist & Creative Director
+  personality: Creative, expressive, innovative
+  specialties: [content-creation, brand-storytelling, creative-strategy]
+  voice:
+    provider: vapi
+    model: eleven_labs
+    voice_id: charlotte
+    characteristics:
+      tone: energetic-creative
+      pace: dynamic
+      energy: enthusiastic
+      style: storytelling
+  avatar:
+    image: /avatars/morgan.png
+    background: gradient-orange
+  metrics:
+    content_pieces: 5240
+    engagement_rate: 8.4%
+    seo_performance: 94/100
+
+hero:
+  headline: Meet Morgan, Your AI Creative Director
+  subheadline: Transform ideas into compelling content that resonates and converts
+  codeExample:
+    language: typescript
+    code: |
+      import { Morgan } from 'agents.do'
+
+      const morgan = new Morgan({
+        voiceEnabled: true,
+        style: 'innovative-storytelling',
+        brandVoice: await loadBrandGuidelines(),
+        channels: ['blog', 'social', 'email', 'video']
+      })
+
+      // Generate blog post
+      const post = await morgan.create({
+        type: 'blog-post',
+        topic: 'Future of AI in marketing',
+        keywords: ['AI marketing', 'automation', 'personalization'],
+        wordCount: 1500,
+        tone: 'thought-leadership'
+      })
+
+      console.log(`SEO Score: ${post.seoScore}/100`)
+      console.log(`Readability: ${post.readabilityGrade}`)
+
+about:
+  description: |
+    Morgan is your AI Content Strategist and Creative Director who crafts compelling
+    narratives that engage audiences and drive action. With an innovative approach to
+    storytelling, Morgan creates content across all channels—from thought-leadership
+    blogs to viral social media campaigns.
+
+  personality_traits:
+    - trait: Creative Innovator
+      description: Finds fresh angles on familiar topics
+    - trait: Brand Storyteller
+      description: Weaves narratives that resonate emotionally
+    - trait: Multi-Channel Expert
+      description: Adapts voice for each platform perfectly
+    - trait: Audience-Centric
+      description: Creates content people actually want to read
+
+  conversation_style:
+    greeting: "Hey! I'm Morgan. Let's create something amazing together. What story do you want to tell?"
+    brainstorming: "Ooh, I love that angle! What if we flipped it and approached from the customer's perspective?"
+    feedback: "This piece is good, but I think we can make it great. The hook needs more punch—let me show you..."
+    presentation: "Picture this: Your audience opens their inbox and sees a subject line they can't resist..."
+
+capabilities:
+  - id: content-creation
+    name: Multi-Format Content Creation
+    description: Blog posts, social media, emails, video scripts, landing pages
+    example: |
+      Morgan: "I've created a thought-leadership post on AI in marketing.
+      The hook: 'Your competitors aren't just using AI. They're using it
+      wrong. Here's what they're missing...'
+
+      It's 1,487 words, grade-8 readability, 94 SEO score. I've woven in
+      three customer stories, addressed five common objections, and ended
+      with a compelling CTA that's conversion-optimized."
+
+  - id: brand-storytelling
+    name: Brand Story Development
+    description: Craft compelling narratives that define brand identity
+    example: |
+      Morgan: "Your brand story isn't about what you do—it's about the
+      transformation you enable. Look at your customers: they came to you
+      frustrated and overwhelmed. You gave them clarity and control.
+
+      That's your story. Let's structure it as a journey: The old way
+      (painful), the moment of change (discovery), the new reality (success).
+      Every piece of content should echo this arc."
+
+  - id: campaign-strategy
+    name: Creative Campaign Strategy
+    description: End-to-end campaigns with creative themes and multi-touch messaging
+    example: |
+      Morgan: "For the product launch, I'm proposing a 'Behind the Build'
+      campaign. We tell the origin story—the customer pain that inspired it,
+      the late nights building it, the eureka moments.
+
+      Week 1: Teaser video on social
+      Week 2: Founder's letter on blog
+      Week 3: Customer beta stories
+      Week 4: Launch event + live demo
+      Week 5: Early adopter case studies"
+
+  - id: seo-optimization
+    name: SEO-Optimized Content
+    description: High-ranking content that drives organic traffic
+    example: |
+      Morgan: "This post targets 'marketing automation tools' (6,500
+      monthly searches, difficulty 42). I've included:
+      - Primary keyword in H1, first paragraph, and conclusion
+      - 8 semantic variations naturally throughout
+      - Schema markup for featured snippet
+      - 12 internal links to product pages
+      - Meta description optimized for CTR
+
+      Expected ranking: Page 1 within 90 days based on domain authority."
+
+implementation:
+  code: |
+    import type { BusinessModule } from 'graphdl'
+    import { Agent } from 'agents.do'
+
+    export const Morgan: Agent = {
+      name: 'Morgan',
+      role: 'Content Strategist & Creative Director',
+
+      personality: {
+        tone: 'energetic-creative',
+        style: 'storytelling',
+        creativity: 'high',
+        structure: 'flexible'
+      },
+
+      voice: {
+        provider: 'vapi',
+        model: 'eleven_labs',
+        voice_id: 'charlotte',
+        settings: {
+          stability: 0.6, // More dynamic
+          similarity_boost: 0.85,
+          speaking_rate: 1.1 // Slightly faster for energy
+        }
+      },
+
+      expertise: {
+        formats: [
+          'blog-posts',
+          'social-media',
+          'email-campaigns',
+          'landing-pages',
+          'video-scripts',
+          'case-studies',
+          'whitepapers',
+          'press-releases'
+        ],
+        channels: [
+          'SEO',
+          'social-media',
+          'email',
+          'paid-ads',
+          'content-marketing'
+        ],
+        specialties: [
+          'storytelling',
+          'brand-voice',
+          'conversion-optimization',
+          'thought-leadership'
+        ]
+      },
+
+      workflows: {
+        createBlogPost: async ({ topic, keywords, $ }) => {
+          const { ai, db, send } = $
+
+          // Research phase
+          const research = await ai.research({
+            topic: topic,
+            sources: {
+              competitors: true,
+              trending: true,
+              scholarly: false // Morgan focuses on practical
+            },
+            keywords: keywords
+          })
+
+          // Creative brief
+          const brief = await ai.generate({
+            type: 'creative-brief',
+            topic: topic,
+            research: research,
+            angle: 'Find a contrarian or unexpected angle',
+            brandVoice: await db.brandVoice.get()
+          })
+
+          // Outline with narrative arc
+          const outline = await ai.generate({
+            type: 'content-outline',
+            brief: brief,
+            structure: {
+              hook: 'Start with surprising stat or provocative question',
+              sections: 'Use storytelling arc: setup, conflict, resolution',
+              examples: 'Weave in 3 real customer stories',
+              conclusion: 'End with inspiring call-to-action'
+            }
+          })
+
+          // Write content
+          const content = await ai.generate({
+            type: 'blog-post',
+            outline: outline,
+            style: {
+              voice: 'conversational-professional',
+              tone: 'inspiring-actionable',
+              readability: 'grade-8',
+              length: 1500
+            },
+            seo: {
+              keywords: keywords,
+              optimize_for: 'engagement-and-ranking'
+            }
+          })
+
+          // Add visual elements
+          const visuals = await ai.generate({
+            images: {
+              featured: { style: 'modern-gradient', dimensions: [1200, 630] },
+              inline: 3, // Charts, diagrams, or photos
+              callouts: 2 // Pull quotes or stats
+            },
+            content: content
+          })
+
+          // SEO optimization
+          const optimized = await ai.optimize({
+            content: content,
+            keywords: keywords,
+            meta: {
+              title: 'Under 60 characters, include primary keyword',
+              description: 'Under 160 characters, compelling CTA',
+              slug: 'URL-friendly with primary keyword'
+            },
+            schema: 'article'
+          })
+
+          // Create final post
+          const post = await db.content.create({
+            type: 'blog-post',
+            title: optimized.meta.title,
+            slug: optimized.meta.slug,
+            content: optimized.content,
+            metaDescription: optimized.meta.description,
+            keywords: keywords,
+            featuredImage: visuals.featured.url,
+            inlineImages: visuals.inline,
+            seoScore: optimized.seoScore,
+            readabilityGrade: optimized.readabilityGrade,
+            status: 'draft',
+            createdBy: 'morgan',
+            createdAt: new Date()
+          })
+
+          // Generate social promotion
+          const social = await ai.generate({
+            type: 'social-promotion',
+            post: post,
+            platforms: ['linkedin', 'twitter', 'facebook'],
+            variants: 3 // A/B test options
+          })
+
+          await db.socialContent.bulkCreate(social)
+
+          // Notify for review
+          await send.slack('#content', {
+            text: '✨ Morgan created new post',
+            blocks: [
+              {
+                type: 'section',
+                text: `*${post.title}*\nSEO: ${post.seoScore}/100 | Readability: ${post.readabilityGrade}`
+              },
+              {
+                type: 'actions',
+                elements: [
+                  {
+                    type: 'button',
+                    text: 'Preview',
+                    url: `/content/preview/${post.id}`
+                  },
+                  {
+                    type: 'button',
+                    text: 'Edit',
+                    url: `/content/edit/${post.id}`
+                  },
+                  {
+                    type: 'button',
+                    text: 'Publish',
+                    style: 'primary',
+                    value: post.id
+                  }
+                ]
+              }
+            ]
+          })
+
+          return post
+        },
+
+        campaignStrategy: async ({ objective, duration, $ }) => {
+          const { ai, db, send } = $
+
+          // Analyze past campaigns
+          const historical = await db.campaigns.aggregate({
+            objective: objective,
+            period: 'last-12-months',
+            metrics: ['engagement', 'conversion', 'roi']
+          })
+
+          // Generate creative concept
+          const concept = await ai.generate({
+            type: 'campaign-concept',
+            objective: objective,
+            duration: duration,
+            historical: historical,
+            inspiration: 'Focus on emotional connection and storytelling',
+            channels: ['content', 'social', 'email', 'paid']
+          })
+
+          // Build content calendar
+          const calendar = await ai.generate({
+            type: 'content-calendar',
+            concept: concept,
+            duration: duration,
+            cadence: {
+              blog: 2, // per week
+              social: 10, // per week
+              email: 1, // per week
+              video: 1 // per month
+            }
+          })
+
+          // Create campaign
+          const campaign = await db.campaigns.create({
+            name: concept.name,
+            objective: objective,
+            concept: concept,
+            calendar: calendar,
+            startDate: new Date(),
+            endDate: addDays(new Date(), duration),
+            status: 'planning',
+            createdBy: 'morgan'
+          })
+
+          // Present to team
+          await send.email('marketing@company.com', {
+            subject: `Campaign Strategy: ${concept.name}`,
+            template: 'campaign-presentation',
+            data: {
+              concept,
+              calendar,
+              examples: concept.examples
+            }
+          })
+
+          return campaign
+        }
+      }
+    }
+
+    export default Morgan
+
+useCases:
+  - scenario: Thought Leadership Series
+    description: Tech company wants to establish industry authority
+    morganResponse: |
+      - Creates 10-part "Future of AI" series
+      - Each post: contrarian angle, customer stories, actionable insights
+      - SEO optimization: 8/10 posts rank page 1 within 90 days
+      - Social amplification: 847 shares, 12K engagements
+      - Result: 3.2x organic traffic, 2,100 qualified leads
+
+  - scenario: Product Launch Campaign
+    description: SaaS launching new AI features
+    morganResponse: |
+      - "AI That Actually Works" campaign concept
+      - 4-week narrative: Problem → Discovery → Build → Launch
+      - Content: Blog series, customer videos, founder story, live demo
+      - Messaging: Demystifies AI, focuses on practical results
+      - Result: 1,240 signups, 87% activation rate, viral on social
+
+  - scenario: Brand Repositioning
+    description: Legacy company modernizing brand voice
+    morganResponse: |
+      - Develops new brand story: "Innovation Meets Experience"
+      - Rewrites website: 40% more conversions
+      - Content refresh: 120 pieces updated with new voice
+      - Style guide: Comprehensive voice/tone guidelines
+      - Result: +28% brand sentiment, younger audience engaged
+
+testimonials:
+  - quote: "Morgan doesn't just write content—Morgan crafts stories that make people care. Our engagement rates tripled."
+    author: Lisa Thompson
+    role: VP of Marketing
+    company: B2B SaaS Platform
+
+  - quote: "I've worked with dozens of content writers. Morgan is the first who actually understands brand storytelling at a strategic level."
+    author: James Rodriguez
+    role: CMO
+    company: E-Commerce Startup
+
+pricing:
+  model: subscription
+  tiers:
+    - name: Content Creator
+      price: $299
+      period: per month
+      features:
+        - 10 blog posts/month
+        - 40 social posts/month
+        - 4 email templates/month
+        - Basic SEO optimization
+        - Standard brand voice
+
+    - name: Creative Director
+      price: $999
+      period: per month
+      features:
+        - Everything in Content Creator
+        - Unlimited content pieces
+        - Campaign strategy
+        - Advanced SEO
+        - Custom brand voice
+        - A/B testing
+        - Analytics & reporting
+
+    - name: Enterprise
+      price: Custom
+      period: contact us
+      features:
+        - Everything in Creative Director
+        - Dedicated Morgan instance
+        - Multi-brand management
+        - Video script writing
+        - Executive ghostwriting
+        - White-label options
+
+integrations:
+  - name: WordPress
+    type: cms
+    purpose: Direct publishing to blog
+  - name: HubSpot
+    type: marketing
+    purpose: Campaign management
+  - name: Buffer
+    type: social
+    purpose: Social media scheduling
+  - name: Canva
+    type: design
+    purpose: Visual content creation
+
+seo:
+  title: Morgan - AI Content Strategist & Creative Director | Agents.do
+  description: Meet Morgan, your AI creative director who crafts compelling content. 8.4% engagement rate, 94/100 SEO performance, 5,240+ pieces created.
+  keywords: [AI content writer, creative director, brand storytelling, content strategy, SEO content]
+---
+
+# Meet Morgan
+
+Your AI Content Strategist and Creative Director who turns ideas into engaging stories.
+
+## Why Teams Love Morgan
+
+- **8.4% Engagement Rate** - 3x industry average
+- **94/100 SEO Performance** - Consistent page-1 rankings
+- **5,240 Content Pieces Created** - Proven track record
+- **Multi-Channel Expertise** - Blog, social, email, video
+- **Brand Storytelling** - Emotionally resonant narratives
+
+## How Morgan Works
+
+1. **Discovery** - Understand your brand voice, audience, and goals
+2. **Strategy** - Develop creative concepts and content calendars
+3. **Creation** - Write compelling content across all formats
+4. **Optimization** - SEO, readability, and conversion optimization
+5. **Amplification** - Social promotion and distribution strategy
+
+## Sample Content
+
+**Topic:** "Why Your Marketing Automation Is Failing"
+
+**Morgan's Hook:**
+> "You've got the best marketing automation platform money can buy. Your workflows are pristine. Your segments are precise. And yet... crickets. Here's the uncomfortable truth: Your automation isn't failing because of the tools. It's failing because you're automating the wrong things."
+
+**What Makes It Great:**
+- ✅ Contrarian angle that challenges assumptions
+- ✅ Opens with relatable pain point
+- ✅ Promises uncomfortable truth (curiosity gap)
+- ✅ Clear value proposition in first paragraph
+- ✅ Conversational yet authoritative tone
+
+## Get Started
+
+Ready to create content that actually resonates?
+
+[Start Free Trial](/signup) • [Talk to Morgan](/demo) • [View Pricing](/pricing)
+
+---
+
+**Morgan** - AI Content Strategist & Creative Director • Part of the [Agents.do](/) family

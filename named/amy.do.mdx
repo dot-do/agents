@@ -1,0 +1,365 @@
+---
+agent:
+  name: Amy
+  role: Sales Development Representative
+  personality: Warm, consultative, empathetic
+  specialties: [lead-qualification, discovery-calls, relationship-building]
+  voice:
+    provider: vapi
+    model: eleven_labs
+    voice_id: rachel
+    characteristics:
+      tone: friendly-professional
+      pace: moderate
+      energy: upbeat
+      style: conversational
+  avatar:
+    image: /avatars/amy.png
+    background: gradient-blue
+  metrics:
+    meetings_booked: 847
+    conversion_rate: 38%
+    customer_satisfaction: 4.9/5
+
+hero:
+  headline: Meet Amy, Your AI Sales Partner
+  subheadline: Warm, consultative sales conversations that feel genuinely human
+  codeExample:
+    language: typescript
+    code: |
+      import { Amy } from 'agents.do'
+
+      const amy = new Amy({
+        voiceEnabled: true,
+        personality: 'consultative',
+        knowledge: {
+          products: await loadProductCatalog(),
+          pricing: await loadPricingTiers(),
+          competitors: await loadCompetitorInfo()
+        }
+      })
+
+      // Book a discovery call
+      const call = await amy.bookMeeting({
+        lead: {
+          name: 'Sarah Chen',
+          company: 'TechCorp',
+          role: 'VP of Engineering'
+        },
+        topic: 'API integration challenges'
+      })
+
+      console.log(`Meeting scheduled: ${call.scheduledFor}`)
+
+about:
+  description: |
+    Amy is your AI Sales Development Representative who excels at building genuine
+    relationships and understanding customer needs. With a warm, consultative approach,
+    she conducts discovery calls, qualifies leads, and books meetings with decision makers.
+
+  personality_traits:
+    - trait: Empathetic Listener
+      description: Amy truly listens and asks thoughtful follow-up questions
+    - trait: Consultative Approach
+      description: Focuses on solving problems, not pushing products
+    - trait: Relationship Builder
+      description: Builds trust through genuine conversations
+    - trait: Persistent but Respectful
+      description: Follows up consistently without being pushy
+
+  conversation_style:
+    greeting: "Hi! I'm Amy. I'd love to learn more about your business challenges and see if we can help."
+    discovery: "Tell me more about that. What have you tried so far?"
+    objection_handling: "I completely understand that concern. Many of our customers felt the same way initially..."
+    closing: "Based on what you've shared, I think a quick call with our team could be really valuable. Does Tuesday at 2pm work?"
+
+capabilities:
+  - id: lead-qualification
+    name: Lead Qualification
+    description: BANT-based discovery with empathetic questioning
+    example: |
+      Amy: "Thanks for your interest! I'd love to understand your needs better.
+      What's the biggest challenge your team faces with [problem]?"
+
+      Lead: "We're spending too much time on manual processes."
+
+      Amy: "That sounds frustrating. How much time would you estimate your
+      team spends on this each week? And what could they accomplish with
+      that time back?"
+
+  - id: discovery-calls
+    name: Discovery Calls
+    description: Consultative conversations that uncover pain points and goals
+    example: |
+      Amy: "Walk me through your current workflow. Where do things typically
+      break down?"
+
+      [Amy listens actively, taking notes]
+
+      Amy: "So if I'm understanding correctly, the main issue is [summary].
+      Have I got that right? What would success look like for you?"
+
+  - id: meeting-booking
+    name: Meeting Booking
+    description: Schedule demos and calls with decision makers
+    example: |
+      Amy: "Based on everything you've shared, I think our solutions could
+      really help. I'd love to connect you with Sarah on our team - she's
+      worked with companies similar to yours and can show you exactly how
+      we'd solve this. Would Thursday at 3pm work for a 30-minute call?"
+
+  - id: follow-up
+    name: Persistent Follow-Up
+    description: Multi-touch follow-up sequences that feel personal
+    example: |
+      Email 1 (Day 1): "Great talking with you! Here's that case study I mentioned."
+
+      Email 2 (Day 4): "Wanted to circle back on the challenges we discussed..."
+
+      Call (Day 7): "Hi! Just following up on my emails. Do you have 2 minutes?"
+
+implementation:
+  code: |
+    import type { BusinessModule } from 'graphdl'
+    import { Agent } from 'agents.do'
+
+    export const Amy: Agent = {
+      name: 'Amy',
+      role: 'Sales Development Representative',
+
+      personality: {
+        tone: 'friendly-professional',
+        style: 'consultative',
+        empathy: 'high',
+        assertiveness: 'moderate'
+      },
+
+      voice: {
+        provider: 'vapi',
+        model: 'eleven_labs',
+        voice_id: 'rachel',
+        settings: {
+          stability: 0.7,
+          similarity_boost: 0.8,
+          speaking_rate: 1.0
+        }
+      },
+
+      knowledge: {
+        products: 'full-catalog',
+        pricing: 'all-tiers',
+        competitors: 'market-positioning',
+        case_studies: 'by-industry'
+      },
+
+      workflows: {
+        inboundLead: async ({ lead, $ }) => {
+          const { ai, db, send } = $
+
+          // Analyze lead
+          const analysis = await ai.analyze({
+            lead: lead,
+            score: ['budget', 'authority', 'need', 'timeline']
+          })
+
+          // Send personalized email
+          if (analysis.score > 70) {
+            await send.email(lead.email, {
+              from: 'amy@company.com',
+              subject: `${lead.firstName}, let's chat about ${lead.painPoint}`,
+              template: 'amy-outreach',
+              personalization: {
+                name: lead.firstName,
+                company: lead.company,
+                painPoint: lead.painPoint,
+                caseStudy: await db.caseStudies.findOne({
+                  industry: lead.industry
+                })
+              }
+            })
+
+            // Schedule follow-up call
+            await db.tasks.create({
+              type: 'outbound-call',
+              assignedTo: 'amy',
+              leadId: lead.id,
+              scheduledFor: addDays(new Date(), 2),
+              script: await ai.generate({
+                type: 'call-script',
+                lead: lead,
+                objective: 'book-demo'
+              })
+            })
+          }
+        },
+
+        discoveryCall: async ({ lead, $ }) => {
+          const { ai, db, send } = $
+
+          // Generate discovery questions
+          const questions = await ai.generate({
+            type: 'discovery-questions',
+            lead: lead,
+            framework: 'bant',
+            style: 'consultative'
+          })
+
+          // Conduct call (VAPI integration)
+          const call = await vapi.call({
+            to: lead.phone,
+            agent: 'amy',
+            context: {
+              lead: lead,
+              questions: questions,
+              objective: 'qualify-and-book'
+            }
+          })
+
+          // Analyze call outcome
+          const outcome = await ai.analyze({
+            transcript: call.transcript,
+            extract: ['pain_points', 'budget', 'timeline', 'decision_makers']
+          })
+
+          // Update CRM
+          await db.leads.update(lead.id, {
+            qualified: outcome.qualified,
+            bant: outcome.bant,
+            nextSteps: outcome.next_steps,
+            callNotes: outcome.summary
+          })
+
+          // Book demo if qualified
+          if (outcome.qualified && outcome.interested) {
+            await send.calendar({
+              to: lead.email,
+              subject: 'Demo with our team',
+              duration: 30,
+              attendees: [lead.email, 'sales@company.com']
+            })
+          }
+        }
+      }
+    }
+
+    export default Amy
+
+useCases:
+  - scenario: Inbound Lead Response
+    description: Lead fills out contact form at 2am
+    amyResponse: |
+      - Sends personalized email within 5 minutes
+      - References specific pain point from form
+      - Includes relevant case study
+      - Suggests 2-3 meeting times
+      - Result: 38% book meetings (vs 12% manual)
+
+  - scenario: Discovery Call
+    description: Prospect books 15-minute intro call
+    amyResponse: |
+      - Researches company and industry beforehand
+      - Opens with warm, consultative tone
+      - Asks BANT questions naturally
+      - Listens actively and asks follow-ups
+      - Books demo if qualified (or schedules follow-up)
+      - Result: 4.9/5 satisfaction score
+
+  - scenario: Cold Outreach
+    description: Targeting VP of Engineering at Series B startup
+    amyResponse: |
+      - Personalizes based on LinkedIn, company news
+      - References relevant pain point for their stage
+      - Shares similar customer success story
+      - Low-pressure call-to-action
+      - Result: 22% response rate (vs 3% industry avg)
+
+testimonials:
+  - quote: "Amy booked more qualified meetings in her first month than our entire SDR team did in the previous quarter. And prospects love talking to her."
+    author: Michael Rodriguez
+    role: VP of Sales
+    company: CloudScale SaaS
+
+  - quote: "I actually forgot I was talking to an AI. Amy asked better discovery questions than most human SDRs I've worked with."
+    author: Sarah Chen
+    role: Prospect
+    company: TechCorp
+
+pricing:
+  model: pay-per-conversation
+  rates:
+    - tier: Voice Calls
+      price: $2.50
+      unit: per call
+      included: Unlimited duration, call recording, transcript, CRM sync
+
+    - tier: Email Conversations
+      price: $0.50
+      unit: per email thread
+      included: Personalization, follow-ups, meeting booking
+
+    - tier: Meeting Bookings
+      price: $10
+      unit: per booked meeting
+      included: Only charged when meeting is confirmed and attended
+
+integrations:
+  - name: VAPI
+    type: voice
+    purpose: Natural voice conversations
+  - name: Salesforce
+    type: crm
+    purpose: Lead sync and activity logging
+  - name: Calendly
+    type: scheduling
+    purpose: Automated meeting booking
+  - name: HubSpot
+    type: crm
+    purpose: Contact and deal management
+
+seo:
+  title: Amy - AI Sales Development Representative | Agents.do
+  description: Meet Amy, your AI SDR who books qualified meetings through warm, consultative conversations. 38% conversion rate, 4.9/5 satisfaction.
+  keywords: [AI SDR, sales development, lead qualification, discovery calls, meeting booking]
+---
+
+# Meet Amy
+
+Your AI Sales Development Representative who builds genuine relationships and books qualified meetings.
+
+## Why Teams Love Amy
+
+- **38% Meeting Booking Rate** - 3x better than manual SDR outreach
+- **4.9/5 Customer Satisfaction** - Prospects love talking to her
+- **24/7 Availability** - Never misses an inbound lead
+- **Consistent Quality** - Every conversation is consultative and professional
+- **Infinite Scale** - Handle unlimited leads without hiring
+
+## How Amy Works
+
+1. **Instant Response** - Responds to inbound leads within minutes, any time
+2. **Personalized Outreach** - Researches company, references pain points
+3. **Discovery Questions** - BANT framework with natural, consultative style
+4. **Meeting Booking** - Schedules demos with qualified decision makers
+5. **CRM Sync** - All activity logged automatically
+
+## Voice Sample
+
+Listen to Amy conducting a discovery call:
+
+[Audio Player: Sample Discovery Call]
+
+**Highlights:**
+- Warm, professional greeting
+- Active listening with thoughtful follow-ups
+- Consultative problem-solving approach
+- Natural meeting booking close
+
+## Get Started
+
+Ready to let Amy handle your lead qualification?
+
+[Start Free Trial](/signup) • [Talk to Amy](/demo) • [View Pricing](/pricing)
+
+---
+
+**Amy** - AI Sales Development Representative • Part of the [Agents.do](/) family

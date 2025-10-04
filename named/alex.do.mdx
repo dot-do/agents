@@ -1,0 +1,486 @@
+---
+agent:
+  name: Alex
+  role: Data Scientist & Analytics Advisor
+  personality: Analytical, precise, methodical
+  specialties: [data-analysis, predictive-modeling, business-intelligence]
+  voice:
+    provider: vapi
+    model: eleven_labs
+    voice_id: adam
+    characteristics:
+      tone: professional-confident
+      pace: measured
+      energy: calm
+      style: precise
+  avatar:
+    image: /avatars/alex.png
+    background: gradient-purple
+  metrics:
+    models_deployed: 342
+    prediction_accuracy: 94.7%
+    insights_generated: 12500
+
+hero:
+  headline: Meet Alex, Your AI Data Scientist
+  subheadline: Turn raw data into actionable insights with precision and clarity
+  codeExample:
+    language: typescript
+    code: |
+      import { Alex } from 'agents.do'
+
+      const alex = new Alex({
+        dataSources: ['postgresql', 'bigquery', 'snowflake'],
+        models: ['forecasting', 'classification', 'clustering'],
+        voiceEnabled: true
+      })
+
+      // Generate predictive model
+      const model = await alex.analyze({
+        objective: 'predict-churn',
+        data: customerData,
+        features: ['usage', 'engagement', 'support_tickets'],
+        horizon: '90-days'
+      })
+
+      console.log(`Accuracy: ${model.accuracy}`)
+      console.log(`Top features: ${model.features.slice(0, 3)}`)
+
+about:
+  description: |
+    Alex is your AI Data Scientist who transforms complex data into clear,
+    actionable insights. With a methodical, analytical approach, Alex builds
+    predictive models, conducts statistical analysis, and explains findings
+    in terms business stakeholders understand.
+
+  personality_traits:
+    - trait: Analytically Rigorous
+      description: Every conclusion backed by statistical evidence
+    - trait: Precise Communicator
+      description: Explains complex concepts in clear, simple terms
+    - trait: Methodical Thinker
+      description: Systematic approach to problem-solving
+    - trait: Data-Driven Decision Maker
+      description: Let the data tell the story
+
+  conversation_style:
+    greeting: "Hi, I'm Alex. I've analyzed your data. Let me walk you through what I found."
+    analysis: "Looking at the correlation between X and Y, we see a statistically significant relationship (p<0.05)..."
+    insight: "The data suggests that customers who engage with feature A are 3.2x more likely to renew."
+    recommendation: "Based on the regression analysis, I recommend focusing on these three variables. Here's why..."
+
+capabilities:
+  - id: predictive-modeling
+    name: Predictive Modeling
+    description: Build ML models for forecasting, classification, and clustering
+    example: |
+      Alex: "I've built a churn prediction model with 94% accuracy. The top
+      three predictive features are: product usage (38% importance), support
+      ticket volume (24%), and days since last login (18%).
+
+      Based on the model, 127 accounts are at high risk (>70% churn probability)
+      in the next 90 days. I recommend prioritizing these for intervention."
+
+  - id: statistical-analysis
+    name: Statistical Analysis
+    description: Hypothesis testing, correlation analysis, and significance testing
+    example: |
+      Alex: "I ran a chi-square test to determine if the new feature adoption
+      differs by customer segment. The p-value is 0.003, which is statistically
+      significant at the 95% confidence level.
+
+      Enterprise customers adopted at 67% vs 42% for SMB. This 25-point
+      difference is not due to chance."
+
+  - id: data-visualization
+    name: Data Visualization
+    description: Create clear, insightful charts and dashboards
+    example: |
+      Alex: "This chart shows revenue trend over the past 24 months. Notice
+      the seasonal pattern - Q4 is consistently 35% higher than Q1.
+
+      The trendline shows 12% year-over-year growth, but if we decompose
+      the time series, underlying growth is actually 8% with 4% coming from
+      price increases."
+
+  - id: business-intelligence
+    name: Business Intelligence
+    description: Build dashboards and automated reporting
+    example: |
+      Alex: "I've set up a daily dashboard that tracks your key metrics:
+      - MRR with 7-day moving average
+      - Churn rate by cohort
+      - Product usage by feature
+      - Customer health scores
+
+      You'll get an automated report every Monday with week-over-week changes
+      and anomaly alerts."
+
+implementation:
+  code: |
+    import type { BusinessModule } from 'graphdl'
+    import { Agent } from 'agents.do'
+
+    export const Alex: Agent = {
+      name: 'Alex',
+      role: 'Data Scientist & Analytics Advisor',
+
+      personality: {
+        tone: 'professional-confident',
+        style: 'analytical-precise',
+        verbosity: 'concise',
+        technical_level: 'adaptable' // Adjusts to audience
+      },
+
+      voice: {
+        provider: 'vapi',
+        model: 'eleven_labs',
+        voice_id: 'adam',
+        settings: {
+          stability: 0.8,
+          similarity_boost: 0.7,
+          speaking_rate: 0.95 // Slightly slower for clarity
+        }
+      },
+
+      capabilities: {
+        dataSources: [
+          'postgresql',
+          'mysql',
+          'bigquery',
+          'snowflake',
+          'redshift',
+          'mongodb'
+        ],
+        models: [
+          'linear-regression',
+          'logistic-regression',
+          'random-forest',
+          'xgboost',
+          'neural-networks',
+          'time-series-forecasting',
+          'clustering',
+          'anomaly-detection'
+        ],
+        visualizations: [
+          'time-series',
+          'distributions',
+          'correlations',
+          'cohort-analysis',
+          'funnel-analysis',
+          'geographic-heatmaps'
+        ]
+      },
+
+      workflows: {
+        predictiveModel: async ({ objective, data, $ }) => {
+          const { ai, db, send } = $
+
+          // Data preparation
+          const prepared = await ai.prepare({
+            data: data,
+            clean: true,
+            impute_missing: 'median',
+            encode_categorical: true,
+            scale_features: true
+          })
+
+          // Feature engineering
+          const features = await ai.engineer({
+            data: prepared,
+            create: [
+              'interaction_terms',
+              'polynomial_features',
+              'time_based_features'
+            ],
+            select: 'recursive-elimination'
+          })
+
+          // Model training
+          const models = await ai.train({
+            data: features,
+            target: objective,
+            algorithms: [
+              'logistic-regression',
+              'random-forest',
+              'xgboost',
+              'neural-network'
+            ],
+            cross_validation: 5,
+            optimize: 'f1-score'
+          })
+
+          // Select best model
+          const best = models.sort((a, b) => b.score - a.score)[0]
+
+          // Feature importance
+          const importance = await ai.explain({
+            model: best,
+            method: 'shap',
+            top_n: 10
+          })
+
+          // Generate report
+          const report = await ai.generate({
+            type: 'model-report',
+            model: best,
+            features: importance,
+            metrics: {
+              accuracy: best.accuracy,
+              precision: best.precision,
+              recall: best.recall,
+              f1: best.f1,
+              auc: best.auc
+            },
+            recommendations: await ai.generate({
+              prompt: 'Based on this model, what actions should the business take?',
+              model: best,
+              importance: importance
+            })
+          })
+
+          // Deploy model
+          await db.models.create({
+            name: `${objective}-predictor`,
+            algorithm: best.algorithm,
+            accuracy: best.accuracy,
+            features: importance,
+            deployed: true,
+            deployedAt: new Date()
+          })
+
+          // Notify stakeholders
+          await send.email('analytics@company.com', {
+            subject: `Model Deployed: ${objective}`,
+            template: 'model-report',
+            data: report,
+            attachments: [
+              {
+                filename: 'model-analysis.pdf',
+                content: await generatePDF(report)
+              },
+              {
+                filename: 'feature-importance.csv',
+                content: await generateCSV(importance)
+              }
+            ]
+          })
+
+          return best
+        },
+
+        dataAnalysis: async ({ question, data, $ }) => {
+          const { ai, db, send } = $
+
+          // Exploratory data analysis
+          const eda = await ai.analyze({
+            data: data,
+            generate: [
+              'summary_statistics',
+              'distributions',
+              'correlations',
+              'missing_values',
+              'outliers'
+            ]
+          })
+
+          // Statistical tests
+          const tests = await ai.test({
+            data: data,
+            question: question,
+            tests: [
+              't-test',
+              'chi-square',
+              'anova',
+              'correlation'
+            ],
+            confidence: 0.95
+          })
+
+          // Generate insights
+          const insights = await ai.generate({
+            type: 'data-insights',
+            eda: eda,
+            tests: tests,
+            question: question,
+            style: 'executive-summary'
+          })
+
+          // Create visualizations
+          const charts = await ai.visualize({
+            data: data,
+            insights: insights,
+            types: ['time-series', 'scatter', 'bar', 'heatmap']
+          })
+
+          // Store analysis
+          await db.analyses.create({
+            question: question,
+            insights: insights,
+            visualizations: charts,
+            createdAt: new Date()
+          })
+
+          return {
+            eda,
+            tests,
+            insights,
+            charts
+          }
+        }
+      }
+    }
+
+    export default Alex
+
+useCases:
+  - scenario: Churn Prediction
+    description: Company losing 15% customers annually
+    alexResponse: |
+      - Analyzes 18 months of customer data (24 features)
+      - Builds gradient boosting model (94.7% accuracy)
+      - Identifies top predictors: usage frequency, support tickets, feature adoption
+      - Scores all active customers for churn risk
+      - Result: 78% of predicted churners saved through intervention
+
+  - scenario: Revenue Forecasting
+    description: CFO needs Q4 revenue projection
+    alexResponse: |
+      - Gathers 5 years historical data
+      - Applies ARIMA model with seasonal decomposition
+      - Accounts for growth trends and external factors
+      - Generates 90-day forecast with confidence intervals
+      - Result: 96% accuracy vs actual (within 4% error)
+
+  - scenario: A/B Test Analysis
+    description: Product team testing new onboarding flow
+    alexResponse: |
+      - Analyzes 10,000 users (5,000 control, 5,000 treatment)
+      - Runs chi-square test on completion rates
+      - Calculates statistical significance (p<0.01)
+      - Estimates revenue impact (+$240K annually)
+      - Result: Clear recommendation to launch new flow
+
+testimonials:
+  - quote: "Alex's analysis revealed insights our team missed for months. The churn prediction model alone saved us $1.2M in revenue."
+    author: Jennifer Park
+    role: VP of Operations
+    company: SaaS Platform
+
+  - quote: "What I love about Alex is the clarity. Complex statistical concepts explained in plain English that our exec team actually understands."
+    author: David Chen
+    role: Chief Data Officer
+    company: FinTech Startup
+
+pricing:
+  model: subscription
+  tiers:
+    - name: Analyst
+      price: $499
+      period: per month
+      features:
+        - Unlimited data analysis
+        - Basic statistical testing
+        - 5 predictive models
+        - Standard visualizations
+        - Email reports
+
+    - name: Data Scientist
+      price: $1,499
+      period: per month
+      features:
+        - Everything in Analyst
+        - Advanced ML models
+        - Custom feature engineering
+        - Real-time dashboards
+        - API access
+        - Priority support
+
+    - name: Enterprise
+      price: Custom
+      period: contact us
+      features:
+        - Everything in Data Scientist
+        - Dedicated Alex instance
+        - Custom model development
+        - White-label reporting
+        - On-premise deployment
+
+integrations:
+  - name: PostgreSQL
+    type: database
+    purpose: Direct SQL query execution
+  - name: BigQuery
+    type: data-warehouse
+    purpose: Large-scale data analysis
+  - name: Snowflake
+    type: data-warehouse
+    purpose: Cloud data warehousing
+  - name: Tableau
+    type: visualization
+    purpose: Dashboard creation
+  - name: Python/R
+    type: programming
+    purpose: Custom analysis scripts
+
+seo:
+  title: Alex - AI Data Scientist & Analytics Advisor | Agents.do
+  description: Meet Alex, your AI data scientist who builds predictive models and generates insights. 94.7% accuracy, clear explanations.
+  keywords: [AI data scientist, predictive modeling, statistical analysis, business intelligence, ML models]
+---
+
+# Meet Alex
+
+Your AI Data Scientist who turns data into decisions with precision and clarity.
+
+## Why Teams Love Alex
+
+- **94.7% Model Accuracy** - Industry-leading prediction accuracy
+- **12,500+ Insights Generated** - Actionable recommendations from data
+- **342 Models Deployed** - Production-ready ML models
+- **Clear Communication** - Complex stats explained simply
+- **24/7 Analysis** - Never wait for data answers
+
+## How Alex Works
+
+1. **Connect Data Sources** - PostgreSQL, BigQuery, Snowflake, or upload CSV
+2. **Ask Questions** - "What predicts churn?" "Which features drive revenue?"
+3. **Get Analysis** - Statistical tests, models, visualizations
+4. **Receive Insights** - Clear recommendations backed by data
+5. **Deploy Models** - Production-ready predictions via API
+
+## Sample Analysis
+
+**Question:** "What factors predict customer churn?"
+
+**Alex's Response:**
+```
+I've analyzed 18 months of data across 24 features for 12,450 customers.
+
+Model: Gradient Boosting Classifier
+Accuracy: 94.7% (cross-validated)
+AUC: 0.96
+
+Top Predictive Features:
+1. Product usage frequency (38% importance)
+   - Customers using <2x/week are 4.2x more likely to churn
+2. Support ticket volume (24% importance)
+   - 3+ tickets in 30 days = 67% churn rate
+3. Feature adoption (18% importance)
+   - Using <3 features = 3.1x churn risk
+
+Recommendation: Focus retention efforts on 127 high-risk accounts
+(>70% churn probability). Estimated impact: $840K ARR saved.
+
+Would you like me to generate a prioritized outreach list?
+```
+
+## Get Started
+
+Ready to unlock insights from your data?
+
+[Start Free Trial](/signup) • [Talk to Alex](/demo) • [View Pricing](/pricing)
+
+---
+
+**Alex** - AI Data Scientist & Analytics Advisor • Part of the [Agents.do](/) family

@@ -1,0 +1,856 @@
+---
+title: cfo.do
+$type: Agent
+agentType: Role
+name: CFO.do
+description: AI Chief Financial Officer - Financial planning, analysis, tax optimization, and strategic finance leadership
+license: Proprietary
+
+hero:
+  headline: Your AI Chief Financial Officer
+  subheadline: Strategic financial leadership powered by AI. Financial planning, forecasting, tax optimization, and real-time insights - all automated.
+  codeExample:
+    language: typescript
+    code: |
+      import { CFO } from 'cfo.do'
+
+      const cfo = new CFO({
+        integrations: ['quickbooks', 'stripe', 'gusto'],
+        currency: 'USD',
+        fiscalYearEnd: '2024-12-31',
+        policies: {
+          budgetAlerts: { threshold: 0.8 },
+          cashReserve: { min: 6 }, // months
+          approvalRequired: { amount: 10000 }
+        }
+      })
+
+      // Real-time financial monitoring
+      cfo.on('expense.submitted', async (expense) => {
+        const analysis = await cfo.analyzeExpense(expense, {
+          checkBudget: true,
+          detectAnomalies: true,
+          suggestCategory: true
+        })
+
+        if (expense.amount > 10000) {
+          await cfo.requestApproval(expense, analysis)
+        } else {
+          await cfo.autoApprove(expense)
+        }
+      })
+
+      // Automated financial reporting
+      cfo.every('month-end', async () => {
+        const report = await cfo.generateFinancials({
+          includeP&L: true,
+          includeBalanceSheet: true,
+          includeCashFlow: true,
+          forecast: { months: 6 }
+        })
+
+        await cfo.send.email('board@company.com', {
+          subject: 'Monthly Financial Report',
+          attachments: [report.pdf]
+        })
+      })
+  cta:
+    primary:
+      text: Start Free Trial
+      url: /signup
+    secondary:
+      text: Book Demo
+      url: /demo
+  badges:
+    - text: AI-Powered
+      icon: sparkles
+    - text: GAAP Compliant
+      icon: certification
+    - text: Bank-Level Security
+      icon: shield
+
+capabilities:
+  headline: What CFO.do Can Do
+  description: Comprehensive financial leadership capabilities powered by AI
+  items:
+    - icon: chart-line
+      title: Financial Planning & Analysis
+      description: Real-time financial modeling, forecasting, and scenario planning with AI-powered insights
+      metrics:
+        - 95% forecast accuracy
+        - 80% faster financial close
+        - Real-time dashboards
+      code: |
+        // Generate 12-month forecast
+        const forecast = await cfo.forecastRevenue({
+          months: 12,
+          scenarios: ['conservative', 'base', 'aggressive'],
+          includeSeasonality: true,
+          includeGrowthRate: true
+        })
+
+        // Scenario analysis
+        const scenarios = await cfo.analyzeScenarios([
+          { name: 'Hiring Plan A', headcount: +10, cost: 1.5M },
+          { name: 'Hiring Plan B', headcount: +20, cost: 2.8M }
+        ])
+
+        // Returns cash runway, burn rate, profitability timeline
+
+    - icon: tax
+      title: Tax Optimization
+      description: Automated tax planning, deduction identification, and compliance with federal and state regulations
+      metrics:
+        - $50k+ average annual savings
+        - 100% compliance rate
+        - Quarterly tax estimates
+      code: |
+        // Identify tax savings opportunities
+        const opportunities = await cfo.analyzeTaxSavings({
+          checkDeductions: true,
+          checkCredits: true,
+          checkEstimates: true
+        })
+
+        // Opportunities might include:
+        // - R&D tax credits: $45,000
+        // - Equipment depreciation: $12,000
+        // - Home office deduction: $8,000
+
+        // Generate quarterly estimates
+        const estimates = await cfo.calculateQuarterlyTax({
+          year: 2024,
+          entity: 'C-Corp'
+        })
+
+    - icon: invoice
+      title: Automated Billing & Collections
+      description: Invoice generation, payment tracking, and automated collections with smart payment reminders
+      metrics:
+        - 40% faster collections
+        - 25% reduction in DSO (Days Sales Outstanding)
+        - 99% accuracy
+      code: |
+        // Automated invoicing
+        cfo.on('deal.closed', async (deal) => {
+          const invoice = await cfo.createInvoice({
+            customer: deal.customer,
+            lineItems: deal.products,
+            terms: 'Net 30',
+            dueDate: addDays(new Date(), 30)
+          })
+
+          await cfo.send.email(deal.customer, invoice)
+        })
+
+        // Smart collections
+        cfo.every('daily', async () => {
+          const overdue = await cfo.findOverdueInvoices()
+
+          for (const invoice of overdue) {
+            await cfo.sendReminder(invoice, {
+              tone: invoice.daysOverdue > 30 ? 'firm' : 'friendly'
+            })
+          }
+        })
+
+    - icon: budget
+      title: Budget Management
+      description: Real-time budget tracking, variance analysis, and intelligent spend recommendations
+      metrics:
+        - 90% budget accuracy
+        - Real-time alerts
+        - Automatic reforecasting
+      code: |
+        // Monitor budget in real-time
+        cfo.on('expense.submitted', async (expense) => {
+          const budget = await cfo.getBudget({
+            department: expense.department,
+            category: expense.category,
+            period: 'monthly'
+          })
+
+          const utilization = (budget.spent + expense.amount) / budget.allocated
+
+          if (utilization > 0.8) {
+            await cfo.send.slack(expense.department, {
+              text: `⚠️ Budget Alert: ${expense.category} at ${utilization * 100}% utilization`
+            })
+          }
+        })
+
+    - icon: dashboard
+      title: Real-Time Financial Dashboards
+      description: Live metrics, KPIs, and financial health monitoring with AI-generated insights
+      metrics:
+        - Real-time data sync
+        - 50+ pre-built metrics
+        - Custom KPI tracking
+      code: |
+        // Real-time financial dashboard
+        const dashboard = await cfo.getDashboard({
+          metrics: [
+            'revenue',
+            'burn_rate',
+            'cash_balance',
+            'runway_months',
+            'mrr',
+            'arr',
+            'gross_margin',
+            'customer_cac',
+            'customer_ltv'
+          ],
+          period: 'last-12-months'
+        })
+
+        // AI insights
+        const insights = await cfo.generateInsights(dashboard)
+        // "Cash runway decreased 15% due to increased hiring.
+        //  Recommend reducing non-essential spend or raising capital."
+
+    - icon: report
+      title: Financial Reporting
+      description: Automated P&L, balance sheet, cash flow, and board reporting with narrative explanations
+      metrics:
+        - 3-day close process
+        - GAAP compliant
+        - Audit-ready reports
+      code: |
+        // Month-end close automation
+        cfo.every('month-end', async () => {
+          // Close books
+          await cfo.closeBooks()
+
+          // Generate financials
+          const financials = await cfo.generateFinancials({
+            statements: ['P&L', 'BalanceSheet', 'CashFlow'],
+            period: 'monthly',
+            format: 'pdf',
+            includeNarrative: true
+          })
+
+          // Send to stakeholders
+          await cfo.distribute(financials, {
+            board: true,
+            investors: true,
+            management: true
+          })
+        })
+
+features:
+  layout: grid
+  items:
+    - icon: integration
+      title: Accounting Integration
+      description: Native sync with QuickBooks, Xero, NetSuite, Sage
+
+    - icon: bank
+      title: Banking Integration
+      description: Real-time bank feeds from 10,000+ financial institutions
+
+    - icon: payroll
+      title: Payroll Integration
+      description: Automatic sync with Gusto, ADP, Rippling, Justworks
+
+    - icon: stripe
+      title: Payment Integration
+      description: Revenue recognition from Stripe, PayPal, Square
+
+    - icon: ai-insights
+      title: AI Financial Insights
+      description: Natural language explanations of financial performance
+
+    - icon: compliance
+      title: Tax Compliance
+      description: Federal and state tax compliance, 1099s, W-2s
+
+useCases:
+  headline: Real-World Use Cases
+  description: How finance teams use CFO.do
+  items:
+    - title: Scaling Financial Operations
+      company: Series B SaaS (200 employees)
+      challenge: CFO spending 60% of time on manual reporting and analysis
+      solution: CFO.do automated month-end close from 10 days to 3 days
+      results:
+        - 70% reduction in close time
+        - 95% forecast accuracy (up from 70%)
+        - CFO time freed for strategic work
+      testimonial:
+        quote: "CFO.do transformed our financial operations. Our board reports went from PowerPoint decks to real-time dashboards."
+        author: Sarah Chen
+        role: CFO
+        company: GrowthTech SaaS
+
+    - title: Tax Savings Discovery
+      company: E-commerce Startup
+      challenge: Overpaying taxes, missing deductions and credits
+      solution: CFO.do identified $87k in missed R&D credits and deductions
+      results:
+        - $87k recovered in first year
+        - $50k annual ongoing savings
+        - Zero compliance issues
+      testimonial:
+        quote: "CFO.do found deductions our CPA missed. The ROI was 50x in the first year."
+        author: Marcus Williams
+        role: Founder & CEO
+        company: ShopLocal
+
+    - title: Improving Cash Flow
+      company: Services Business
+      challenge: 60-day average collections, cash flow struggles
+      solution: CFO.do's automated collections reduced DSO by 40%
+      results:
+        - DSO reduced from 60 to 36 days
+        - 30% improvement in cash position
+        - 90% reduction in collection effort
+      testimonial:
+        quote: "Our cash flow problems disappeared. CFO.do's smart reminders get payments faster without annoying customers."
+        author: Jennifer Martinez
+        role: COO
+        company: ProServices
+
+pricing:
+  headline: Transparent Pricing
+  description: Choose the plan that fits your business
+  plans:
+    - name: Starter
+      price: $199/month
+      annual: $1,990/year
+      description: Perfect for startups and small businesses
+      features:
+        - Up to $1M annual revenue
+        - 1 entity
+        - 3 users
+        - Financial dashboards
+        - Basic reporting
+        - Email support
+      cta: Start Free Trial
+
+    - name: Professional
+      price: $699/month
+      annual: $6,990/year
+      description: For growing businesses
+      features:
+        - Up to $10M annual revenue
+        - 3 entities
+        - Unlimited users
+        - All Starter features
+        - Advanced forecasting
+        - Budget management
+        - Tax optimization
+        - Priority support
+      cta: Start Free Trial
+      popular: true
+
+    - name: Enterprise
+      price: Custom
+      description: For established companies
+      features:
+        - Unlimited revenue
+        - Unlimited entities
+        - All Professional features
+        - Custom integrations
+        - Dedicated CFO advisor
+        - SLA guarantee
+        - White-label option
+      cta: Contact Sales
+
+integrations:
+  headline: Integrations
+  description: Works with your existing financial stack
+  categories:
+    - name: Accounting
+      tools:
+        - name: QuickBooks
+          status: Native
+        - name: Xero
+          status: Native
+        - name: NetSuite
+          status: Beta
+
+    - name: Banking
+      tools:
+        - name: Plaid
+          status: Native
+        - name: Mercury
+          status: Native
+        - name: Brex
+          status: Native
+
+    - name: Payroll
+      tools:
+        - name: Gusto
+          status: Native
+        - name: ADP
+          status: Beta
+        - name: Rippling
+          status: Coming Soon
+
+    - name: Payments
+      tools:
+        - name: Stripe
+          status: Native
+        - name: PayPal
+          status: Native
+        - name: Square
+          status: Beta
+
+routes:
+  - pattern: /capabilities/[capability]/readme.mdx
+    collection: capabilities
+    variables:
+      - name
+      - description
+      - examples
+      - metrics
+    template: |
+      # {Capability.name}
+
+      {Capability.description}
+
+      ## Examples
+
+      {Capability.examples}
+
+      ## Metrics
+
+      {Capability.metrics}
+
+seo:
+  title: CFO.do - AI Chief Financial Officer | Automated Financial Management
+  description: AI-powered CFO for financial planning, forecasting, tax optimization, and strategic finance. Real-time insights and automated reporting.
+  keywords: [ai-cfo, financial-planning, tax-optimization, forecasting, budgeting, financial-reporting, fp&a]
+
+analytics:
+  events:
+    - capability_viewed
+    - demo_requested
+    - trial_started
+    - integration_connected
+---
+
+# CFO.do - Your AI Chief Financial Officer
+
+Strategic financial leadership powered by AI. Automate financial planning, forecasting, tax optimization, and reporting.
+
+## Why CFO.do?
+
+Financial management is complex and time-consuming. Manual processes lead to late closes, inaccurate forecasts, and missed tax savings opportunities. CFO.do acts as your AI Chief Financial Officer, providing expert-level financial leadership 24/7.
+
+**The Challenge:**
+- Month-end close takes 10+ days
+- Financial forecasts are 70% accurate at best
+- Missing tax deductions and credits
+- Cash flow surprises
+- CFOs spend 60% of time on reporting instead of strategy
+
+**The Solution:**
+CFO.do provides automated, AI-powered financial leadership. Get real-time insights, accurate forecasts, tax optimization, and instant reporting - without manual data entry or spreadsheet gymnastics.
+
+## Capabilities
+
+### 📊 Financial Planning & Analysis
+
+**Automated Forecasting:**
+```typescript
+// 12-month revenue forecast with 95% accuracy
+const forecast = await cfo.forecastRevenue({
+  months: 12,
+  scenarios: ['conservative', 'base', 'aggressive'],
+  includeSeasonality: true,
+  considerMarketTrends: true
+})
+
+// Output:
+// Conservative: $2.4M (+10% YoY)
+// Base: $2.8M (+30% YoY)
+// Aggressive: $3.5M (+62% YoY)
+```
+
+**Scenario Planning:**
+```typescript
+// What if we hire 10 engineers?
+const scenario = await cfo.analyzeScenario({
+  hires: {
+    engineers: 10,
+    avgSalary: 150000,
+    startDate: '2024-Q2'
+  }
+})
+
+// Output:
+// Quarterly burn increase: +$450k
+// Cash runway impact: -3.2 months
+// Break-even delay: +4 months
+// Recommended capital raise: $2M by Q3
+```
+
+### 💰 Tax Optimization
+
+**Automated Tax Savings:**
+```typescript
+// Identify tax savings opportunities
+const savings = await cfo.analyzeTaxSavings({
+  year: 2024,
+  entity: 'C-Corp'
+})
+
+// CFO.do found:
+// 1. R&D Tax Credit: $45,000
+//    - Qualified software development: $38k
+//    - Product experimentation: $7k
+//
+// 2. Section 179 Depreciation: $12,000
+//    - Computer equipment: $8k
+//    - Office furniture: $4k
+//
+// 3. Home Office Deduction: $8,000
+//    - 5 remote employees eligible
+//
+// Total savings: $65,000
+```
+
+**Quarterly Tax Estimates:**
+```typescript
+// Automatic quarterly tax calculations
+const q1 = await cfo.calculateQuarterlyTax({
+  quarter: 'Q1',
+  year: 2024
+})
+
+// Payment due: $45,000
+// Federal: $32,000
+// State (CA): $13,000
+// Due date: April 15, 2024
+// Pay via: ACH, check, credit card
+```
+
+### 📄 Automated Billing & Collections
+
+**Smart Invoicing:**
+```typescript
+// Automatic invoice generation
+cfo.on('deal.closed', async (deal) => {
+  const invoice = await cfo.createInvoice({
+    customer: deal.customer,
+    amount: deal.amount,
+    terms: deal.terms || 'Net 30',
+    items: deal.lineItems,
+    autoSend: true
+  })
+
+  // Automatically sent via email
+  // Payment link included
+  // Reminder scheduled for day 25
+})
+```
+
+**AI-Powered Collections:**
+```typescript
+// Smart payment reminders
+cfo.every('daily', async () => {
+  const overdue = await cfo.findOverdueInvoices()
+
+  for (const invoice of overdue) {
+    const reminder = await cfo.generateReminder(invoice, {
+      tone: invoice.daysOverdue < 7 ? 'friendly' :
+            invoice.daysOverdue < 30 ? 'firm' :
+            'formal',
+      includeLateFee: invoice.daysOverdue > 30
+    })
+
+    await cfo.send.email(invoice.customer, reminder)
+  }
+})
+
+// Results:
+// - 40% faster payment
+// - 25% reduction in DSO
+// - 90% collection rate without phone calls
+```
+
+### 📈 Real-Time Dashboards
+
+**Live Financial Metrics:**
+```typescript
+const dashboard = await cfo.getDashboard({
+  metrics: [
+    'revenue',
+    'burn_rate',
+    'cash_balance',
+    'runway_months',
+    'mrr',
+    'arr',
+    'gross_margin',
+    'customer_cac',
+    'customer_ltv',
+    'ltv_cac_ratio'
+  ]
+})
+
+// Real-time updates
+// Drill-down capability
+// Export to PDF/Excel
+// Share with board
+```
+
+**AI-Generated Insights:**
+```typescript
+const insights = await cfo.analyzePerformance()
+
+// CFO.do insights:
+//
+// 🔴 ALERT: Cash runway decreased from 18 to 14 months
+//    Cause: Engineering hiring accelerated (15 vs planned 10)
+//    Impact: $180k/month additional burn
+//    Recommendation: Reduce discretionary spend or raise $2M
+//
+// 🟢 POSITIVE: Gross margin improved from 65% to 72%
+//    Cause: Infrastructure optimization reduced AWS costs 30%
+//    Impact: $15k/month savings
+//    Recommendation: Continue cloud cost optimization
+//
+// 🟡 WARNING: Sales cycle increased from 45 to 62 days
+//    Cause: Moving upmarket to enterprise deals
+//    Impact: Revenue timing shift, Q2 may miss plan
+//    Recommendation: Adjust forecast, inform board
+```
+
+### 📋 Financial Reporting
+
+**Automated Month-End Close:**
+```typescript
+// 3-day close process (down from 10)
+cfo.every('month-end', async () => {
+  // 1. Reconcile all accounts
+  await cfo.reconcileAccounts()
+
+  // 2. Accrue expenses
+  await cfo.accrueExpenses()
+
+  // 3. Calculate deferred revenue
+  await cfo.calculateDeferredRevenue()
+
+  // 4. Generate financial statements
+  const financials = await cfo.generateFinancials({
+    statements: ['P&L', 'BalanceSheet', 'CashFlow'],
+    period: 'monthly',
+    narrative: true
+  })
+
+  // 5. Distribute to stakeholders
+  await cfo.distribute(financials, {
+    board: true,
+    investors: true,
+    management: true
+  })
+})
+```
+
+**Board Reporting:**
+```typescript
+// Executive summary with AI narrative
+const boardPackage = await cfo.generateBoardPackage({
+  period: 'Q1-2024',
+  include: [
+    'executive-summary',
+    'financial-statements',
+    'kpi-dashboard',
+    'variance-analysis',
+    'forecast-update',
+    'key-risks'
+  ]
+})
+
+// Includes natural language explanations:
+// "Revenue of $2.4M exceeded plan by 8% due to higher
+//  close rates in enterprise segment. Gross margin of
+//  68% was below target of 70% due to one-time
+//  infrastructure costs..."
+```
+
+## Getting Started
+
+### 1. Connect Your Accounts
+
+```bash
+# Connect accounting system
+cfo integrations connect quickbooks
+
+# Connect bank accounts
+cfo integrations connect plaid
+
+# Connect payment processor
+cfo integrations connect stripe
+
+# Connect payroll
+cfo integrations connect gusto
+```
+
+### 2. Configure Financial Policies
+
+```typescript
+// .cfo.config.ts
+export default {
+  fiscalYearEnd: '2024-12-31',
+  currency: 'USD',
+
+  budgets: {
+    alertThreshold: 0.8, // Alert at 80% utilization
+    approvalRequired: 10000 // Require approval over $10k
+  },
+
+  cash: {
+    minReserve: 6, // 6 months runway minimum
+    alertBelow: 9 // Alert if below 9 months
+  },
+
+  collections: {
+    terms: 'Net 30',
+    reminderSchedule: [7, 14, 21, 28], // Days before due
+    lateFeeAfter: 30,
+    lateFeePercent: 1.5
+  },
+
+  reporting: {
+    closeDay: 3, // Close books by 3rd of month
+    boardPackageDay: 5,
+    recipients: {
+      board: ['board@company.com'],
+      investors: ['investors@company.com'],
+      management: ['leadership@company.com']
+    }
+  }
+}
+```
+
+### 3. Import Historical Data
+
+```typescript
+// One-time historical import
+await cfo.importData({
+  source: 'quickbooks',
+  startDate: '2020-01-01',
+  includeTransactions: true,
+  includeInvoices: true,
+  includeCustomers: true
+})
+
+// CFO.do will:
+// - Import all transactions
+// - Categorize expenses
+// - Build historical trends
+// - Train forecasting models
+```
+
+## Implementation
+
+```typescript
+import type { BusinessModule } from 'graphdl'
+
+export const CFOAgent: BusinessModule = $ => {
+  const { db, ai, on, send, every, api } = $
+
+  // Real-time expense monitoring
+  on.expense.submitted(async (expense) => {
+    const budget = await db.budgets.findOne({
+      department: expense.department,
+      category: expense.category
+    })
+
+    const utilization = (budget.spent + expense.amount) / budget.allocated
+
+    if (utilization > 0.8) {
+      await send.slack(`#${expense.department}`, {
+        text: `⚠️ Budget alert: ${expense.category} at ${Math.round(utilization * 100)}%`
+      })
+    }
+
+    if (expense.amount > 10000) {
+      await send.email('cfo@company.com', {
+        subject: `Approval required: $${expense.amount} expense`,
+        body: `${expense.description}\nSubmitted by: ${expense.submitter}`
+      })
+    } else {
+      await db.expenses.update(expense.id, { status: 'approved' })
+    }
+  })
+
+  // Automated collections
+  every('daily', async () => {
+    const overdue = await db.invoices.find({
+      status: 'unpaid',
+      dueDate: { lt: new Date() }
+    })
+
+    for (const invoice of overdue) {
+      const daysOverdue = daysBetween(invoice.dueDate, new Date())
+
+      const reminder = await ai.generate({
+        prompt: `Generate a ${daysOverdue < 7 ? 'friendly' : 'firm'} payment reminder for invoice #${invoice.number}`,
+        context: { invoice, customer: invoice.customer }
+      })
+
+      await send.email(invoice.customer.email, reminder)
+    }
+  })
+
+  // Month-end close
+  every('month-end', async () => {
+    await api.post('/quickbooks/close', { period: 'month' })
+
+    const financials = await ai.generate({
+      prompt: 'Generate monthly financial report with narrative explanation',
+      data: await db.transactions.findAll({ period: 'last-month' })
+    })
+
+    await send.email('board@company.com', {
+      subject: 'Monthly Financial Report',
+      attachments: [financials.pdf]
+    })
+  })
+
+  return {}
+}
+```
+
+## Success Stories
+
+### GrowthTech SaaS - Faster Financial Close
+
+"Our month-end close went from 10 days to 3 days. CFO.do automated reconciliations, accruals, and reporting. Our board package is now real-time dashboards instead of static PowerPoint. Game-changing."
+
+**- Sarah Chen, CFO**
+
+### ShopLocal - $87k Tax Savings
+
+"CFO.do found $87k in missed R&D credits and deductions our CPA didn't catch. The ROI was 50x in year one. Plus, quarterly tax estimates are automatic - no more surprises."
+
+**- Marcus Williams, CEO**
+
+### ProServices - 40% Better Collections
+
+"Our DSO dropped from 60 days to 36 days. CFO.do's smart reminders get payments faster without annoying customers. Cash flow problems disappeared overnight."
+
+**- Jennifer Martinez, COO**
+
+## FAQ
+
+**Q: How does CFO.do compare to hiring a CFO?**
+A: A full-time CFO costs $250k-500k/year. CFO.do provides 80% of the capabilities at 1% of the cost. Best used alongside a fractional CFO or controller for strategic decisions.
+
+**Q: Is my financial data secure?**
+A: Yes. Bank-level encryption, SOC 2 Type II certified, never trains AI on your data. Same security as your bank.
+
+**Q: What accounting systems are supported?**
+A: QuickBooks, Xero, NetSuite, Sage, FreshBooks. Full list at cfo.do/integrations
+
+**Q: Does CFO.do replace my accountant?**
+A: No. CFO.do handles day-to-day financial operations and reporting. You still need an accountant for taxes and compliance. Most customers see 50% reduction in accounting fees.
+
+## Ready to Transform Your Finances?
+
+Start your free 14-day trial. No credit card required.
+
+[Start Free Trial →](/signup) | [Book Demo →](/demo)

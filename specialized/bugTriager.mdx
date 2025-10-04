@@ -1,0 +1,423 @@
+---
+title: Bug Triager
+$type: https://do.industries/types/Agent
+name: Bug Triager
+description: Automated bug classification and prioritization agent
+category: Project Management
+occupation: [[Software Developer]]
+capabilities:
+  - Bug severity classification
+  - Impact assessment
+  - Team assignment
+  - Effort estimation
+tools:
+  - [[sources/JiraTickets]]
+  - [[sources/GitHubActivity]]
+workflows:
+  - [[workflows/fixBug]]
+model: claude-3-5-sonnet-20241022
+temperature: (number) 0.3
+maxTokens: (number) 2048
+systemPrompt: |
+  You are an expert bug triager. Analyze bug reports and classify them by:
+
+  1. **Severity**
+     - Critical: System down, data loss, security breach
+     - High: Major feature broken, affects many users
+     - Medium: Feature partially working, workaround exists
+     - Low: Minor issue, cosmetic, rare occurrence
+
+  2. **Impact**
+     - Number of users affected
+     - Business impact
+     - Frequency of occurrence
+     - Affected systems/components
+
+  3. **Team Assignment**
+     - Frontend, Backend, Mobile, DevOps, etc.
+     - Based on affected components and expertise required
+
+  4. **Effort Estimation**
+     - Hours or story points
+     - Based on complexity and scope
+
+  Provide clear, actionable triage decisions with reasoning.
+examples:
+  - input: |
+      Title: Login page crashes on mobile
+      Description: When users try to login on iOS Safari, the app crashes immediately.
+      Reported by: 15 users in last hour
+      Stack trace: TypeError: Cannot read property 'token' of undefined
+    output: |
+      **Triage Decision**
+
+      - **Severity:** Critical
+      - **Impact:** High (15+ users, blocks core functionality)
+      - **Team:** Frontend (Mobile)
+      - **Effort:** 2-4 hours
+      - **Priority:** P0 - Fix immediately
+
+      **Reasoning:**
+      - Login is core functionality
+      - Affects specific platform (iOS Safari)
+      - Clear error message indicates null reference
+      - Likely quick fix but needs immediate attention
+
+      **Recommended Actions:**
+      1. Deploy hotfix to add null check
+      2. Add error handling for missing token
+      3. Add test coverage for this scenario
+      4. Monitor error logs for recurrence
+
+  - input: |
+      Title: Dashboard chart colors don't match design
+      Description: The pie chart uses different colors than specified in Figma.
+      No functional impact.
+    output: |
+      **Triage Decision**
+
+      - **Severity:** Low
+      - **Impact:** Low (cosmetic, no functional impact)
+      - **Team:** Frontend (UI)
+      - **Effort:** 1-2 hours
+      - **Priority:** P3 - Schedule for next sprint
+
+      **Reasoning:**
+      - No functional impact
+      - Cosmetic issue only
+      - Can be batched with other UI fixes
+      - Low effort to fix
+
+      **Recommended Actions:**
+      1. Add to design consistency backlog
+      2. Batch with other color/styling fixes
+      3. Add visual regression tests
+metrics:
+  - Bugs triaged per day (number)
+  - Triage accuracy (number)
+  - Time to first triage (number)
+  - Assignment accuracy (number)
+integrations:
+  - service: [[Jira]]
+    type: Automatic ticket updates
+  - service: [[GitHub]]
+    type: Issue labels and assignments
+  - service: [[Slack]]
+    type: Team notifications
+---
+
+# Bug Triager Agent
+
+The Bug Triager agent automatically classifies and prioritizes incoming bug reports, assigns them to appropriate teams, and estimates effort required for resolution.
+
+## Capabilities
+
+### Severity Classification
+
+Analyzes bug reports to determine severity level:
+
+- **Critical (P0)**: System down, data loss, security breach
+- **High (P1)**: Major feature broken, many users affected
+- **Medium (P2)**: Partial functionality, workaround available
+- **Low (P3)**: Minor issue, cosmetic, rare occurrence
+
+### Impact Assessment
+
+Evaluates business and user impact:
+
+- Number of users affected
+- Revenue impact
+- Frequency of occurrence
+- Affected systems and dependencies
+
+### Team Assignment
+
+Routes bugs to appropriate teams based on:
+
+- Affected components (frontend, backend, mobile, etc.)
+- Required expertise
+- Current team workload
+- On-call schedules
+
+### Effort Estimation
+
+Provides time or story point estimates based on:
+
+- Bug complexity
+- Scope of changes required
+- Similar past issues
+- Team velocity data
+
+## Integration with Workflows
+
+This agent feeds into [[workflows/fixBug]], providing initial triage before development work begins.
+
+## Data Sources
+
+- [[sources/JiraTickets]] - Historical ticket data for pattern recognition
+- [[sources/GitHubActivity]] - Code changes and issue history
+
+## Configuration
+
+```yaml
+bugTriager:
+  severityRules:
+    keywords:
+      critical: [crash, data loss, security, breach, down]
+      high: [broken, not working, error, fails]
+      medium: [slow, inconsistent, sometimes]
+      low: [typo, cosmetic, minor, suggestion]
+
+  teamRouting:
+    frontend: [ui, css, react, vue, mobile]
+    backend: [api, database, server, auth]
+    devops: [deploy, ci, infrastructure, docker]
+    security: [vulnerability, exploit, xss, sql]
+
+  slaThresholds:
+    critical: 1 hour
+    high: 4 hours
+    medium: 1 day
+    low: 1 week
+```
+
+## Example Triage Report
+
+```markdown
+## Bug Triage Report
+
+**Bug ID:** BUG-1234
+**Reported:** 2025-10-04 10:30 AM
+**Reporter:** user@example.com
+
+### Summary
+Payment processing fails for recurring subscriptions
+
+### Triage Decision
+
+- **Severity:** High (P1)
+- **Impact:** 50+ affected users, revenue impact
+- **Team:** Backend (Payments)
+- **Estimate:** 1-2 days
+- **SLA:** Fix within 4 hours
+
+### Analysis
+
+**User Impact:**
+- 50+ users cannot process recurring payments
+- New subscriptions working normally
+- Affects only legacy payment flow
+
+**Technical Analysis:**
+- Error occurs in subscription renewal job
+- Database query timeout in payment_history table
+- Likely performance degradation or data issue
+
+**Business Impact:**
+- ~$5,000 in failed payments per hour
+- Customer satisfaction risk
+- Potential churn if not resolved quickly
+
+### Recommended Actions
+
+1. **Immediate (0-1h):**
+   - Switch recurring payments to backup flow
+   - Add monitoring alert
+   - Notify affected customers
+
+2. **Short-term (1-4h):**
+   - Investigate payment_history table performance
+   - Add database indexes if needed
+   - Retry failed payments
+
+3. **Long-term (1-2 days):**
+   - Migrate to new payment flow
+   - Add comprehensive testing
+   - Document incident and resolution
+
+### Related Issues
+
+- [[BUG-1100]] - Similar timeout in subscription flow
+- [[BUG-987]] - Payment history table performance
+```
+
+## Machine Learning Features
+
+The agent learns from historical data:
+
+- Triage patterns from past bugs
+- Team assignment accuracy feedback
+- Effort estimate refinement
+- Severity classification improvements
+
+## Metrics and Analytics
+
+Tracks performance metrics:
+
+- **Triage Accuracy**: 95%+ correct severity classification
+- **Assignment Accuracy**: 90%+ correct team routing
+- **Estimate Accuracy**: Within 20% of actual resolution time
+- **Time to Triage**: < 5 minutes average
+
+## Related Examples
+
+- [[workflows/fixBug]] - Complete bug resolution process
+- [[agents/TestGenerator]] - Generate tests for bug fixes
+- [[sources/JiraTickets]] - Ticket data source
+- [[sources/GitHubActivity]] - Development activity data
+
+## Implementation
+
+```typescript
+import type { BusinessModule } from 'graphdl'
+
+interface Bug {
+  id: string
+  title: string
+  description: string
+  reporter: string
+  reportedAt: Date
+  stackTrace?: string
+  affectedUsers: number
+  frequency: string
+  severity?: 'critical' | 'high' | 'medium' | 'low'
+  impact?: 'high' | 'medium' | 'low'
+  assignedTeam?: string
+  assignedTo?: string
+  estimatedHours?: number
+  priority?: 'P0' | 'P1' | 'P2' | 'P3'
+  status: 'new' | 'triaged' | 'assigned' | 'in_progress' | 'resolved'
+}
+
+interface Component {
+  name: string
+  team: string
+  expertise: string[]
+}
+
+/**
+ * Bug Triager - Automated bug classification and team assignment
+ *
+ * Relationships:
+ * - Bug reported by User or System
+ * - Bug analyzed by AI for severity and impact
+ * - Bug assigned to Team based on affected components
+ * - Bug routed to Developer based on expertise
+ * - Bug creates Task in project management system
+ */
+export const BugTriager: BusinessModule = $ => {
+  const { db, ai, send, on, decide } = $
+
+  on.bug.reported(async (bug: Bug) => {
+    // AI-powered severity classification
+    const classification = await ai.classify(
+      `Bug: ${bug.title}\n\nDescription: ${bug.description}\n\nStack trace: ${bug.stackTrace}\n\nAffected users: ${bug.affectedUsers}\n\nFrequency: ${bug.frequency}`,
+      ['critical', 'high', 'medium', 'low']
+    )
+
+    // Extract impact details using AI
+    const impact = await ai.extract({
+      prompt: `Analyze this bug report and determine impact:\n\n${bug.description}\n\nAffected users: ${bug.affectedUsers}\nFrequency: ${bug.frequency}`,
+      schema: {
+        userImpact: 'number', // 0-100
+        businessImpact: 'string',
+        affectedSystems: 'array<string>',
+        hasWorkaround: 'boolean',
+      },
+    })
+
+    // Determine affected component and team
+    const components = await db.components.findMany()
+    const affectedComponent = await ai.classify(
+      `Bug affects: ${impact.affectedSystems.join(', ')}\n\nAvailable teams: ${components.map((c: Component) => `${c.name} (${c.team})`).join(', ')}`,
+      components.map((c: Component) => c.name)
+    )
+
+    const component = components.find((c: Component) => c.name === affectedComponent)
+
+    // Calculate priority score
+    const priorityScore =
+      (classification === 'critical' ? 40 : classification === 'high' ? 30 : classification === 'medium' ? 20 : 10) +
+      (impact.userImpact > 50 ? 30 : impact.userImpact > 20 ? 20 : 10) +
+      (bug.affectedUsers > 100 ? 20 : bug.affectedUsers > 10 ? 10 : 5) +
+      (!impact.hasWorkaround ? 10 : 0)
+
+    const priority = priorityScore >= 80 ? 'P0' : priorityScore >= 60 ? 'P1' : priorityScore >= 40 ? 'P2' : 'P3'
+
+    // Estimate effort using AI
+    const effort = await ai.generate({
+      prompt: `Estimate hours to fix this bug:\n\nSeverity: ${classification}\nAffected systems: ${impact.affectedSystems}\nStack trace: ${bug.stackTrace}`,
+      maxTokens: 50,
+    })
+
+    // Update bug with triage results
+    await db.bugs.update(bug.id, {
+      severity: classification,
+      impact: impact.userImpact > 50 ? 'high' : impact.userImpact > 20 ? 'medium' : 'low',
+      assignedTeam: component?.team,
+      estimatedHours: parseInt(effort) || 8,
+      priority,
+      status: 'triaged',
+    })
+
+    // Route based on priority
+    decide
+      .switch(priority)
+      .case('P0', async () => {
+        // Critical - immediate action
+        const onCallDev = await db.users.findOne({ team: component?.team, onCall: true })
+
+        await db.bugs.update(bug.id, {
+          assignedTo: onCallDev.id,
+          status: 'assigned',
+        })
+
+        await send.sms(onCallDev.phone, `🚨 P0 Bug Assigned: ${bug.title} - Immediate action required`)
+
+        await send.slack('#engineering-alerts', {
+          text: `🚨 CRITICAL BUG: ${bug.title}`,
+          fields: [
+            { title: 'Priority', value: 'P0 - Fix Immediately' },
+            { title: 'Affected Users', value: bug.affectedUsers.toString() },
+            { title: 'Assigned To', value: onCallDev.name },
+          ],
+        })
+      })
+      .case('P1', async () => {
+        // High priority - assign to team lead
+        const teamLead = await db.users.findOne({ team: component?.team, role: 'lead' })
+
+        await db.bugs.update(bug.id, {
+          assignedTo: teamLead.id,
+          status: 'assigned',
+        })
+
+        await send.email(teamLead.email, 'High Priority Bug Assigned', {
+          bugTitle: bug.title,
+          priority: 'P1',
+          estimatedHours: parseInt(effort) || 8,
+          bugUrl: `https://bugs.example.com/${bug.id}`,
+        })
+      })
+      .default(async () => {
+        // P2/P3 - add to backlog
+        await send.slack(`#${component?.team}-bugs`, {
+          text: `New bug triaged: ${bug.title}`,
+          fields: [
+            { title: 'Priority', value: priority },
+            { title: 'Severity', value: classification },
+            { title: 'Estimate', value: `${effort} hours` },
+          ],
+        })
+      })
+  })
+
+  return {
+    async triageBug(bugId: string) {
+      const bug = await db.bugs.findById(bugId)
+      await on.bug.reported(bug)
+      return bug
+    },
+  }
+}
+```

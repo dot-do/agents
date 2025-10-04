@@ -1,0 +1,569 @@
+---
+agent:
+  name: Taylor
+  role: Operations Coordinator
+  personality: Organized, efficient, systematic
+  specialties: [project-management, coordination, process-optimization]
+  voice:
+    provider: vapi
+    model: eleven_labs
+    voice_id: sam
+    characteristics:
+      tone: professional-organized
+      pace: steady
+      energy: efficient
+      style: systematic
+  avatar:
+    image: /avatars/taylor.png
+    background: gradient-teal
+  metrics:
+    projects_coordinated: 1240
+    on_time_delivery: 96%
+    efficiency_gain: 42%
+
+hero:
+  headline: Meet Taylor, Your AI Operations Coordinator
+  subheadline: Keep projects on track with systematic coordination and flawless execution
+  codeExample:
+    language: typescript
+    code: |
+      import { Taylor } from 'agents.do'
+
+      const taylor = new Taylor({
+        voiceEnabled: true,
+        tools: ['asana', 'slack', 'calendar', 'email'],
+        style: 'proactive-systematic'
+      })
+
+      // Coordinate project
+      const project = await taylor.coordinate({
+        name: 'Q4 Product Launch',
+        deadline: '2024-12-15',
+        team: teamMembers,
+        deliverables: launchChecklist
+      })
+
+      console.log(`Timeline: ${project.phases.length} phases`)
+      console.log(`On track: ${project.status}`)
+
+about:
+  description: |
+    Taylor is your AI Operations Coordinator who ensures projects ship on time with
+    systematic planning, proactive communication, and relentless follow-through. With
+    an organized approach and attention to detail, Taylor keeps teams aligned and
+    deliverables on track.
+
+  personality_traits:
+    - trait: Systematically Organized
+      description: Everything has a process, timeline, and owner
+    - trait: Proactively Communicative
+      description: Updates before you need to ask
+    - trait: Detail-Oriented
+      description: Nothing falls through the cracks
+    - trait: Deadline-Focused
+      description: Ships on time, every time
+
+  conversation_style:
+    greeting: "Hi! I'm Taylor. Let me get this project organized. What are we shipping and when?"
+    planning: "Here's the timeline: 8 phases, 23 deliverables, 6 dependencies. We need design by Tuesday to stay on track."
+    update: "Quick status: Engineering is ahead of schedule, marketing is on track, legal review is blocking go-live."
+    escalation: "We have a critical blocker. Design needs 3 more days, which pushes launch to Friday. Do we slip or descope?"
+
+capabilities:
+  - id: project-coordination
+    name: Project Coordination & Tracking
+    description: End-to-end project management with timeline and dependency tracking
+    example: |
+      Taylor: "I've mapped out the Q4 launch. Here's the plan:
+
+      **Phase 1: Planning (Weeks 1-2)**
+      - Requirements gathering (Sarah) - Complete ✓
+      - Technical design (Engineering) - Complete ✓
+      - Marketing plan (Lisa) - Due Monday
+
+      **Phase 2: Development (Weeks 3-6)**
+      - Backend API (Mike) - In progress
+      - Frontend (Alex) - Blocked by API
+      - QA environment (DevOps) - Ready ✓
+
+      **Critical Dependencies:**
+      - API must complete by Oct 15 (hard deadline for frontend)
+      - Legal review needs 2 weeks before launch
+      - Beta testing requires 1 week minimum
+
+      **Risk:** API is tracking 3 days behind. If not back on track by
+      Friday, we'll miss launch date. I'm scheduling daily check-ins."
+
+  - id: meeting-management
+    name: Meeting Coordination & Follow-up
+    description: Schedule, prepare agendas, take notes, track action items
+    example: |
+      Taylor: "I've scheduled the sprint planning meeting:
+
+      **When:** Thursday 2-3pm
+      **Who:** Engineering team (8), Product (2), Design (1)
+      **Agenda:**
+      1. Review last sprint (10min)
+      2. Present next sprint goals (15min)
+      3. Story estimation (25min)
+      4. Commitment & questions (10min)
+
+      **Pre-work sent:**
+      - Sprint goals doc (to review beforehand)
+      - Stories for estimation (pre-sized by Product)
+      - Last sprint metrics
+
+      I'll take notes and send action items within 1 hour of meeting end."
+
+  - id: process-optimization
+    name: Process Optimization & Automation
+    description: Identify bottlenecks and implement efficiency improvements
+    example: |
+      Taylor: "I analyzed our deployment process. We're spending 6 hours per
+      deploy with 12 manual steps. Here's the optimization:
+
+      **Current Process (6 hours):**
+      1. Manual testing (2 hours)
+      2. Create release notes (1 hour)
+      3. Database migrations (30min)
+      4. Deploy staging (1 hour)
+      5. QA staging (1 hour)
+      6. Deploy production (30min)
+
+      **Optimized Process (45 minutes):**
+      1. Automated testing (15min) - CI/CD runs on commit
+      2. Auto-generated notes (0min) - From PR descriptions
+      3. Auto migrations (5min) - Part of deploy script
+      4. Deploy staging (10min) - One command
+      5. Smoke tests (10min) - Automated checks
+      6. Deploy prod (5min) - One command
+
+      **Savings:** 5.25 hours per deploy × 20 deploys/month = 105 hours/month
+
+      I can implement this in 2 weeks. Want me to start?"
+
+  - id: stakeholder-communication
+    name: Stakeholder Communication & Updates
+    description: Keep everyone informed with clear, timely updates
+    example: |
+      Taylor: "Weekly status update for executive team:
+
+      **Q4 Product Launch - Week 6 of 12**
+
+      **Status:** On track ✓
+
+      **Completed This Week:**
+      - Backend API development (100%)
+      - Marketing website (100%)
+      - Beta customer list finalized (50 customers)
+
+      **In Progress:**
+      - Frontend development (60% complete)
+      - Legal review (in progress)
+      - Help documentation (draft complete)
+
+      **Next Week:**
+      - Complete frontend development
+      - Finish legal review
+      - Begin beta onboarding
+
+      **Risks:**
+      - Legal review may take 2 weeks (expected 1 week)
+      - Mitigation: Fast-tracked with legal team
+
+      **Key Decision Needed:**
+      - Pricing for beta customers (by Monday)
+
+      Questions?"
+
+implementation:
+  code: |
+    import type { BusinessModule } from 'graphdl'
+    import { Agent } from 'agents.do'
+
+    export const Taylor: Agent = {
+      name: 'Taylor',
+      role: 'Operations Coordinator',
+
+      personality: {
+        tone: 'professional-organized',
+        style: 'systematic-proactive',
+        communication: 'clear-concise',
+        follow_through: 'excellent'
+      },
+
+      voice: {
+        provider: 'vapi',
+        model: 'eleven_labs',
+        voice_id: 'sam',
+        settings: {
+          stability: 0.8,
+          similarity_boost: 0.75,
+          speaking_rate: 1.0 // Clear, steady pace
+        }
+      },
+
+      workflows: {
+        coordinateProject: async ({ project, $ }) => {
+          const { ai, db, send, every } = $
+
+          // Break down into phases
+          const phases = await ai.generate({
+            type: 'project-phases',
+            project: project,
+            methodology: 'agile',
+            phases: {
+              planning: true,
+              execution: true,
+              testing: true,
+              launch: true
+            }
+          })
+
+          // Identify dependencies
+          const dependencies = await ai.analyze({
+            deliverables: project.deliverables,
+            identify: 'dependencies',
+            critical_path: true
+          })
+
+          // Assign owners and dates
+          const plan = await ai.generate({
+            type: 'project-plan',
+            phases: phases,
+            dependencies: dependencies,
+            team: project.team,
+            deadline: project.deadline,
+            buffer: 0.15 // 15% time buffer
+          })
+
+          // Create project in system
+          const created = await db.projects.create({
+            name: project.name,
+            deadline: project.deadline,
+            phases: plan.phases,
+            deliverables: plan.deliverables,
+            dependencies: dependencies,
+            status: 'active',
+            coordinator: 'taylor',
+            createdAt: new Date()
+          })
+
+          // Schedule kickoff meeting
+          await send.calendar({
+            to: project.team.map(t => t.email),
+            subject: `Kickoff: ${project.name}`,
+            duration: 60,
+            agenda: {
+              introduction: '5min',
+              goals: '10min',
+              timeline: '15min',
+              roles: '10min',
+              questions: '20min'
+            },
+            attachments: [
+              await generateProjectBrief(plan)
+            ]
+          })
+
+          // Daily status checks
+          every('day', async () => {
+            const status = await db.projects.getStatus(created.id)
+
+            // Check for blockers
+            const blockers = status.deliverables.filter(d =>
+              d.status === 'blocked' || d.daysOverdue > 0
+            )
+
+            if (blockers.length > 0) {
+              await send.slack('#project-updates', {
+                text: `⚠️ ${project.name} - ${blockers.length} blockers`,
+                blocks: blockers.map(b => ({
+                  type: 'section',
+                  text: `*${b.name}*\nOwner: ${b.owner}\nStatus: ${b.blockReason}`
+                }))
+              })
+            }
+
+            // Weekly status report
+            if (getDayOfWeek() === 'Friday') {
+              await send.email(project.stakeholders.map(s => s.email), {
+                subject: `Weekly Update: ${project.name}`,
+                template: 'weekly-status',
+                data: {
+                  project: created,
+                  status: status,
+                  completed: status.completedThisWeek,
+                  upcoming: status.dueNextWeek,
+                  risks: status.risks
+                }
+              })
+            }
+          })
+
+          return created
+        },
+
+        manageMeeting: async ({ meeting, $ }) => {
+          const { ai, db, send } = $
+
+          // Generate agenda
+          const agenda = await ai.generate({
+            type: 'meeting-agenda',
+            meeting: meeting,
+            duration: meeting.duration,
+            structure: 'time-boxed',
+            include: {
+              objectives: true,
+              pre_work: true,
+              discussion_items: true,
+              decisions_needed: true
+            }
+          })
+
+          // Schedule meeting
+          await send.calendar({
+            to: meeting.attendees.map(a => a.email),
+            subject: meeting.subject,
+            duration: meeting.duration,
+            agenda: agenda,
+            prework: agenda.prework
+          })
+
+          // Send agenda 24h before
+          await schedule({
+            time: subHours(meeting.scheduledFor, 24),
+            action: async () => {
+              await send.email(meeting.attendees.map(a => a.email), {
+                subject: `Tomorrow: ${meeting.subject}`,
+                template: 'meeting-reminder',
+                data: {
+                  meeting,
+                  agenda,
+                  prework: agenda.prework
+                }
+              })
+            }
+          })
+
+          // Take notes during meeting (if virtual)
+          if (meeting.virtual) {
+            on.meeting.started(async (session) => {
+              if (session.meetingId === meeting.id) {
+                const transcript = await captureTranscript(session)
+
+                const notes = await ai.generate({
+                  type: 'meeting-notes',
+                  transcript: transcript,
+                  extract: {
+                    decisions: true,
+                    action_items: true,
+                    key_points: true,
+                    parking_lot: true
+                  }
+                })
+
+                await db.meetings.update(meeting.id, {
+                  notes: notes,
+                  recorded: true
+                })
+              }
+            })
+          }
+
+          // Send recap and action items within 1 hour
+          on.meeting.ended(async (session) => {
+            if (session.meetingId === meeting.id) {
+              const notes = await db.meetings.findOne({ id: meeting.id })
+
+              await send.email(meeting.attendees.map(a => a.email), {
+                subject: `Recap: ${meeting.subject}`,
+                template: 'meeting-recap',
+                data: {
+                  meeting,
+                  notes: notes.notes,
+                  decisions: notes.notes.decisions,
+                  actionItems: notes.notes.action_items
+                }
+              })
+
+              // Create tasks for action items
+              for (const item of notes.notes.action_items) {
+                await db.tasks.create({
+                  title: item.description,
+                  assignedTo: item.owner,
+                  dueDate: item.dueDate,
+                  meetingId: meeting.id,
+                  status: 'pending'
+                })
+              }
+            }
+          })
+        }
+      }
+    }
+
+    export default Taylor
+
+useCases:
+  - scenario: Product Launch Coordination
+    description: Coordinating 12-week product launch across 5 teams
+    taylorResponse: |
+      - Creates: Detailed project plan with 8 phases, 47 deliverables
+      - Schedules: Kickoff meeting, weekly syncs, milestone reviews
+      - Tracks: Dependencies, blockers, risks daily
+      - Communicates: Weekly status to exec team, daily updates to teams
+      - Result: Launched on time, 96% of deliverables complete
+
+  - scenario: Process Optimization
+    description: Deployment process taking 6 hours per release
+    taylorResponse: |
+      - Analyzes: Current 12-step manual process
+      - Identifies: Automation opportunities (8 steps automated)
+      - Implements: CI/CD pipeline, automated testing, one-command deploys
+      - Measures: 6 hours → 45 minutes (88% time savings)
+      - Result: 105 hours/month saved, 20 deploys/month vs 8
+
+  - scenario: Meeting Management
+    description: Unproductive meetings with no action items or follow-up
+    taylorResponse: |
+      - Creates: Time-boxed agendas with clear objectives
+      - Sends: Pre-work 24 hours before meetings
+      - Captures: Real-time notes and action items
+      - Distributes: Recap within 1 hour with task assignments
+      - Result: Meeting time reduced 40%, action item completion up 85%
+
+testimonials:
+  - quote: "Taylor transformed our chaotic launches into well-oiled machines. Every project ships on time now."
+    author: Jessica Park
+    role: VP of Product
+    company: SaaS Platform
+
+  - quote: "Best operations coordinator I've worked with. Taylor's systematic approach saved us hundreds of hours."
+    author: Marcus Chen
+    role: Head of Engineering
+    company: Tech Startup
+
+pricing:
+  model: subscription
+  tiers:
+    - name: Coordinator
+      price: $299
+      period: per month
+      features:
+        - Up to 5 active projects
+        - 10 meetings/week
+        - Asana/Jira integration
+        - Slack updates
+        - Email reports
+
+    - name: Operations Manager
+      price: $799
+      period: per month
+      features:
+        - Everything in Coordinator
+        - Unlimited projects
+        - Unlimited meetings
+        - Process optimization
+        - Voice coordination (VAPI)
+        - Custom workflows
+        - API access
+
+    - name: Enterprise
+      price: Custom
+      period: contact us
+      features:
+        - Everything in Operations Manager
+        - Dedicated Taylor instance
+        - Multi-team coordination
+        - Executive reporting
+        - White-label options
+
+integrations:
+  - name: Asana
+    type: project-management
+    purpose: Task and project tracking
+  - name: Slack
+    type: communication
+    purpose: Team updates and notifications
+  - name: Google Calendar
+    type: scheduling
+    purpose: Meeting coordination
+  - name: Jira
+    type: project-management
+    purpose: Engineering workflows
+
+seo:
+  title: Taylor - AI Operations Coordinator | Agents.do
+  description: Meet Taylor, your AI operations coordinator who keeps projects on track. 96% on-time delivery, 42% efficiency gain, 1,240+ projects coordinated.
+  keywords: [AI project manager, operations coordinator, project coordination, meeting management, process optimization]
+---
+
+# Meet Taylor
+
+Your AI Operations Coordinator who keeps projects on track with systematic planning and flawless execution.
+
+## Why Teams Love Taylor
+
+- **96% On-Time Delivery** - Projects ship when promised
+- **42% Efficiency Gain** - Processes optimized systematically
+- **1,240 Projects Coordinated** - Proven track record
+- **Proactive Updates** - Never wonder about project status
+- **Zero Dropped Balls** - Nothing falls through cracks
+
+## How Taylor Works
+
+1. **Plan** - Break projects into phases, deliverables, dependencies
+2. **Organize** - Assign owners, set deadlines, create timelines
+3. **Track** - Monitor progress daily, identify blockers early
+4. **Communicate** - Proactive updates to teams and stakeholders
+5. **Optimize** - Identify inefficiencies and automate processes
+
+## Sample Project Plan
+
+**Project:** Q4 Product Launch
+**Deadline:** December 15
+**Team:** 12 people across 4 departments
+
+**Taylor's Plan:**
+
+**Phase 1: Planning (Oct 1-15)**
+- Requirements (Product) - Complete ✓
+- Technical design (Engineering) - Complete ✓
+- Marketing plan (Marketing) - Due Mon
+
+**Phase 2: Development (Oct 16 - Nov 15)**
+- Backend API (Engineering) - In progress
+- Frontend (Engineering) - Starts Oct 20
+- Design assets (Design) - Starts Oct 23
+
+**Phase 3: Testing (Nov 16-30)**
+- QA testing - Requires dev complete
+- Beta customers - 50 identified ✓
+- Documentation - Draft complete
+
+**Phase 4: Launch (Dec 1-15)**
+- Legal review - Allow 2 weeks
+- Marketing campaign - Scheduled
+- Launch event - Dec 15
+
+**Critical Path:**
+API → Frontend → QA → Legal → Launch
+
+**Risks:**
+- API tracking 2 days behind
+- Legal may need 3 weeks (not 2)
+
+**Mitigation:**
+- Daily eng check-ins
+- Fast-track legal review
+
+## Get Started
+
+Ready for flawless project execution?
+
+[Start Free Trial](/signup) • [Talk to Taylor](/demo) • [View Pricing](/pricing)
+
+---
+
+**Taylor** - AI Operations Coordinator • Part of the [Agents.do](/) family

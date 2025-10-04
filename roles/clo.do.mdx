@@ -1,0 +1,1115 @@
+---
+hero:
+  headline: Your AI Chief Legal Officer
+  subheadline: Streamline legal operations with AI-powered contract analysis, compliance monitoring, and risk management
+  codeExample:
+    language: typescript
+    code: |
+      import { CLO } from 'clo.do'
+
+      const clo = new CLO({
+        jurisdiction: ['us-federal', 'california', 'new-york'],
+        specialties: ['contracts', 'compliance', 'ip', 'employment'],
+        integrations: ['docusign', 'ironclad', 'salesforce'],
+        policies: {
+          contractReview: 'ai-powered',
+          complianceMonitoring: 'continuous',
+          riskAssessment: 'automated'
+        }
+      })
+
+      // Review contracts automatically
+      const review = await clo.contracts.review({
+        document: contractPDF,
+        type: 'vendor-agreement'
+      })
+
+      // Monitor compliance
+      const compliance = await clo.compliance.monitor()
+      console.log(`GDPR: ${compliance.gdpr.status}`)
+      console.log(`CCPA: ${compliance.ccpa.status}`)
+
+      // Assess legal risks
+      const risks = await clo.risk.assess()
+      console.log(`High risks: ${risks.high.length}`)
+  primaryCTA:
+    text: Start Free Trial
+    href: /signup
+  secondaryCTA:
+    text: Book Demo
+    href: /demo
+  badges:
+    - 95% review accuracy
+    - 80% time savings
+    - 100% compliance coverage
+
+capabilities:
+  - id: contract-analysis
+    name: AI Contract Analysis & Review
+    description: Automated contract review with risk identification, clause extraction, and redlining recommendations.
+    icon: 📄
+    metrics:
+      - label: Review Accuracy
+        value: 95%
+      - label: Time Savings
+        value: 80%
+      - label: Risk Detection
+        value: 98%
+    codeExample:
+      language: typescript
+      code: |
+        // Automated contract review
+        on.contract.uploaded(async (contract) => {
+          // Extract text and metadata
+          const extracted = await api.post('https://ocr.do/extract', {
+            document: contract.fileUrl,
+            extractTables: true,
+            extractSignatures: true
+          })
+
+          // AI-powered contract analysis
+          const analysis = await ai.analyze({
+            document: extracted.text,
+            type: contract.type, // vendor, customer, employment, nda
+            jurisdiction: contract.jurisdiction,
+            analyze: {
+              key_terms: true,
+              obligations: true,
+              payment_terms: true,
+              termination_clauses: true,
+              liability_caps: true,
+              indemnification: true,
+              ip_rights: true,
+              confidentiality: true,
+              dispute_resolution: true,
+              regulatory_compliance: true
+            }
+          })
+
+          // Identify risks and issues
+          const risks = await ai.evaluate({
+            contract: extracted.text,
+            analysis: analysis,
+            playbook: await db.contractPlaybooks.findOne({ type: contract.type }),
+            precedents: await db.contracts.findSimilar({
+              type: contract.type,
+              approved: true
+            }),
+            identify: {
+              unfavorable_terms: true,
+              missing_clauses: true,
+              ambiguous_language: true,
+              regulatory_issues: true,
+              non_standard_terms: true
+            }
+          })
+
+          // Generate redline recommendations
+          const redlines = await ai.generate({
+            type: 'contract-redlines',
+            contract: extracted.text,
+            risks: risks,
+            standards: await db.contractStandards.findOne({ type: contract.type }),
+            templates: await db.clauseLibrary.findAll({ category: contract.type })
+          })
+
+          // Store analysis
+          const review = await db.contractReviews.create({
+            contractId: contract.id,
+            analysis: analysis,
+            risks: risks,
+            riskScore: risks.overall_score,
+            redlines: redlines,
+            status: risks.high_risks.length > 0 ? 'needs-revision' : 'approved',
+            reviewedBy: 'CLO Agent',
+            reviewedAt: new Date()
+          })
+
+          // Alert on high-risk contracts
+          if (risks.high_risks.length > 0) {
+            await send.slack('#legal', {
+              text: `⚠️ High-risk contract requires review`,
+              blocks: [
+                {
+                  type: 'section',
+                  text: `*${contract.counterparty}* - ${contract.type}`
+                },
+                {
+                  type: 'section',
+                  text: `**High-risk issues:**\n${risks.high_risks.map(r => `• ${r.description}`).join('\n')}`
+                },
+                {
+                  type: 'section',
+                  text: `**Recommended changes:**\n${redlines.critical.map(r => `• ${r.recommendation}`).join('\n')}`
+                },
+                {
+                  type: 'actions',
+                  elements: [
+                    {
+                      type: 'button',
+                      text: 'View Analysis',
+                      url: `https://legal.company.com/contracts/${contract.id}`
+                    },
+                    {
+                      type: 'button',
+                      text: 'Apply Redlines',
+                      value: redlines.id
+                    }
+                  ]
+                }
+              ]
+            })
+
+            await send.email(contract.assignedTo || 'legal@company.com', {
+              subject: `Contract requires review: ${contract.counterparty}`,
+              template: 'contract-review',
+              data: {
+                contract,
+                review,
+                risks: risks.high_risks,
+                redlines: redlines.critical
+              }
+            })
+          }
+
+          // Auto-approve low-risk standard contracts
+          if (risks.overall_score < 0.3 && contract.type === 'nda' && contract.value < 50000) {
+            await db.contracts.update(contract.id, {
+              status: 'auto-approved',
+              approvedBy: 'CLO Agent',
+              approvedAt: new Date()
+            })
+
+            await api.post('https://docusign.com/api/send', {
+              contractId: contract.id,
+              recipients: [contract.counterpartyEmail]
+            })
+          }
+
+          return review
+        })
+
+  - id: legal-research
+    name: AI Legal Research & Case Law Analysis
+    description: Automated legal research with case law analysis, precedent identification, and citation verification.
+    icon: 🔍
+    metrics:
+      - label: Research Speed
+        value: 95% faster
+      - label: Case Law Coverage
+        value: 100%
+      - label: Citation Accuracy
+        value: 99%
+    codeExample:
+      language: typescript
+      code: |
+        // AI-powered legal research
+        on.research.requested(async (request) => {
+          // Multi-source legal research
+          const research = await ai.research({
+            query: request.question,
+            jurisdiction: request.jurisdiction,
+            sources: {
+              case_law: true, // Federal and state cases
+              statutes: true, // Legislation and regulations
+              secondary: true, // Law reviews, treatises
+              administrative: true // Agency decisions, opinions
+            },
+            depth: request.depth || 'comprehensive',
+            timeframe: request.timeframe || 'last-20-years'
+          })
+
+          // Analyze relevant cases
+          const cases = await Promise.all(
+            research.cases.map(async (c) => {
+              const analysis = await ai.analyze({
+                case: c,
+                analyze: {
+                  facts: true,
+                  holding: true,
+                  reasoning: true,
+                  dissent: true,
+                  precedential_value: true,
+                  distinguishing_factors: true,
+                  subsequent_history: true
+                }
+              })
+
+              return {
+                ...c,
+                analysis,
+                relevance: await ai.score({
+                  case: c,
+                  query: request.question,
+                  jurisdiction: request.jurisdiction
+                })
+              }
+            })
+          )
+
+          // Extract key legal principles
+          const principles = await ai.extract({
+            cases: cases.filter(c => c.relevance > 0.7),
+            extract: 'legal-principles',
+            synthesize: true
+          })
+
+          // Generate research memo
+          const memo = await ai.generate({
+            type: 'legal-memorandum',
+            question: request.question,
+            research: research,
+            cases: cases.sort((a, b) => b.relevance - a.relevance).slice(0, 10),
+            principles: principles,
+            jurisdiction: request.jurisdiction,
+            format: {
+              executive_summary: true,
+              issue_statement: true,
+              brief_answer: true,
+              facts: true,
+              discussion: true,
+              conclusion: true,
+              citations: 'bluebook'
+            }
+          })
+
+          // Store research
+          const saved = await db.legalResearch.create({
+            question: request.question,
+            jurisdiction: request.jurisdiction,
+            research: research,
+            cases: cases,
+            principles: principles,
+            memo: memo,
+            requestedBy: request.userId,
+            completedAt: new Date()
+          })
+
+          // Send memo
+          await send.email(request.userEmail, {
+            subject: `Legal Research: ${request.question}`,
+            template: 'research-memo',
+            data: { memo },
+            attachments: [
+              {
+                filename: 'research-memo.pdf',
+                content: await generatePDF(memo)
+              },
+              {
+                filename: 'case-summaries.pdf',
+                content: await generatePDF(cases)
+              }
+            ]
+          })
+
+          // Add to knowledge base
+          await db.legalKnowledge.create({
+            topic: request.topic,
+            question: request.question,
+            answer: memo.brief_answer,
+            cases: cases.map(c => c.citation),
+            jurisdiction: request.jurisdiction,
+            lastUpdated: new Date()
+          })
+
+          return saved
+        })
+
+  - id: compliance-monitoring
+    name: Continuous Compliance Monitoring
+    description: Automated monitoring of regulatory compliance with alerts for new regulations and deadline tracking.
+    icon: ✅
+    metrics:
+      - label: Compliance Coverage
+        value: 100%
+      - label: Deadline Adherence
+        value: 100%
+      - label: Regulatory Updates
+        value: Real-time
+    codeExample:
+      language: typescript
+      code: |
+        // Continuous compliance monitoring
+        every('day', async () => {
+          const regulations = await db.regulations.findAll({
+            applicable: true,
+            jurisdiction: ['us-federal', 'california', 'new-york', 'eu']
+          })
+
+          for (const regulation of regulations) {
+            // Check compliance status
+            const status = await ai.evaluate({
+              regulation: regulation,
+              requirements: regulation.requirements,
+              evidence: {
+                policies: await db.policies.findAll({ regulation: regulation.id }),
+                controls: await db.controls.findAll({ regulation: regulation.id }),
+                procedures: await db.procedures.findAll({ regulation: regulation.id }),
+                training: await db.training.findAll({ topic: regulation.topic }),
+                audits: await db.audits.findAll({ regulation: regulation.id, period: 'last-year' })
+              }
+            })
+
+            // Store compliance status
+            await db.complianceStatus.create({
+              regulationId: regulation.id,
+              compliant: status.compliant,
+              gaps: status.gaps,
+              recommendations: status.recommendations,
+              checkedAt: new Date()
+            })
+
+            // Alert on non-compliance
+            if (!status.compliant) {
+              await send.slack('#legal', {
+                text: `⚠️ Compliance gap: ${regulation.name}`,
+                blocks: [
+                  {
+                    type: 'section',
+                    text: `*${regulation.name}* (${regulation.jurisdiction})`
+                  },
+                  {
+                    type: 'section',
+                    text: `**Gaps:**\n${status.gaps.map(g => `• ${g.description}`).join('\n')}`
+                  },
+                  {
+                    type: 'section',
+                    text: `**Recommendations:**\n${status.recommendations.map(r => `• ${r.action}`).join('\n')}`
+                  }
+                ]
+              })
+
+              // Create remediation tasks
+              for (const gap of status.gaps) {
+                await db.tasks.create({
+                  type: 'compliance-remediation',
+                  regulationId: regulation.id,
+                  description: gap.description,
+                  recommendation: gap.recommendation,
+                  priority: gap.severity === 'critical' ? 'urgent' : 'high',
+                  dueDate: gap.deadline || addDays(new Date(), 30),
+                  assignedTo: regulation.owner
+                })
+              }
+            }
+          }
+
+          // Monitor for new regulations
+          const updates = await api.get('https://regulations.gov/api/updates', {
+            topics: ['privacy', 'employment', 'environmental', 'securities', 'tax'],
+            since: subDays(new Date(), 1)
+          })
+
+          for (const update of updates) {
+            // Analyze applicability
+            const applicable = await ai.evaluate({
+              regulation: update,
+              company: await db.company.get(),
+              analyze: {
+                applies: true,
+                impact: true,
+                deadline: true,
+                requirements: true
+              }
+            })
+
+            if (applicable.applies) {
+              await db.regulations.create({
+                name: update.title,
+                jurisdiction: update.jurisdiction,
+                effective_date: update.effectiveDate,
+                requirements: applicable.requirements,
+                impact: applicable.impact,
+                applicable: true,
+                added_at: new Date()
+              })
+
+              await send.email('legal@company.com', {
+                subject: `New Regulation: ${update.title}`,
+                template: 'new-regulation',
+                data: {
+                  regulation: update,
+                  analysis: applicable,
+                  deadline: update.effectiveDate
+                }
+              })
+            }
+          }
+        })
+
+  - id: risk-management
+    name: Legal Risk Assessment & Management
+    description: Automated risk identification, scoring, and mitigation tracking across all business activities.
+    icon: ⚖️
+    metrics:
+      - label: Risk Identification
+        value: 96%
+      - label: Incident Prevention
+        value: 78%
+      - label: Mitigation Tracking
+        value: 100%
+    codeExample:
+      language: typescript
+      code: |
+        // Continuous legal risk assessment
+        every('week', async () => {
+          // Identify legal risks across all business areas
+          const risks = await ai.analyze({
+            activities: {
+              contracts: await db.contracts.findAll({ status: 'active' }),
+              litigation: await db.litigation.findAll({ status: 'open' }),
+              compliance: await db.complianceStatus.findAll({ compliant: false }),
+              ip: await db.intellectualProperty.findAll(),
+              employment: await db.employees.findAll({ status: 'active' }),
+              regulatory: await db.regulations.findAll({ applicable: true })
+            },
+            identify: {
+              contractual_risks: true,
+              litigation_risks: true,
+              compliance_risks: true,
+              ip_risks: true,
+              employment_risks: true,
+              regulatory_risks: true,
+              reputational_risks: true
+            }
+          })
+
+          // Score and prioritize risks
+          const scored = await Promise.all(
+            risks.map(async (risk) => {
+              const score = await ai.score({
+                risk: risk,
+                factors: {
+                  likelihood: 0.4,
+                  impact: 0.4,
+                  velocity: 0.2
+                },
+                context: {
+                  industry: 'technology',
+                  size: 'mid-market',
+                  jurisdiction: ['us', 'eu']
+                }
+              })
+
+              return { ...risk, score }
+            })
+          )
+
+          // Generate mitigation strategies
+          const high_risks = scored.filter(r => r.score > 0.7)
+
+          for (const risk of high_risks) {
+            const mitigation = await ai.generate({
+              prompt: 'Create risk mitigation strategy',
+              risk: risk,
+              best_practices: await db.riskPlaybooks.findAll(),
+              precedents: await db.riskMitigations.findSimilar(risk)
+            })
+
+            // Store risk
+            const stored = await db.legalRisks.create({
+              category: risk.category,
+              description: risk.description,
+              likelihood: risk.likelihood,
+              impact: risk.impact,
+              score: risk.score,
+              mitigation: mitigation,
+              owner: risk.owner || 'legal@company.com',
+              status: 'identified',
+              identifiedAt: new Date()
+            })
+
+            // Create mitigation tasks
+            for (const action of mitigation.actions) {
+              await db.tasks.create({
+                type: 'risk-mitigation',
+                riskId: stored.id,
+                description: action.description,
+                priority: risk.score > 0.9 ? 'critical' : 'high',
+                dueDate: action.timeline,
+                assignedTo: action.responsible
+              })
+            }
+
+            // Alert stakeholders
+            await send.email([risk.owner, 'legal@company.com', 'ceo@company.com'], {
+              subject: `High Legal Risk Identified: ${risk.category}`,
+              template: 'risk-alert',
+              data: {
+                risk: stored,
+                mitigation: mitigation,
+                score: Math.round(risk.score * 100)
+              }
+            })
+          }
+
+          // Generate risk report
+          const report = {
+            date: new Date(),
+            total_risks: risks.length,
+            by_severity: {
+              critical: scored.filter(r => r.score > 0.9).length,
+              high: scored.filter(r => r.score > 0.7 && r.score <= 0.9).length,
+              medium: scored.filter(r => r.score > 0.4 && r.score <= 0.7).length,
+              low: scored.filter(r => r.score <= 0.4).length
+            },
+            by_category: groupBy(risks, 'category'),
+            trends: await analyzeTrends(scored),
+            top_risks: scored.sort((a, b) => b.score - a.score).slice(0, 10)
+          }
+
+          await send.email(['clo@company.com', 'ceo@company.com', 'board@company.com'], {
+            subject: 'Weekly Legal Risk Report',
+            template: 'risk-report',
+            data: report,
+            attachments: [
+              {
+                filename: 'risk-report.pdf',
+                content: await generatePDF(report)
+              }
+            ]
+          })
+        })
+
+  - id: ip-management
+    name: Intellectual Property Management
+    description: Track patents, trademarks, copyrights with automated filing reminders and infringement monitoring.
+    icon: 💡
+    metrics:
+      - label: Filing Compliance
+        value: 100%
+      - label: Infringement Detection
+        value: 94%
+      - label: Portfolio Optimization
+        value: 32%
+    codeExample:
+      language: typescript
+      code: |
+        // IP portfolio management
+        every('day', async () => {
+          const portfolio = await db.intellectualProperty.findAll()
+
+          for (const ip of portfolio) {
+            // Check maintenance deadlines
+            if (ip.type === 'patent') {
+              const nextDeadline = getNextMaintenanceFee(ip)
+
+              if (nextDeadline && getDaysBetween(new Date(), nextDeadline) < 90) {
+                await send.email('legal@company.com', {
+                  subject: `Patent maintenance fee due: ${ip.title}`,
+                  template: 'ip-deadline',
+                  data: {
+                    ip: ip,
+                    deadline: nextDeadline,
+                    fee: calculateMaintenanceFee(ip)
+                  }
+                })
+
+                await db.tasks.create({
+                  type: 'ip-maintenance',
+                  ipId: ip.id,
+                  description: `Pay maintenance fee for ${ip.patentNumber}`,
+                  dueDate: subDays(nextDeadline, 30),
+                  priority: 'high'
+                })
+              }
+            }
+
+            // Monitor for infringement
+            if (ip.type === 'trademark') {
+              const results = await api.post('https://trademark-monitor.com/api/search', {
+                mark: ip.mark,
+                classes: ip.classes,
+                jurisdiction: ip.jurisdiction
+              })
+
+              const potential = results.filter(r =>
+                r.similarity > 0.8 && r.applicationDate > ip.registrationDate
+              )
+
+              if (potential.length > 0) {
+                await send.slack('#legal', {
+                  text: `⚠️ Potential trademark infringement: ${ip.mark}`,
+                  blocks: [
+                    {
+                      type: 'section',
+                      text: `Found ${potential.length} similar marks`
+                    },
+                    {
+                      type: 'section',
+                      text: potential.map(p => `• ${p.mark} (${p.applicant})`).join('\n')
+                    }
+                  ]
+                })
+
+                for (const p of potential) {
+                  await db.ipThreats.create({
+                    ipId: ip.id,
+                    type: 'trademark-infringement',
+                    description: `Similar mark: ${p.mark}`,
+                    party: p.applicant,
+                    similarity: p.similarity,
+                    status: 'monitoring',
+                    identifiedAt: new Date()
+                  })
+                }
+              }
+            }
+          }
+
+          // Identify IP opportunities
+          const products = await db.products.findAll({ released: false })
+
+          for (const product of products) {
+            const analysis = await ai.analyze({
+              product: product,
+              identify: {
+                patentable_innovations: true,
+                trademarkable_brands: true,
+                copyrightable_content: true
+              }
+            })
+
+            if (analysis.opportunities.length > 0) {
+              await send.email('legal@company.com', {
+                subject: `IP opportunities: ${product.name}`,
+                template: 'ip-opportunities',
+                data: {
+                  product,
+                  opportunities: analysis.opportunities
+                }
+              })
+            }
+          }
+        })
+
+features:
+  - title: Contract Management
+    description: Centralized contract repository with version control, e-signature integration, and renewal tracking
+    icon: 📑
+  - title: Matter Management
+    description: Track litigation, investigations, and legal matters with document management and billing integration
+    icon: ⚖️
+  - title: Policy Library
+    description: Searchable policy library with version control, approval workflows, and distribution tracking
+    icon: 📚
+  - title: E-Signature Integration
+    description: Native integration with DocuSign, Adobe Sign, and HelloSign for streamlined execution
+    icon: ✍️
+  - title: Legal Analytics
+    description: Real-time dashboards for spend analysis, cycle time, risk exposure, and compliance status
+    icon: 📊
+  - title: Knowledge Base
+    description: Searchable legal knowledge base with precedents, templates, and research memos
+    icon: 🧠
+
+useCases:
+  - company: SaaS Platform
+    industry: Technology
+    challenge: Contract review bottleneck causing 3-4 week delays in deal closure and rising legal spend
+    solution: Implemented CLO.do for contract review automation, template management, and playbook-driven approvals
+    results:
+      - metric: Contract review time reduced from 3 weeks to 2 days (90% faster)
+      - metric: Legal spend down 42% through automation
+      - metric: Deal velocity improved 3.2x
+      - metric: Risk identification up 28%
+    testimonial:
+      quote: "CLO.do transformed our legal function from a bottleneck to an enabler. We review contracts in days instead of weeks, and the AI catches risks our team would have missed."
+      author: Jennifer Martinez
+      role: General Counsel
+      company: SaaS Platform
+
+  - company: Healthcare Provider Network
+    industry: Healthcare
+    challenge: Managing HIPAA compliance across 50 locations with manual audit processes and inconsistent documentation
+    solution: Deployed CLO.do for compliance monitoring, policy management, and audit automation
+    results:
+      - metric: 100% HIPAA compliance maintained
+      - metric: Audit preparation time reduced 85%
+      - metric: Policy distribution automated
+      - metric: Incident response time down 73%
+    testimonial:
+      quote: "The continuous compliance monitoring is a game-changer. We went from quarterly manual audits to real-time monitoring with automatic alerts. Sleep better at night."
+      author: Dr. Michael Chen
+      role: Chief Compliance Officer
+      company: Healthcare Provider Network
+
+  - company: FinTech Startup
+    industry: Financial Services
+    challenge: Rapid growth requiring compliance with SEC, FINRA, state regulations with 2-person legal team
+    solution: Implemented CLO.do for regulatory monitoring, contract automation, and risk management
+    results:
+      - metric: Compliance coverage expanded to 15 jurisdictions
+      - metric: Legal team productivity 4.8x
+      - metric: Contract cycle time reduced 78%
+      - metric: Zero regulatory violations
+    testimonial:
+      quote: "CLO.do made it possible to scale our legal function without hiring 10 more lawyers. The regulatory monitoring keeps us ahead of changes, and the contract automation is flawless."
+      author: Sarah Williams
+      role: Chief Legal Officer
+      company: FinTech Startup
+
+pricing:
+  tiers:
+    - name: Starter
+      price: $699
+      period: per month
+      description: For small legal teams managing foundational operations
+      features:
+        - Up to 100 contracts/year
+        - 3 legal team members
+        - Basic contract review
+        - Compliance monitoring (5 frameworks)
+        - Template library
+        - E-signature integration
+        - Email support
+        - 99.5% uptime SLA
+      cta:
+        text: Start Free Trial
+        href: /signup?plan=starter
+
+    - name: Professional
+      price: $2,499
+      period: per month
+      description: For growing legal departments with complex needs
+      popular: true
+      features:
+        - Up to 1,000 contracts/year
+        - Unlimited legal team members
+        - Advanced contract analysis
+        - Compliance monitoring (all frameworks)
+        - Legal research & case law
+        - Risk management
+        - IP portfolio management
+        - Matter management
+        - All integrations
+        - Priority support
+        - 99.9% uptime SLA
+        - Dedicated legal advisor
+      cta:
+        text: Start Free Trial
+        href: /signup?plan=professional
+
+    - name: Enterprise
+      price: Custom
+      period: contact us
+      description: For large legal departments and law firms
+      features:
+        - Unlimited contracts
+        - Unlimited users
+        - Custom AI models
+        - Multi-entity management
+        - Advanced analytics
+        - API access + webhooks
+        - Custom integrations
+        - White-label options
+        - On-premise deployment
+        - 24/7 legal hotline
+        - 99.95% uptime SLA
+        - Dedicated technical team
+      cta:
+        text: Contact Sales
+        href: /contact-sales
+
+integrations:
+  categories:
+    - name: Contract Management
+      description: Sync with contract lifecycle management platforms
+      integrations:
+        - name: Ironclad
+          logo: /logos/ironclad.svg
+          docs: /integrations/ironclad
+        - name: Agiloft
+          logo: /logos/agiloft.svg
+          docs: /integrations/agiloft
+        - name: ContractWorks
+          logo: /logos/contractworks.svg
+          docs: /integrations/contractworks
+        - name: Concord
+          logo: /logos/concord.svg
+          docs: /integrations/concord
+
+    - name: E-Signature
+      description: Integrate with electronic signature platforms
+      integrations:
+        - name: DocuSign
+          logo: /logos/docusign.svg
+          docs: /integrations/docusign
+        - name: Adobe Sign
+          logo: /logos/adobe-sign.svg
+          docs: /integrations/adobe-sign
+        - name: HelloSign
+          logo: /logos/hellosign.svg
+          docs: /integrations/hellosign
+        - name: PandaDoc
+          logo: /logos/pandadoc.svg
+          docs: /integrations/pandadoc
+
+    - name: Legal Research
+      description: Connect with legal research databases
+      integrations:
+        - name: Westlaw
+          logo: /logos/westlaw.svg
+          docs: /integrations/westlaw
+        - name: LexisNexis
+          logo: /logos/lexisnexis.svg
+          docs: /integrations/lexisnexis
+        - name: Fastcase
+          logo: /logos/fastcase.svg
+          docs: /integrations/fastcase
+        - name: Casetext
+          logo: /logos/casetext.svg
+          docs: /integrations/casetext
+
+    - name: CRM & Ticketing
+      description: Integrate with business systems
+      integrations:
+        - name: Salesforce
+          logo: /logos/salesforce.svg
+          docs: /integrations/salesforce
+        - name: Jira
+          logo: /logos/jira.svg
+          docs: /integrations/jira
+        - name: ServiceNow
+          logo: /logos/servicenow.svg
+          docs: /integrations/servicenow
+        - name: Zendesk
+          logo: /logos/zendesk.svg
+          docs: /integrations/zendesk
+
+routes:
+  collections:
+    - name: capabilities
+      pattern: /capabilities/[capability]/readme.mdx
+      data:
+        - capability: contract-analysis
+          title: AI Contract Analysis & Review
+          description: Automated contract review with risk identification
+        - capability: legal-research
+          title: AI Legal Research & Case Law Analysis
+          description: Automated legal research with precedent identification
+        - capability: compliance-monitoring
+          title: Continuous Compliance Monitoring
+          description: Automated regulatory compliance monitoring
+        - capability: risk-management
+          title: Legal Risk Assessment & Management
+          description: Automated risk identification and mitigation
+        - capability: ip-management
+          title: Intellectual Property Management
+          description: Track IP portfolio with infringement monitoring
+
+    - name: integrations
+      pattern: /integrations/[integration]/readme.mdx
+      data:
+        - integration: ironclad
+          title: Ironclad Integration
+          category: Contract Management
+        - integration: docusign
+          title: DocuSign Integration
+          category: E-Signature
+        - integration: westlaw
+          title: Westlaw Integration
+          category: Legal Research
+        - integration: salesforce
+          title: Salesforce Integration
+          category: CRM & Ticketing
+
+seo:
+  title: CLO.do - Your AI Chief Legal Officer for Legal Operations
+  description: Streamline legal ops with AI-powered contract analysis, compliance monitoring, legal research, and risk management. 95% review accuracy, 80% time savings.
+  keywords:
+    - AI Chief Legal Officer
+    - Legal automation
+    - Contract analysis
+    - Contract review software
+    - Compliance monitoring
+    - Legal research
+    - Risk management
+    - IP management
+    - Legal operations
+    - Legal tech
+
+analytics:
+  events:
+    - name: clo_demo_requested
+      description: User requested a demo
+    - name: clo_trial_started
+      description: User started free trial
+    - name: clo_capability_viewed
+      description: User viewed capability details
+    - name: clo_integration_explored
+      description: User explored integration documentation
+---
+
+# Your AI Chief Legal Officer
+
+**CLO.do** is your AI-powered legal leader, streamlining legal operations through intelligent contract analysis, continuous compliance monitoring, automated legal research, and proactive risk management. Achieve 95% review accuracy, 80% time savings, and 100% compliance coverage.
+
+## Why CLO.do?
+
+Legal teams are overwhelmed:
+- **Contract bottlenecks** delay deals by weeks and cost revenue
+- **Manual compliance** can't scale across multiple jurisdictions
+- **Legal research** takes hours of billable time
+- **Risk identification** is reactive instead of proactive
+- **IP management** misses deadlines and infringements
+
+CLO.do solves these challenges with AI that reviews contracts in minutes, monitors compliance 24/7, conducts research instantly, and identifies risks before they materialize.
+
+## Key Capabilities
+
+### 📄 AI Contract Analysis & Review
+Automated contract review with risk identification, clause extraction, and redlining recommendations. Review contracts 80% faster with 95% accuracy.
+
+### 🔍 AI Legal Research & Case Law Analysis
+Automated legal research across case law, statutes, and regulations with precedent identification. Complete research 95% faster with 99% citation accuracy.
+
+### ✅ Continuous Compliance Monitoring
+Automated monitoring of regulatory compliance across all jurisdictions with real-time alerts for new regulations and deadline tracking. Achieve 100% compliance coverage.
+
+### ⚖️ Legal Risk Assessment & Management
+Automated risk identification, scoring, and mitigation tracking. Identify 96% of legal risks and prevent 78% of incidents.
+
+### 💡 Intellectual Property Management
+Track patents, trademarks, copyrights with automated filing reminders and 94% infringement detection rate.
+
+## Real-World Results
+
+- **SaaS Platform**: 90% faster contract review, 42% lower legal spend, 3.2x deal velocity
+- **Healthcare Provider**: 100% HIPAA compliance maintained, 85% faster audits, 73% faster incident response
+- **FinTech Startup**: 15 jurisdictions covered, 4.8x team productivity, zero regulatory violations
+
+## How It Works
+
+CLO.do becomes your AI legal department across all functions:
+
+1. **Review** - AI analyzes contracts for risks, missing clauses, and unfavorable terms
+2. **Research** - Automated legal research with case law analysis and citation verification
+3. **Monitor** - Continuous compliance monitoring across all applicable regulations
+4. **Assess** - Proactive risk identification and scoring with mitigation strategies
+5. **Protect** - IP portfolio management with infringement detection and deadline tracking
+6. **Manage** - Matter management, policy library, and legal knowledge base
+
+## Implementation
+
+```typescript
+import type { BusinessModule } from 'graphdl'
+
+export const CLOAgent: BusinessModule = $ => {
+  const { db, ai, on, send, every, api } = $
+
+  // Contract review
+  on.contract.uploaded(async (contract) => {
+    const analysis = await ai.analyze({
+      document: contract.text,
+      type: contract.type,
+      identify: ['risks', 'obligations', 'termination']
+    })
+
+    const risks = await ai.evaluate({ contract, analysis })
+
+    if (risks.high_risks.length > 0) {
+      await send.slack('#legal', {
+        text: `⚠️ High-risk contract: ${contract.counterparty}`
+      })
+    }
+  })
+
+  // Compliance monitoring
+  every('day', async () => {
+    const regulations = await db.regulations.findAll()
+
+    for (const reg of regulations) {
+      const status = await ai.evaluate({
+        regulation: reg,
+        evidence: await gatherEvidence(reg)
+      })
+
+      if (!status.compliant) {
+        await send.email('legal@company.com', {
+          subject: `Compliance gap: ${reg.name}`
+        })
+      }
+    }
+  })
+
+  // Legal research
+  on.research.requested(async (request) => {
+    const research = await ai.research({
+      query: request.question,
+      sources: ['case_law', 'statutes', 'secondary']
+    })
+
+    const memo = await ai.generate({
+      type: 'legal-memorandum',
+      research
+    })
+
+    await send.email(request.userEmail, {
+      subject: `Research: ${request.question}`,
+      data: { memo }
+    })
+  })
+
+  // Risk assessment
+  every('week', async () => {
+    const risks = await ai.analyze({
+      activities: await gatherBusinessActivities(),
+      identify: 'legal-risks'
+    })
+
+    const high_risks = risks.filter(r => r.score > 0.7)
+
+    await send.email('legal@company.com', {
+      subject: 'Weekly Risk Report',
+      data: { risks: high_risks }
+    })
+  })
+
+  return {
+    name: 'CLO Agent',
+    version: '1.0.0',
+    capabilities: [
+      'contract-analysis',
+      'legal-research',
+      'compliance-monitoring',
+      'risk-management',
+      'ip-management'
+    ]
+  }
+}
+
+export default CLOAgent
+```
+
+## Get Started
+
+Transform your legal operations with AI. Start with a free 14-day trial:
+
+1. **Sign up** - No credit card required
+2. **Connect systems** - Contracts, e-signature, CRM
+3. **Upload contracts** - We'll analyze your existing agreements
+4. **Go live** - CLO.do starts reviewing and monitoring immediately
+
+[Start Free Trial](/signup) • [Book Demo](/demo) • [View Pricing](/pricing)
+
+## FAQs
+
+**Q: How accurate is the contract review?**
+A: Our AI achieves 95% accuracy on risk identification and 98% on clause extraction, comparable to experienced attorneys.
+
+**Q: Which jurisdictions do you support?**
+A: US federal, all 50 states, EU, UK, Canada, Australia, and 40+ other jurisdictions. We can add new jurisdictions on request.
+
+**Q: Can I customize contract playbooks?**
+A: Yes! Professional and Enterprise plans include custom playbooks, templates, and approval workflows.
+
+**Q: How does legal research compare to Westlaw/LexisNexis?**
+A: We integrate with both platforms and add AI analysis on top. Our AI reads cases, extracts principles, and generates memos automatically.
+
+**Q: Is my data secure?**
+A: Yes. We're SOC 2 Type II certified, encrypt all data in transit and at rest, and never train AI models on customer data.
+
+---
+
+**CLO.do** - AI-powered legal operations • [Pricing](/pricing) • [Integrations](/integrations) • [Docs](/docs) • [Support](mailto:support@clo.do)

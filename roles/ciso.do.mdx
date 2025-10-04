@@ -1,0 +1,1073 @@
+---
+hero:
+  headline: Your AI Chief Information Security Officer
+  subheadline: Protect your organization with AI-powered threat detection, compliance automation, and continuous security monitoring
+  codeExample:
+    language: typescript
+    code: |
+      import { CISO } from 'ciso.do'
+
+      const ciso = new CISO({
+        assets: ['web-apps', 'apis', 'databases', 'cloud-infrastructure'],
+        compliance: ['soc2', 'gdpr', 'hipaa', 'pci-dss'],
+        integrations: ['github', 'aws', 'datadog', 'okta'],
+        policies: {
+          vulnerabilityScanning: 'continuous',
+          threatDetection: 'real-time',
+          incidentResponse: 'automated',
+          accessControl: 'zero-trust'
+        }
+      })
+
+      // Continuous security monitoring
+      await ciso.monitor.all()
+
+      // Automated vulnerability scanning
+      const vulns = await ciso.scan.vulnerabilities()
+      console.log(`Critical: ${vulns.critical.length}`)
+      console.log(`High: ${vulns.high.length}`)
+
+      // Check compliance status
+      const compliance = await ciso.compliance.status()
+      console.log(`SOC 2: ${compliance.soc2.ready ? 'Ready' : 'Gaps found'}`)
+  primaryCTA:
+    text: Start Free Trial
+    href: /signup
+  secondaryCTA:
+    text: Book Demo
+    href: /demo
+  badges:
+    - SOC 2 certified
+    - 99.9% threat detection
+    - <4 hour MTTR
+
+capabilities:
+  - id: vulnerability-management
+    name: Continuous Vulnerability Management
+    description: Automated scanning, prioritization, and remediation of security vulnerabilities across your entire stack.
+    icon: 🔒
+    metrics:
+      - label: Vulnerability Detection
+        value: 99.8%
+      - label: Time to Remediation
+        value: 73% faster
+      - label: Critical CVE Coverage
+        value: 100%
+    codeExample:
+      language: typescript
+      code: |
+        // Continuous vulnerability scanning
+        every('hour', async () => {
+          // Scan all assets
+          const assets = await db.assets.findAll({ status: 'active' })
+
+          for (const asset of assets) {
+            // Multi-scanner approach for comprehensive coverage
+            const scans = await Promise.all([
+              api.post('https://snyk.io/api/test', { target: asset.url }),
+              api.post('https://aquasec.com/api/scan', { image: asset.image }),
+              api.post('https://veracode.com/api/scan', { app: asset.id })
+            ])
+
+            // Aggregate and deduplicate findings
+            const vulnerabilities = await ai.analyze({
+              scans: scans,
+              deduplicate: true,
+              enrich: {
+                cvss: true,
+                exploit_available: true,
+                patch_available: true,
+                business_impact: true
+              }
+            })
+
+            // AI-powered risk prioritization
+            const prioritized = await ai.prioritize({
+              vulnerabilities: vulnerabilities,
+              context: {
+                asset_criticality: asset.businessCriticality,
+                data_sensitivity: asset.dataSensitivity,
+                internet_facing: asset.isPublic,
+                authentication: asset.requiresAuth
+              },
+              factors: {
+                cvss_score: 0.3,
+                exploitability: 0.25,
+                asset_criticality: 0.25,
+                patch_availability: 0.2
+              }
+            })
+
+            // Store findings
+            await db.vulnerabilities.bulkCreate(
+              prioritized.map(v => ({
+                assetId: asset.id,
+                cve: v.cve,
+                severity: v.severity,
+                cvss: v.cvss,
+                riskScore: v.riskScore,
+                description: v.description,
+                remediation: v.remediation,
+                discoveredAt: new Date()
+              }))
+            )
+
+            // Auto-create tickets for critical/high
+            const critical = prioritized.filter(v => v.severity === 'critical' || v.severity === 'high')
+
+            for (const vuln of critical) {
+              // Create remediation ticket
+              const ticket = await api.post('https://jira.company.com/api/issue', {
+                project: 'SEC',
+                type: 'Security Vulnerability',
+                priority: vuln.severity === 'critical' ? 'Highest' : 'High',
+                summary: `${vuln.severity.toUpperCase()}: ${vuln.cve} in ${asset.name}`,
+                description: `
+                  **Vulnerability:** ${vuln.cve}
+                  **CVSS:** ${vuln.cvss}
+                  **Asset:** ${asset.name}
+                  **Risk Score:** ${vuln.riskScore}
+
+                  **Description:**
+                  ${vuln.description}
+
+                  **Remediation:**
+                  ${vuln.remediation}
+                `,
+                dueDate: addDays(new Date(), vuln.severity === 'critical' ? 1 : 7)
+              })
+
+              await db.vulnerabilities.update(vuln.id, {
+                ticketId: ticket.key,
+                assignedTo: asset.owner
+              })
+
+              // Alert security team
+              await send.slack('#security-alerts', {
+                text: `🚨 ${vuln.severity.toUpperCase()} vulnerability discovered`,
+                blocks: [
+                  {
+                    type: 'section',
+                    text: `*${vuln.cve}* in ${asset.name}`
+                  },
+                  {
+                    type: 'section',
+                    text: `CVSS: ${vuln.cvss} | Risk: ${vuln.riskScore}/100`
+                  },
+                  {
+                    type: 'actions',
+                    elements: [
+                      {
+                        type: 'button',
+                        text: 'View Ticket',
+                        url: `https://jira.company.com/browse/${ticket.key}`
+                      }
+                    ]
+                  }
+                ]
+              })
+            }
+          }
+        })
+
+  - id: threat-detection
+    name: Real-Time Threat Detection & Response
+    description: AI-powered SIEM with behavioral analytics, anomaly detection, and automated incident response.
+    icon: 🛡️
+    metrics:
+      - label: Threat Detection Rate
+        value: 99.9%
+      - label: False Positive Rate
+        value: <0.1%
+      - label: Mean Time to Response
+        value: <4 hours
+    codeExample:
+      language: typescript
+      code: |
+        // Real-time threat detection
+        on.log.received(async (log) => {
+          // AI-powered anomaly detection
+          const analysis = await ai.analyze({
+            log: log,
+            context: {
+              user: await db.users.findOne({ id: log.userId }),
+              historical: await db.logs.findAll({
+                userId: log.userId,
+                period: 'last-30-days'
+              }),
+              peers: await db.logs.findAll({
+                role: log.user?.role,
+                period: 'last-7-days'
+              })
+            },
+            detect: {
+              anomalies: true,
+              attack_patterns: true,
+              policy_violations: true,
+              lateral_movement: true,
+              data_exfiltration: true
+            }
+          })
+
+          // Store security event
+          if (analysis.suspicious || analysis.anomalies.length > 0) {
+            const event = await db.securityEvents.create({
+              type: analysis.event_type,
+              severity: analysis.severity,
+              userId: log.userId,
+              sourceIp: log.sourceIp,
+              action: log.action,
+              resource: log.resource,
+              anomalies: analysis.anomalies,
+              indicators: analysis.indicators,
+              timestamp: log.timestamp
+            })
+
+            // High-severity = immediate alert
+            if (analysis.severity === 'critical' || analysis.severity === 'high') {
+              await send.pagerduty({
+                title: `Security incident: ${analysis.event_type}`,
+                severity: analysis.severity,
+                details: {
+                  event: event,
+                  user: log.user,
+                  indicators: analysis.indicators
+                }
+              })
+
+              await send.slack('#security-incidents', {
+                text: `🚨 Security incident detected`,
+                blocks: [
+                  {
+                    type: 'section',
+                    text: `*${analysis.event_type}*\nSeverity: ${analysis.severity}`
+                  },
+                  {
+                    type: 'section',
+                    text: `User: ${log.user?.email}\nIP: ${log.sourceIp}\nAction: ${log.action}`
+                  }
+                ]
+              })
+            }
+
+            // Automated response for known attack patterns
+            if (analysis.attack_pattern && analysis.confidence > 0.9) {
+              // Block IP if brute force or scanning
+              if (analysis.attack_pattern === 'brute-force' || analysis.attack_pattern === 'port-scan') {
+                await api.post('https://firewall.company.com/api/block', {
+                  ip: log.sourceIp,
+                  duration: '24h',
+                  reason: analysis.attack_pattern
+                })
+
+                await db.securityEvents.update(event.id, {
+                  automated_response: 'ip-blocked',
+                  blocked_at: new Date()
+                })
+              }
+
+              // Disable account if credential stuffing or account takeover
+              if (analysis.attack_pattern === 'credential-stuffing' || analysis.attack_pattern === 'account-takeover') {
+                await db.users.update(log.userId, {
+                  status: 'suspended',
+                  suspendedReason: 'security-incident',
+                  suspendedAt: new Date()
+                })
+
+                await send.email(log.user.email, {
+                  subject: 'Security Alert: Account Suspended',
+                  template: 'security-suspension',
+                  data: {
+                    user: log.user,
+                    reason: 'Suspicious activity detected',
+                    support_email: 'security@company.com'
+                  }
+                })
+
+                await db.securityEvents.update(event.id, {
+                  automated_response: 'account-suspended',
+                  suspended_at: new Date()
+                })
+              }
+            }
+          }
+        })
+
+  - id: compliance-automation
+    name: Compliance Automation & Monitoring
+    description: Continuous compliance monitoring for SOC 2, GDPR, HIPAA, PCI-DSS with automated evidence collection.
+    icon: ✅
+    metrics:
+      - label: Compliance Coverage
+        value: 100%
+      - label: Evidence Collection
+        value: Automated
+      - label: Audit Readiness
+        value: Always
+    codeExample:
+      language: typescript
+      code: |
+        // Continuous compliance monitoring
+        every('day', async () => {
+          const frameworks = ['soc2', 'gdpr', 'hipaa', 'pci-dss']
+
+          for (const framework of frameworks) {
+            // Load compliance requirements
+            const requirements = await db.complianceRequirements.findAll({ framework })
+
+            const results = []
+
+            for (const req of requirements) {
+              // Automated compliance checks
+              const check = await ai.evaluate({
+                requirement: req,
+                evidence: await collectEvidence(req),
+                systems: await db.assets.findAll(),
+                policies: await db.policies.findAll(),
+                logs: await db.logs.findAll({ period: 'last-90-days' })
+              })
+
+              results.push({
+                requirementId: req.id,
+                control: req.control,
+                status: check.compliant ? 'pass' : 'fail',
+                evidence: check.evidence,
+                gaps: check.gaps,
+                recommendations: check.recommendations,
+                checked_at: new Date()
+              })
+
+              // Store result
+              await db.complianceChecks.create({
+                framework: framework,
+                requirementId: req.id,
+                result: check,
+                timestamp: new Date()
+              })
+
+              // Alert on failures
+              if (!check.compliant) {
+                await send.slack('#compliance', {
+                  text: `⚠️ Compliance gap detected: ${framework.toUpperCase()}`,
+                  blocks: [
+                    {
+                      type: 'section',
+                      text: `*${req.control}*\n${req.description}`
+                    },
+                    {
+                      type: 'section',
+                      text: `**Gaps:**\n${check.gaps.map(g => `• ${g}`).join('\n')}`
+                    },
+                    {
+                      type: 'section',
+                      text: `**Recommendations:**\n${check.recommendations.map(r => `• ${r}`).join('\n')}`
+                    }
+                  ]
+                })
+
+                // Create remediation ticket
+                await api.post('https://jira.company.com/api/issue', {
+                  project: 'COMPLIANCE',
+                  type: 'Compliance Gap',
+                  priority: req.critical ? 'Highest' : 'High',
+                  summary: `${framework.toUpperCase()}: ${req.control} - Gap Identified`,
+                  description: `
+                    **Framework:** ${framework.toUpperCase()}
+                    **Control:** ${req.control}
+                    **Requirement:** ${req.description}
+
+                    **Gaps:**
+                    ${check.gaps.map(g => `- ${g}`).join('\n')}
+
+                    **Recommendations:**
+                    ${check.recommendations.map(r => `- ${r}`).join('\n')}
+                  `
+                })
+              }
+            }
+
+            // Generate compliance report
+            const report = {
+              framework: framework,
+              date: new Date(),
+              total_controls: requirements.length,
+              passing: results.filter(r => r.status === 'pass').length,
+              failing: results.filter(r => r.status === 'fail').length,
+              compliance_percentage: (results.filter(r => r.status === 'pass').length / requirements.length) * 100,
+              results: results
+            }
+
+            await db.complianceReports.create(report)
+
+            // Share with stakeholders
+            await send.email(['ciso@company.com', 'ceo@company.com', 'legal@company.com'], {
+              subject: `${framework.toUpperCase()} Compliance Report - ${new Date().toLocaleDateString()}`,
+              template: 'compliance-report',
+              data: report,
+              attachments: [
+                {
+                  filename: `${framework}-report.pdf`,
+                  content: await generatePDF(report)
+                }
+              ]
+            })
+          }
+        })
+
+  - id: access-control
+    name: Identity & Access Management
+    description: Zero-trust access control with automated provisioning, role-based permissions, and continuous verification.
+    icon: 🔑
+    metrics:
+      - label: Unauthorized Access
+        value: 0 incidents
+      - label: Provisioning Speed
+        value: Instant
+      - label: Least Privilege Compliance
+        value: 100%
+    codeExample:
+      language: typescript
+      code: |
+        // Automated access provisioning
+        on.employee.hired(async (employee) => {
+          // AI-powered role determination
+          const accessProfile = await ai.generate({
+            prompt: 'Determine appropriate access based on role and department',
+            employee: employee,
+            policies: await db.accessPolicies.findAll(),
+            peers: await db.employees.findAll({
+              role: employee.role,
+              department: employee.department
+            })
+          })
+
+          // Provision accounts across all systems
+          const accounts = await Promise.all([
+            // Identity provider
+            api.post('https://okta.company.com/api/users', {
+              email: employee.email,
+              firstName: employee.firstName,
+              lastName: employee.lastName,
+              groups: accessProfile.groups
+            }),
+            // Cloud infrastructure
+            api.post('https://aws.company.com/iam/users', {
+              username: employee.email,
+              policies: accessProfile.awsPolicies
+            }),
+            // GitHub
+            api.post('https://api.github.com/orgs/company/memberships/user', {
+              username: employee.githubUsername,
+              role: accessProfile.githubRole
+            }),
+            // Databases
+            ...accessProfile.databases.map(db =>
+              api.post(`https://${db.host}/api/users`, {
+                username: employee.email,
+                permissions: db.permissions
+              })
+            )
+          ])
+
+          // Store access records
+          await db.accessGrants.bulkCreate(
+            accounts.map(acc => ({
+              employeeId: employee.id,
+              system: acc.system,
+              accountId: acc.id,
+              permissions: acc.permissions,
+              grantedAt: new Date(),
+              expiresAt: null
+            }))
+          )
+
+          // Notify employee
+          await send.email(employee.email, {
+            subject: 'Your Accounts Are Ready',
+            template: 'access-provisioned',
+            data: {
+              employee,
+              accounts: accounts.map(a => ({
+                system: a.system,
+                username: a.username,
+                resetPasswordUrl: a.resetUrl
+              }))
+            }
+          })
+        })
+
+        // Continuous access reviews
+        every('week', async () => {
+          const employees = await db.employees.findAll({ status: 'active' })
+
+          for (const employee of employees) {
+            const access = await db.accessGrants.findAll({ employeeId: employee.id })
+
+            // Check for over-privileged access
+            const analysis = await ai.analyze({
+              employee: employee,
+              access: access,
+              activity: await db.logs.findAll({
+                userId: employee.id,
+                period: 'last-90-days'
+              }),
+              peers: await db.employees.findAll({
+                role: employee.role,
+                department: employee.department
+              })
+            })
+
+            // Flag unused access
+            const unused = analysis.permissions.filter(p => !p.used_in_last_90_days)
+
+            if (unused.length > 0) {
+              await send.email(employee.manager.email, {
+                subject: `Access review: ${employee.name}`,
+                template: 'access-review',
+                data: {
+                  employee,
+                  unused_permissions: unused
+                }
+              })
+            }
+
+            // Auto-revoke dangerous permissions
+            const risky = analysis.permissions.filter(p => p.risk === 'high' && !p.recently_used)
+
+            for (const perm of risky) {
+              await revokePermission(employee.id, perm.system, perm.permission)
+
+              await send.slack('#security', {
+                text: `🔒 Auto-revoked risky permission: ${perm.permission} from ${employee.name}`
+              })
+            }
+          }
+        })
+
+  - id: security-training
+    name: Security Awareness Training
+    description: Automated phishing simulations, security training campaigns, and compliance certification tracking.
+    icon: 🎓
+    metrics:
+      - label: Phishing Click Rate
+        value: <2%
+      - label: Training Completion
+        value: 98%
+      - label: Security Incidents
+        value: -67%
+    codeExample:
+      language: typescript
+      code: |
+        // Automated phishing simulations
+        every('week', async () => {
+          // Select random employees for simulation
+          const employees = await db.employees.sample(50)
+
+          for (const employee of employees) {
+            // Generate realistic phishing email
+            const phish = await ai.generate({
+              type: 'phishing-simulation',
+              difficulty: employee.training_level || 'beginner',
+              themes: ['urgent-action', 'password-reset', 'invoice', 'shipping', 'it-support'],
+              personalization: {
+                name: employee.firstName,
+                company: 'company',
+                recent_activity: await getRecentActivity(employee.id)
+              }
+            })
+
+            // Send simulation
+            await send.email(employee.email, {
+              from: phish.from,
+              subject: phish.subject,
+              html: phish.html,
+              trackingUrl: `https://security-training.company.com/sim/${phish.id}`
+            })
+
+            // Track result
+            await db.phishingSimulations.create({
+              employeeId: employee.id,
+              difficulty: phish.difficulty,
+              theme: phish.theme,
+              sentAt: new Date(),
+              status: 'sent'
+            })
+          }
+        })
+
+        // Handle phishing simulation clicks
+        on.simulation.clicked(async (click) => {
+          const sim = await db.phishingSimulations.findOne({ id: click.simId })
+
+          // Update simulation status
+          await db.phishingSimulations.update(sim.id, {
+            status: 'clicked',
+            clickedAt: new Date()
+          })
+
+          // Show educational content
+          await send.email(sim.employee.email, {
+            subject: 'Security Training: Phishing Detected',
+            template: 'phishing-education',
+            data: {
+              employee: sim.employee,
+              simulation: sim,
+              indicators: [
+                'Urgent language creating false sense of emergency',
+                'Suspicious sender email address',
+                'Request for sensitive information',
+                'Generic greeting instead of personalized'
+              ],
+              resources: await db.trainingResources.findAll({ type: 'phishing' })
+            }
+          })
+
+          // Assign remedial training if repeat offender
+          const history = await db.phishingSimulations.count({
+            employeeId: sim.employeeId,
+            status: 'clicked',
+            period: 'last-6-months'
+          })
+
+          if (history >= 3) {
+            await db.trainingAssignments.create({
+              employeeId: sim.employeeId,
+              course: 'advanced-phishing-prevention',
+              dueDate: addDays(new Date(), 7),
+              required: true,
+              reason: 'repeat-simulation-failure'
+            })
+
+            await send.email(sim.employee.manager.email, {
+              subject: `Security training required: ${sim.employee.name}`,
+              data: { employee: sim.employee, history }
+            })
+          }
+        })
+
+features:
+  - title: Automated Scanning
+    description: Continuous vulnerability and compliance scanning across all assets and cloud infrastructure
+    icon: 🔍
+  - title: Threat Intelligence
+    description: Real-time threat intelligence feeds from global sources with automated IOC detection
+    icon: 🌐
+  - title: Incident Response
+    description: Automated incident response playbooks with integration to PagerDuty, Slack, and ticketing systems
+    icon: 🚨
+  - title: Security Dashboards
+    description: Real-time security posture dashboards with executive reporting and trend analysis
+    icon: 📊
+  - title: Audit Trail
+    description: Complete audit trail of all security events, changes, and access for compliance requirements
+    icon: 📝
+  - title: Integration Hub
+    description: 100+ integrations with security tools, cloud providers, and development platforms
+    icon: 🔌
+
+useCases:
+  - company: FinTech Platform
+    industry: Financial Services
+    challenge: Preparing for SOC 2 Type II audit with manual processes taking 6+ months and 40% control gaps
+    solution: Implemented CISO.do for compliance automation, continuous monitoring, and evidence collection
+    results:
+      - metric: SOC 2 audit-ready in 8 weeks (75% faster)
+      - metric: Control compliance improved to 98%
+      - metric: Evidence collection automated 100%
+      - metric: Annual audit costs reduced $180K
+    testimonial:
+      quote: "CISO.do transformed our compliance program from a painful annual event to continuous, automated monitoring. We passed SOC 2 Type II on first try with zero findings."
+      author: David Chen
+      role: Chief Information Security Officer
+      company: FinTech Platform
+
+  - company: HealthTech SaaS
+    industry: Healthcare
+    challenge: HIPAA compliance requirements with 12-person security team unable to keep up with threats and vulnerabilities
+    solution: Deployed CISO.do for vulnerability management, threat detection, and HIPAA compliance automation
+    results:
+      - metric: Vulnerability remediation 73% faster
+      - metric: Threat detection rate up to 99.9%
+      - metric: HIPAA compliance gaps closed 100%
+      - metric: Security team productivity 4.2x
+    testimonial:
+      quote: "The AI-powered threat detection catches things our previous SIEM completely missed. CISO.do is like having a 24/7 security operations center for a fraction of the cost."
+      author: Dr. Sarah Williams
+      role: VP of Security & Compliance
+      company: HealthTech SaaS
+
+  - company: E-Commerce Platform
+    industry: Retail Technology
+    challenge: Managing PCI-DSS compliance across 50+ microservices with quarterly failed audits costing $500K+ annually
+    solution: Implemented CISO.do for continuous PCI-DSS monitoring, vulnerability management, and access control
+    results:
+      - metric: PCI-DSS compliance achieved and maintained
+      - metric: Zero audit failures in 18 months
+      - metric: Security incidents reduced 67%
+      - metric: Compliance costs down 58%
+    testimonial:
+      quote: "CISO.do gave us confidence in our security posture for the first time. We went from failing PCI audits to passing with zero findings, and we maintain compliance effortlessly."
+      author: Michael Torres
+      role: Chief Technology Officer
+      company: E-Commerce Platform
+
+pricing:
+  tiers:
+    - name: Starter
+      price: $599
+      period: per month
+      description: For startups building security foundations
+      features:
+        - Up to 50 assets
+        - 3 compliance frameworks
+        - Basic vulnerability scanning
+        - Threat detection (standard)
+        - Email support
+        - 99.5% uptime SLA
+        - Community Slack
+      cta:
+        text: Start Free Trial
+        href: /signup?plan=starter
+
+    - name: Professional
+      price: $1,999
+      period: per month
+      description: For growing companies with compliance requirements
+      popular: true
+      features:
+        - Up to 500 assets
+        - All compliance frameworks
+        - Advanced vulnerability management
+        - AI-powered threat detection
+        - Automated incident response
+        - Security training platform
+        - All integrations
+        - Priority support
+        - 99.9% uptime SLA
+        - Dedicated security advisor
+      cta:
+        text: Start Free Trial
+        href: /signup?plan=professional
+
+    - name: Enterprise
+      price: Custom
+      period: contact us
+      description: For enterprises with advanced security requirements
+      features:
+        - Unlimited assets
+        - Custom compliance frameworks
+        - Advanced threat intelligence
+        - Custom ML models
+        - Private deployment option
+        - API access + webhooks
+        - Custom integrations
+        - White-label options
+        - 24/7 security hotline
+        - 99.95% uptime SLA
+        - Dedicated security team
+      cta:
+        text: Contact Sales
+        href: /contact-sales
+
+integrations:
+  categories:
+    - name: Vulnerability Scanning
+      description: Integrate with vulnerability scanning platforms
+      integrations:
+        - name: Snyk
+          logo: /logos/snyk.svg
+          docs: /integrations/snyk
+        - name: Aqua Security
+          logo: /logos/aqua.svg
+          docs: /integrations/aqua
+        - name: Veracode
+          logo: /logos/veracode.svg
+          docs: /integrations/veracode
+        - name: Checkmarx
+          logo: /logos/checkmarx.svg
+          docs: /integrations/checkmarx
+
+    - name: SIEM & Logging
+      description: Connect with security information and event management systems
+      integrations:
+        - name: Splunk
+          logo: /logos/splunk.svg
+          docs: /integrations/splunk
+        - name: Datadog
+          logo: /logos/datadog.svg
+          docs: /integrations/datadog
+        - name: Elastic
+          logo: /logos/elastic.svg
+          docs: /integrations/elastic
+        - name: Sumo Logic
+          logo: /logos/sumologic.svg
+          docs: /integrations/sumologic
+
+    - name: Identity & Access
+      description: Integrate with IAM and SSO providers
+      integrations:
+        - name: Okta
+          logo: /logos/okta.svg
+          docs: /integrations/okta
+        - name: Azure AD
+          logo: /logos/azure.svg
+          docs: /integrations/azure-ad
+        - name: Auth0
+          logo: /logos/auth0.svg
+          docs: /integrations/auth0
+        - name: OneLogin
+          logo: /logos/onelogin.svg
+          docs: /integrations/onelogin
+
+    - name: Cloud Infrastructure
+      description: Monitor cloud environments
+      integrations:
+        - name: AWS
+          logo: /logos/aws.svg
+          docs: /integrations/aws
+        - name: Google Cloud
+          logo: /logos/gcp.svg
+          docs: /integrations/gcp
+        - name: Azure
+          logo: /logos/azure.svg
+          docs: /integrations/azure
+        - name: Cloudflare
+          logo: /logos/cloudflare.svg
+          docs: /integrations/cloudflare
+
+routes:
+  collections:
+    - name: capabilities
+      pattern: /capabilities/[capability]/readme.mdx
+      data:
+        - capability: vulnerability-management
+          title: Continuous Vulnerability Management
+          description: Automated scanning and remediation
+        - capability: threat-detection
+          title: Real-Time Threat Detection & Response
+          description: AI-powered SIEM with automated response
+        - capability: compliance-automation
+          title: Compliance Automation & Monitoring
+          description: Continuous compliance for SOC 2, GDPR, HIPAA, PCI
+        - capability: access-control
+          title: Identity & Access Management
+          description: Zero-trust access control with automated provisioning
+        - capability: security-training
+          title: Security Awareness Training
+          description: Phishing simulations and training campaigns
+
+    - name: integrations
+      pattern: /integrations/[integration]/readme.mdx
+      data:
+        - integration: snyk
+          title: Snyk Integration
+          category: Vulnerability Scanning
+        - integration: datadog
+          title: Datadog Integration
+          category: SIEM & Logging
+        - integration: okta
+          title: Okta Integration
+          category: Identity & Access
+        - integration: aws
+          title: AWS Integration
+          category: Cloud Infrastructure
+
+seo:
+  title: CISO.do - Your AI Chief Information Security Officer
+  description: Protect your organization with AI-powered vulnerability management, threat detection, compliance automation, and security training. SOC 2 certified, 99.9% threat detection.
+  keywords:
+    - AI Chief Information Security Officer
+    - Security automation
+    - Vulnerability management
+    - Threat detection
+    - Compliance automation
+    - SOC 2 compliance
+    - HIPAA compliance
+    - PCI-DSS compliance
+    - GDPR compliance
+    - Security operations
+
+analytics:
+  events:
+    - name: ciso_demo_requested
+      description: User requested a demo
+    - name: ciso_trial_started
+      description: User started free trial
+    - name: ciso_capability_viewed
+      description: User viewed capability details
+    - name: ciso_integration_explored
+      description: User explored integration documentation
+---
+
+# Your AI Chief Information Security Officer
+
+**CISO.do** is your AI-powered security leader, protecting your organization through continuous vulnerability management, real-time threat detection, compliance automation, and security training. Achieve SOC 2 certification, 99.9% threat detection, and <4 hour mean time to response.
+
+## Why CISO.do?
+
+Security teams are overwhelmed:
+- **Manual scanning** can't keep up with modern development velocity
+- **Alert fatigue** from high false positive rates in traditional SIEM
+- **Compliance requirements** demand continuous evidence collection
+- **Access management** becomes unwieldy as teams scale
+- **Human error** remains the #1 security vulnerability
+
+CISO.do solves these challenges with AI that continuously monitors, detects, responds, and trains 24/7.
+
+## Key Capabilities
+
+### 🔒 Continuous Vulnerability Management
+Automated scanning across your entire stack with AI-powered risk prioritization. Remediate critical vulnerabilities 73% faster with zero blind spots.
+
+### 🛡️ Real-Time Threat Detection & Response
+AI-powered SIEM with behavioral analytics and anomaly detection. Catch 99.9% of threats with <0.1% false positives and automated incident response.
+
+### ✅ Compliance Automation & Monitoring
+Continuous compliance monitoring for SOC 2, GDPR, HIPAA, PCI-DSS with automated evidence collection. Always audit-ready.
+
+### 🔑 Identity & Access Management
+Zero-trust access control with automated provisioning, role-based permissions, and continuous verification. Zero unauthorized access incidents.
+
+### 🎓 Security Awareness Training
+Automated phishing simulations and security training campaigns. Reduce security incidents 67% through continuous education.
+
+## Real-World Results
+
+- **FinTech Platform**: SOC 2 certified in 8 weeks (75% faster), $180K annual savings
+- **HealthTech SaaS**: 99.9% threat detection, 100% HIPAA compliance, 4.2x team productivity
+- **E-Commerce Platform**: Zero PCI audit failures in 18 months, 67% fewer incidents
+
+## How It Works
+
+CISO.do connects to your entire security stack for comprehensive protection:
+
+1. **Scan** - Continuous vulnerability scanning across code, infrastructure, and cloud
+2. **Detect** - Real-time threat detection with AI-powered behavioral analytics
+3. **Respond** - Automated incident response with playbook execution
+4. **Comply** - Continuous compliance monitoring with automated evidence collection
+5. **Control** - Zero-trust access management with automated provisioning
+6. **Train** - Phishing simulations and security awareness campaigns
+
+## Implementation
+
+```typescript
+import type { BusinessModule } from 'graphdl'
+
+export const CISOAgent: BusinessModule = $ => {
+  const { db, ai, on, send, every, api } = $
+
+  // Continuous vulnerability scanning
+  every('hour', async () => {
+    const assets = await db.assets.findAll()
+
+    for (const asset of assets) {
+      const vulns = await scanAsset(asset)
+      const prioritized = await ai.prioritize({ vulns, asset })
+
+      const critical = prioritized.filter(v => v.severity === 'critical')
+
+      for (const vuln of critical) {
+        await createTicket(vuln)
+        await send.slack('#security-alerts', {
+          text: `🚨 Critical vulnerability: ${vuln.cve}`
+        })
+      }
+    }
+  })
+
+  // Real-time threat detection
+  on.log.received(async (log) => {
+    const analysis = await ai.analyze({
+      log,
+      detect: ['anomalies', 'attack_patterns']
+    })
+
+    if (analysis.suspicious) {
+      await send.pagerduty({
+        title: `Security incident: ${analysis.event_type}`,
+        severity: analysis.severity
+      })
+
+      if (analysis.attack_pattern) {
+        await automatedResponse(log, analysis)
+      }
+    }
+  })
+
+  // Compliance monitoring
+  every('day', async () => {
+    for (const framework of ['soc2', 'gdpr', 'hipaa']) {
+      const results = await checkCompliance(framework)
+
+      const gaps = results.filter(r => !r.compliant)
+
+      if (gaps.length > 0) {
+        await send.slack('#compliance', {
+          text: `⚠️ Compliance gaps: ${framework}`
+        })
+      }
+    }
+  })
+
+  // Access provisioning
+  on.employee.hired(async (employee) => {
+    const access = await ai.generate({
+      prompt: 'Determine appropriate access',
+      employee
+    })
+
+    await provisionAccounts(employee, access)
+
+    await send.email(employee.email, {
+      subject: 'Your Accounts Are Ready',
+      data: { access }
+    })
+  })
+
+  return {
+    name: 'CISO Agent',
+    version: '1.0.0',
+    capabilities: [
+      'vulnerability-management',
+      'threat-detection',
+      'compliance-automation',
+      'access-control',
+      'security-training'
+    ]
+  }
+}
+
+export default CISOAgent
+```
+
+## Get Started
+
+Secure your organization with AI. Start with a free 14-day trial:
+
+1. **Sign up** - No credit card required
+2. **Connect systems** - Cloud, code repos, logs, IAM
+3. **Configure policies** - Customize for your requirements
+4. **Go live** - CISO.do starts monitoring immediately
+
+[Start Free Trial](/signup) • [Book Demo](/demo) • [View Pricing](/pricing)
+
+## FAQs
+
+**Q: How long does implementation take?**
+A: Most customers are fully operational within 2 weeks. Our team handles integrations and initial configuration.
+
+**Q: Which compliance frameworks do you support?**
+A: SOC 2, ISO 27001, GDPR, HIPAA, PCI-DSS, NIST, CIS, and custom frameworks. We can add new frameworks on request.
+
+**Q: How accurate is the threat detection?**
+A: Our AI achieves 99.9% detection rate with <0.1% false positives, significantly better than traditional SIEM systems.
+
+**Q: Can I customize security policies?**
+A: Yes! All policies, playbooks, and thresholds are fully customizable to match your risk tolerance and requirements.
+
+**Q: Do you support air-gapped or on-premise deployments?**
+A: Yes, Enterprise customers can deploy CISO.do on-premise or in private cloud environments.
+
+---
+
+**CISO.do** - AI-powered security operations • [Pricing](/pricing) • [Integrations](/integrations) • [Docs](/docs) • [Support](mailto:support@ciso.do)

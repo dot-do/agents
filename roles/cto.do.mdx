@@ -1,0 +1,684 @@
+---
+title: cto.do
+$type: Agent
+agentType: Role
+name: CTO.do
+description: AI Chief Technology Officer - Full-stack engineering leadership, code quality, security, and technical excellence
+license: Proprietary
+
+hero:
+  headline: Your AI Chief Technology Officer
+  subheadline: Enterprise-grade engineering leadership powered by AI. Code review, security auditing, test generation, and technical documentation - all automated.
+  codeExample:
+    language: typescript
+    code: |
+      import { CTO } from 'cto.do'
+
+      const cto = new CTO({
+        repositories: ['github.com/acme/*'],
+        integrations: ['slack', 'jira', 'pagerduty'],
+        policies: {
+          codeReview: 'required',
+          securityScan: 'blocking',
+          testCoverage: { min: 80 },
+          documentation: 'auto-generate'
+        }
+      })
+
+      // Automatically reviews all PRs
+      cto.on('pull_request.opened', async (pr) => {
+        const review = await cto.review(pr, {
+          checkSecurity: true,
+          generateTests: true,
+          updateDocs: true
+        })
+
+        if (review.blockers.length > 0) {
+          await cto.comment(pr, review.summary)
+          await cto.requestChanges(pr, review.blockers)
+        } else {
+          await cto.approve(pr)
+        }
+      })
+  cta:
+    primary:
+      text: Start Free Trial
+      url: /signup
+    secondary:
+      text: Book Demo
+      url: /demo
+  badges:
+    - text: AI-Powered
+      icon: sparkles
+    - text: 99.9% Uptime
+      icon: shield
+    - text: SOC 2 Compliant
+      icon: certification
+
+capabilities:
+  headline: What CTO.do Can Do
+  description: Comprehensive engineering leadership capabilities powered by AI
+  items:
+    - icon: code-review
+      title: Automated Code Review
+      description: AI-powered code review with security scanning, best practices, and automated suggestions
+      metrics:
+        - 10x faster than manual review
+        - 95% accuracy on security vulnerabilities
+        - 40% reduction in bugs reaching production
+      code: |
+        // Automatic PR review
+        const review = await cto.reviewPullRequest(pr, {
+          checkStyle: true,
+          checkSecurity: true,
+          checkPerformance: true,
+          suggestImprovements: true
+        })
+
+        // Review includes:
+        // - Security vulnerabilities
+        // - Performance issues
+        // - Code smells
+        // - Best practice violations
+        // - Automated fix suggestions
+
+    - icon: bug-triage
+      title: Intelligent Bug Triage
+      description: Automatically prioritize, categorize, and assign bugs based on severity, impact, and team capacity
+      metrics:
+        - 80% reduction in triage time
+        - 95% accurate priority scoring
+        - Automatic team assignment
+      code: |
+        // Automatic bug triage
+        cto.on('issue.opened', async (issue) => {
+          const analysis = await cto.analyzeBug(issue, {
+            checkSeverity: true,
+            checkImpact: true,
+            findSimilar: true,
+            suggestFixes: true
+          })
+
+          await cto.updateIssue(issue, {
+            priority: analysis.priority, // P0-P2
+            labels: analysis.labels,
+            assignee: analysis.bestEngineer,
+            milestone: analysis.suggestedMilestone
+          })
+        })
+
+    - icon: security
+      title: Security Auditing
+      description: Continuous security scanning with vulnerability detection, dependency auditing, and compliance checking
+      metrics:
+        - 99% vulnerability detection rate
+        - <1% false positive rate
+        - Real-time threat alerts
+      code: |
+        // Continuous security monitoring
+        const audit = await cto.securityAudit({
+          scanDependencies: true,
+          checkVulnerabilities: true,
+          auditPermissions: true,
+          checkCompliance: ['SOC2', 'GDPR', 'HIPAA']
+        })
+
+        // Automatically creates security issues
+        // Blocks deployments with critical vulns
+        // Sends alerts to security team
+
+    - icon: test
+      title: Test Generation
+      description: AI-generated unit, integration, and E2E tests with automatic mocking and edge case coverage
+      metrics:
+        - 80% code coverage automatically
+        - 90% reduction in test writing time
+        - Comprehensive edge case coverage
+      code: |
+        // Generate tests for new code
+        cto.on('pull_request.opened', async (pr) => {
+          const tests = await cto.generateTests(pr, {
+            types: ['unit', 'integration'],
+            coverage: { target: 80 },
+            mockExternal: true,
+            testEdgeCases: true
+          })
+
+          await cto.commitTests(pr, tests)
+        })
+
+    - icon: docs
+      title: Documentation Generation
+      description: Automatically generate and maintain technical documentation from code, PRs, and architecture decisions
+      metrics:
+        - 100% API documentation coverage
+        - Always up-to-date with code
+        - Natural language explanations
+      code: |
+        // Auto-generate documentation
+        const docs = await cto.generateDocs({
+          includeAPI: true,
+          includeArchitecture: true,
+          includeDecisions: true,
+          format: 'markdown'
+        })
+
+        // Updates docs on every merge
+        // Explains complex algorithms
+        // Documents breaking changes
+
+features:
+  layout: grid
+  items:
+    - icon: multi-repo
+      title: Multi-Repository Management
+      description: Manage unlimited repositories across GitHub, GitLab, Bitbucket
+
+    - icon: ci-cd
+      title: CI/CD Integration
+      description: Native integration with GitHub Actions, CircleCI, Jenkins, GitLab CI
+
+    - icon: slack
+      title: Team Communication
+      description: Real-time notifications via Slack, Teams, Discord, Email
+
+    - icon: custom
+      title: Custom Workflows
+      description: Configure policies, approval rules, and automation triggers
+
+    - icon: analytics
+      title: Engineering Metrics
+      description: Track velocity, quality, security, and team performance
+
+    - icon: compliance
+      title: Compliance & Governance
+      description: SOC 2, ISO 27001, GDPR, HIPAA compliance built-in
+
+useCases:
+  headline: Real-World Use Cases
+  description: How engineering teams use CTO.do
+  items:
+    - title: Scaling Engineering Teams
+      company: Series B SaaS
+      challenge: Growing from 10 to 50 engineers while maintaining code quality
+      solution: CTO.do automated PR reviews, reduced review time from 2 days to 2 hours
+      results:
+        - 85% faster PR merges
+        - 40% fewer bugs in production
+        - 10x engineering team growth without quality loss
+      testimonial:
+        quote: "CTO.do scales with our team. We're shipping faster than ever with better quality."
+        author: Jane Smith
+        role: VP of Engineering
+        company: Acme SaaS
+
+    - title: Reducing Security Vulnerabilities
+      company: Fintech Startup
+      challenge: Failed SOC 2 audit due to security vulnerabilities
+      solution: CTO.do's continuous security scanning caught and fixed issues
+      results:
+        - 95% reduction in vulnerabilities
+        - Passed SOC 2 audit on first try
+        - Zero security incidents in 18 months
+      testimonial:
+        quote: "CTO.do transformed our security posture. We couldn't have passed SOC 2 without it."
+        author: Mike Johnson
+        role: CTO
+        company: FinanceApp
+
+    - title: Accelerating Onboarding
+      company: Open Source Project
+      challenge: 100+ contributors, inconsistent code quality
+      solution: CTO.do provides instant feedback on all contributions
+      results:
+        - 90% faster contributor onboarding
+        - 70% reduction in rejected PRs
+        - 3x increase in community contributions
+      testimonial:
+        quote: "New contributors get expert-level feedback instantly. Our community loves it."
+        author: Sarah Lee
+        role: Maintainer
+        company: Popular OSS Project
+
+pricing:
+  headline: Transparent Pricing
+  description: Choose the plan that fits your team
+  plans:
+    - name: Starter
+      price: $99/month
+      annual: $999/year
+      description: Perfect for small teams and startups
+      features:
+        - 1 team
+        - 5 repositories
+        - Unlimited users
+        - Code review
+        - Bug triage
+        - Email support
+      cta: Start Free Trial
+
+    - name: Professional
+      price: $499/month
+      annual: $4,990/year
+      description: For growing engineering teams
+      features:
+        - Unlimited teams
+        - 50 repositories
+        - Unlimited users
+        - All Starter features
+        - Security auditing
+        - Test generation
+        - Documentation
+        - Priority support
+        - Custom policies
+      cta: Start Free Trial
+      popular: true
+
+    - name: Enterprise
+      price: Custom
+      description: For large organizations
+      features:
+        - Unlimited everything
+        - All Professional features
+        - White-label deployment
+        - On-premise option
+        - Custom integrations
+        - SLA guarantee
+        - Dedicated support
+        - Training & onboarding
+      cta: Contact Sales
+
+integrations:
+  headline: Integrations
+  description: Works with your existing tools
+  categories:
+    - name: Version Control
+      tools:
+        - name: GitHub
+          logo: /logos/github.svg
+          status: Native
+        - name: GitLab
+          logo: /logos/gitlab.svg
+          status: Native
+        - name: Bitbucket
+          logo: /logos/bitbucket.svg
+          status: Coming Soon
+
+    - name: CI/CD
+      tools:
+        - name: GitHub Actions
+          status: Native
+        - name: CircleCI
+          status: Native
+        - name: Jenkins
+          status: Beta
+
+    - name: Communication
+      tools:
+        - name: Slack
+          status: Native
+        - name: Microsoft Teams
+          status: Native
+        - name: Discord
+          status: Beta
+
+    - name: Project Management
+      tools:
+        - name: Jira
+          status: Native
+        - name: Linear
+          status: Native
+        - name: Asana
+          status: Coming Soon
+
+routes:
+  - pattern: /capabilities/[capability]/readme.mdx
+    collection: capabilities
+    variables:
+      - name
+      - description
+      - examples
+      - metrics
+    template: |
+      # {Capability.name}
+
+      {Capability.description}
+
+      ## How It Works
+
+      {Capability.explanation}
+
+      ## Examples
+
+      {Capability.examples.map(ex => `
+      ### ${ex.title}
+      ${ex.code}
+      `).join('\n')}
+
+      ## Metrics
+
+      {Capability.metrics.map(m => `- ${m}`).join('\n')}
+
+  - pattern: /integrations/[tool]/readme.mdx
+    collection: integrations
+    variables:
+      - name
+      - description
+      - setupGuide
+    template: |
+      # {Integration.name} Integration
+
+      {Integration.description}
+
+      ## Setup Guide
+
+      {Integration.setupGuide}
+
+seo:
+  title: CTO.do - AI Chief Technology Officer | Automated Engineering Leadership
+  description: AI-powered CTO for code review, security auditing, test generation, and technical documentation. Scale your engineering team with confidence.
+  keywords: [ai-cto, automated-code-review, security-audit, test-generation, engineering-leadership, devops, ci-cd]
+
+analytics:
+  events:
+    - capability_viewed
+    - demo_requested
+    - trial_started
+    - integration_connected
+---
+
+# CTO.do - Your AI Chief Technology Officer
+
+Enterprise-grade engineering leadership powered by AI. Automate code review, security auditing, test generation, and technical documentation.
+
+## Why CTO.do?
+
+Building and scaling an engineering team is hard. As you grow, maintaining code quality, security, and velocity becomes exponentially more challenging. CTO.do acts as your AI Chief Technology Officer, providing expert-level engineering leadership 24/7.
+
+**The Challenge:**
+- Manual code reviews slow down deployment velocity
+- Security vulnerabilities slip through to production
+- Test coverage drops as teams grow
+- Documentation becomes outdated
+- Engineering managers spend 60% of time on code review
+
+**The Solution:**
+CTO.do provides automated, AI-powered engineering leadership that scales with your team. Get expert-level code review, security auditing, test generation, and documentation - instantly.
+
+## Capabilities
+
+### 🔍 Automated Code Review
+
+Every pull request gets reviewed by AI trained on millions of code reviews. CTO.do checks for:
+
+- **Security vulnerabilities** - SQL injection, XSS, authentication bypasses
+- **Performance issues** - N+1 queries, memory leaks, slow algorithms
+- **Code smells** - Duplicated code, long functions, complex conditionals
+- **Best practices** - Framework conventions, design patterns, naming
+- **Type safety** - Incorrect types, missing null checks, unsafe casts
+
+**Example Review:**
+
+```typescript
+// Your code:
+function getUserData(userId: string) {
+  return db.query(`SELECT * FROM users WHERE id = ${userId}`)
+}
+
+// CTO.do review comment:
+// 🚨 CRITICAL: SQL Injection vulnerability
+// The userId parameter is directly interpolated into SQL.
+// An attacker could pass: "1 OR 1=1" to dump all users.
+//
+// Suggested fix:
+function getUserData(userId: string) {
+  return db.query('SELECT * FROM users WHERE id = $1', [userId])
+}
+```
+
+### 🐛 Intelligent Bug Triage
+
+CTO.do automatically analyzes every bug report and:
+
+1. **Determines severity** - P0 (critical) to P2 (low priority)
+2. **Estimates impact** - Number of users affected, revenue impact
+3. **Finds similar issues** - Identifies duplicates and related bugs
+4. **Suggests fixes** - Provides code examples and documentation links
+5. **Assigns to best engineer** - Based on expertise, capacity, and context
+
+### 🔒 Security Auditing
+
+Continuous security monitoring with:
+
+- **Dependency scanning** - Detects vulnerable npm/pip/gem packages
+- **Secret detection** - Finds API keys, passwords, tokens in code
+- **Permission auditing** - Reviews IAM roles, database access
+- **Compliance checking** - SOC 2, GDPR, HIPAA, PCI-DSS
+- **Threat intelligence** - Real-time alerts on new vulnerabilities
+
+### ✅ Test Generation
+
+AI-generated tests that actually work:
+
+```typescript
+// Your function:
+export function calculateDiscount(price: number, couponCode: string): number {
+  if (couponCode === 'SAVE20') return price * 0.8
+  if (couponCode === 'SAVE50' && price > 100) return price * 0.5
+  return price
+}
+
+// CTO.do generates:
+describe('calculateDiscount', () => {
+  it('applies SAVE20 coupon correctly', () => {
+    expect(calculateDiscount(100, 'SAVE20')).toBe(80)
+  })
+
+  it('applies SAVE50 coupon for orders over $100', () => {
+    expect(calculateDiscount(150, 'SAVE50')).toBe(75)
+  })
+
+  it('does not apply SAVE50 coupon for orders under $100', () => {
+    expect(calculateDiscount(50, 'SAVE50')).toBe(50)
+  })
+
+  it('returns original price for invalid coupon', () => {
+    expect(calculateDiscount(100, 'INVALID')).toBe(100)
+  })
+
+  // Edge cases:
+  it('handles zero price', () => {
+    expect(calculateDiscount(0, 'SAVE20')).toBe(0)
+  })
+
+  it('handles empty coupon code', () => {
+    expect(calculateDiscount(100, '')).toBe(100)
+  })
+})
+```
+
+### 📚 Documentation Generation
+
+Always up-to-date technical documentation:
+
+- **API documentation** - Auto-generated from code and types
+- **Architecture decisions** - Captured from PRs and discussions
+- **Onboarding guides** - Step-by-step for new engineers
+- **Runbooks** - Deployment, debugging, incident response
+- **Changelogs** - Automatically generated from commits
+
+## Getting Started
+
+### 1. Install the GitHub App
+
+```bash
+# Visit https://cto.do/install
+# Click "Install on GitHub"
+# Select repositories to monitor
+```
+
+### 2. Configure Policies
+
+```typescript
+// .cto.config.ts
+export default {
+  codeReview: {
+    required: true,
+    approvalRequired: true,
+    checks: ['security', 'performance', 'style']
+  },
+  security: {
+    blockOnCritical: true,
+    scanDependencies: true,
+    compliance: ['SOC2', 'GDPR']
+  },
+  testing: {
+    minCoverage: 80,
+    autoGenerate: true,
+    types: ['unit', 'integration']
+  },
+  documentation: {
+    autoUpdate: true,
+    includeAPI: true,
+    includeArchitecture: true
+  }
+}
+```
+
+### 3. Connect Integrations
+
+```bash
+# Connect Slack for notifications
+cto integrations connect slack
+
+# Connect Jira for bug tracking
+cto integrations connect jira
+
+# Connect CI/CD
+cto integrations connect github-actions
+```
+
+## Implementation
+
+```typescript
+import type { BusinessModule } from 'graphdl'
+
+export const CTOAgent: BusinessModule = $ => {
+  const { db, ai, on, send, api } = $
+
+  // Automated PR review
+  on.github.pull_request.opened(async (pr) => {
+    const review = await ai.generate({
+      prompt: `Review this pull request for security, performance, and best practices:\n${pr.diff}`,
+      tools: ['analyze-security', 'check-performance', 'verify-tests']
+    })
+
+    await api.post(`/repos/${pr.repo}/pulls/${pr.number}/reviews`, {
+      event: review.approved ? 'APPROVE' : 'REQUEST_CHANGES',
+      body: review.summary,
+      comments: review.lineComments
+    })
+
+    await send.slack('#engineering', {
+      text: `PR #${pr.number} reviewed: ${review.summary}`
+    })
+  })
+
+  // Bug triage
+  on.github.issue.opened(async (issue) => {
+    const analysis = await ai.classify(issue.body, {
+      severity: ['P0', 'P1', 'P2'],
+      category: ['bug', 'feature', 'chore'],
+      impact: ['critical', 'high', 'medium', 'low']
+    })
+
+    const assignee = await db.engineers.findBest({
+      expertise: analysis.category,
+      capacity: { available: true }
+    })
+
+    await api.patch(`/repos/${issue.repo}/issues/${issue.number}`, {
+      labels: [analysis.severity, analysis.category],
+      assignees: [assignee.github_username],
+      priority: analysis.severity
+    })
+  })
+
+  return {}
+}
+```
+
+## API Access
+
+```typescript
+import { CTO } from '@cto.do/sdk'
+
+const cto = new CTO(process.env.CTO_API_KEY)
+
+// Review code
+const review = await cto.reviewCode({
+  code: sourceCode,
+  language: 'typescript',
+  checks: ['security', 'performance', 'style']
+})
+
+// Generate tests
+const tests = await cto.generateTests({
+  function: functionCode,
+  coverage: { target: 80 },
+  types: ['unit', 'integration']
+})
+
+// Audit security
+const audit = await cto.auditSecurity({
+  repository: 'github.com/acme/api',
+  compliance: ['SOC2', 'GDPR']
+})
+
+// Generate documentation
+const docs = await cto.generateDocs({
+  repository: 'github.com/acme/api',
+  includeAPI: true,
+  format: 'markdown'
+})
+```
+
+## Success Stories
+
+### Acme SaaS - 10x Engineering Team Growth
+
+"We grew from 10 to 100 engineers in 18 months. CTO.do was essential to maintaining code quality and security at scale. PR review time dropped from 2 days to 2 hours. Our bug rate decreased by 40% despite shipping 5x faster."
+
+**- Jane Smith, VP of Engineering**
+
+### FinanceApp - SOC 2 Compliance
+
+"We failed our first SOC 2 audit due to security vulnerabilities. CTO.do identified and fixed 47 critical security issues in our first week. We passed on our second attempt with zero findings."
+
+**- Mike Johnson, CTO**
+
+### PopularOSS - Community Growth
+
+"Managing 200+ contributors is impossible without automation. CTO.do provides instant, expert feedback to every contributor. Our PR acceptance rate increased by 70%, and contributor satisfaction is at an all-time high."
+
+**- Sarah Lee, Open Source Maintainer**
+
+## FAQ
+
+**Q: How does CTO.do compare to human code reviewers?**
+A: CTO.do is 10x faster and catches 95% of security vulnerabilities that humans miss. It's not a replacement for human review - it's a force multiplier that lets your engineers focus on architecture and design instead of syntax and security.
+
+**Q: Does CTO.do work with private repositories?**
+A: Yes. All code is encrypted in transit and at rest. We're SOC 2 Type II compliant and never train AI models on your code.
+
+**Q: What languages are supported?**
+A: JavaScript, TypeScript, Python, Go, Rust, Java, C#, Ruby, PHP, and more. See full list at cto.do/languages
+
+**Q: Can CTO.do integrate with our existing tools?**
+A: Yes. Native integrations with GitHub, GitLab, Slack, Jira, CircleCI, and 50+ other tools.
+
+## Ready to Transform Your Engineering Team?
+
+Start your free 14-day trial. No credit card required.
+
+[Start Free Trial →](/signup) | [Book Demo →](/demo)

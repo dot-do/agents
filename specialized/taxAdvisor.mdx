@@ -1,0 +1,252 @@
+---
+title: Tax Advisor Agent
+$type: Agent
+name: Tax Advisor Agent
+description: Provides tax planning guidance and identifies deductions and credits
+
+capabilities:
+  - tax-situation-analysis
+  - deduction-identification
+  - credit-eligibility
+  - estimated-tax-calculation
+  - tax-strategy-recommendations
+
+model:
+  provider: anthropic
+  model: claude-3-5-sonnet-20241022
+  temperature: 0.2
+
+systemPrompt: |
+  You are a tax advisory agent with expertise in US federal and state tax law. Your job is to:
+  1. Analyze client tax situation (income, deductions, credits)
+  2. Identify available deductions and tax credits
+  3. Calculate estimated tax liability
+  4. Recommend tax planning strategies
+  5. Explain tax implications in clear language
+
+  Focus areas:
+  - Income tax (W-2, 1099, business income)
+  - Deductions (standard vs itemized)
+  - Tax credits (child, education, energy)
+  - Retirement contributions (401k, IRA)
+  - Investment taxes (capital gains, dividends)
+  - Self-employment taxes
+
+functions:
+  - calculate-tax-liability
+  - identify-deductions
+  - assess-credit-eligibility
+  - recommend-strategies
+
+memory:
+  type: conversation
+  maxTokens: 15000
+---
+
+# Tax Advisor Agent
+
+An AI agent that analyzes tax situations and recommends tax planning strategies.
+
+## Core Capabilities
+
+### Tax Situation Analysis
+
+The agent collects and analyzes:
+
+**Income Sources:**
+- **W-2 Income** - Salary, wages, tips
+- **1099 Income** - Contract work, freelancing
+- **Business Income** - Self-employment, partnerships
+- **Investment Income** - Interest, dividends, capital gains
+- **Retirement Income** - Pensions, IRA distributions
+- **Other Income** - Rental, royalties, alimony
+
+**Filing Status:**
+- Single
+- Married Filing Jointly
+- Married Filing Separately
+- Head of Household
+- Qualifying Widow(er)
+
+### Deduction Identification
+
+**Standard Deduction (2024):**
+- Single: $14,600
+- Married Filing Jointly: $29,200
+- Head of Household: $21,900
+
+**Itemized Deductions:**
+The agent identifies potential itemized deductions:
+
+**State & Local Taxes (SALT):**
+- State income tax or sales tax
+- Property taxes
+- Cap: $10,000
+
+**Mortgage Interest:**
+- Primary residence
+- Second home
+- Debt limit: $750,000
+
+**Charitable Contributions:**
+- Cash donations (60% AGI limit)
+- Property donations (30% AGI limit)
+- Substantiation requirements
+
+**Medical Expenses:**
+- Expenses > 7.5% of AGI
+- Insurance premiums, prescriptions, procedures
+
+**Business Deductions (Self-Employed):**
+- Home office (simplified or actual)
+- Business travel and meals
+- Equipment and supplies
+- Health insurance premiums
+- Retirement contributions
+
+### Tax Credit Assessment
+
+The agent checks eligibility for credits:
+
+**Refundable Credits:**
+- **Earned Income Tax Credit (EITC)** - Up to $7,430
+- **Additional Child Tax Credit** - Refundable portion
+- **Premium Tax Credit** - Healthcare.gov subsidies
+
+**Non-Refundable Credits:**
+- **Child Tax Credit** - $2,000 per child
+- **Child & Dependent Care Credit** - Up to $2,100
+- **Education Credits** - American Opportunity ($2,500), Lifetime Learning ($2,000)
+- **Energy Credits** - Solar, EV, home efficiency
+- **Adoption Credit** - Up to $15,950
+
+### Estimated Tax Calculation
+
+**Federal Tax Brackets (2024):**
+| Income (Single) | Rate |
+|----------------|------|
+| $0 - $11,600 | 10% |
+| $11,600 - $47,150 | 12% |
+| $47,150 - $100,525 | 22% |
+| $100,525 - $191,950 | 24% |
+| $191,950 - $243,725 | 32% |
+| $243,725 - $609,350 | 35% |
+| $609,350+ | 37% |
+
+**Self-Employment Tax:**
+- Social Security: 12.4% (up to $168,600)
+- Medicare: 2.9% (no cap)
+- Additional Medicare: 0.9% (over $200k/$250k)
+
+## Tax Planning Strategies
+
+### Retirement Contributions
+
+**Traditional 401(k)/IRA:**
+- Reduces current taxable income
+- Tax-deferred growth
+- Taxed at withdrawal
+
+**Roth 401(k)/IRA:**
+- No current deduction
+- Tax-free growth
+- Tax-free withdrawals
+
+**Strategy:** Max traditional if high income now, Roth if expecting higher income later
+
+### Capital Gains Management
+
+**Tax-Loss Harvesting:**
+- Sell losing investments to offset gains
+- Up to $3,000 loss deduction
+- Carryforward excess losses
+
+**Long-Term vs Short-Term:**
+- Hold >1 year for preferential rates
+- Long-term rates: 0%, 15%, 20%
+- Short-term taxed as ordinary income
+
+### Charitable Giving
+
+**Strategies:**
+- **Bunching** - Combine multiple years donations
+- **Donor-Advised Fund** - Large deduction upfront
+- **Qualified Charitable Distribution** - From IRA after 70½
+
+### Business Deductions
+
+**Strategies:**
+- **Home Office** - Simplified ($5/sq ft) or actual
+- **Vehicle** - Standard mileage (67¢/mile) or actual
+- **Retirement Plans** - Solo 401(k), SEP IRA
+- **Section 179** - Immediate equipment expensing
+
+## Use Cases
+
+### W-2 Employee Tax Planning
+**Profile:** Single, $85k salary, renting
+
+**Agent Analysis:**
+1. Standard deduction likely better ($14,600)
+2. Max 401(k) to reduce AGI ($23,000 limit)
+3. Check education credit eligibility
+4. Consider HSA contributions ($4,150)
+
+**Estimated Tax Savings:** $5,520 (401k) + $500 (HSA) = $6,020
+
+### Self-Employed Tax Optimization
+**Profile:** Freelancer, $120k income
+
+**Agent Analysis:**
+1. Home office deduction (~$5,000)
+2. Health insurance deduction ($12,000)
+3. Solo 401(k) contribution ($23,000 employee + $20,000 employer)
+4. QBI deduction (20% of qualified income)
+
+**Estimated Tax Savings:** $15,000+
+
+### Retiree Tax Minimization
+**Profile:** Retired, pension + Social Security + investments
+
+**Agent Analysis:**
+1. Manage income to minimize SS taxation
+2. Qualified Charitable Distribution (QCD)
+3. Capital gains harvesting (0% rate if income <$94,050)
+4. Medicare surcharge avoidance
+
+## Example Conversation
+
+**User:** "I'm self-employed, made $150k last year. What deductions can I take?"
+
+**Agent:**
+1. Asks about business expenses (office, travel, equipment)
+2. Inquires about health insurance and retirement
+3. Identifies available deductions:
+   - Home office: $6,000
+   - Health insurance: $18,000
+   - Solo 401(k): $43,500
+   - Business expenses: $15,000
+4. Calculates tax impact (saves ~$30,000)
+5. Recommends quarterly estimated payments
+
+## Integration Points
+
+- **Financial Data:** Uses [[investment-portfolio-schema.mdx|Investment Portfolio]]
+- **ROI Calculation:** Connects to [[calculate-roi-function.mdx|ROI Calculator]]
+- **Tax Workflow:** Triggers [[generate-tax-return-workflow.mdx|Tax Return Workflow]]
+- **Advisor Agent:** Works with [[financial-advisor-agent.mdx|Financial Advisor]]
+
+## Compliance & Disclaimers
+
+- Agent provides educational information only
+- Not personalized tax advice
+- User should consult licensed tax professional
+- Tax laws change annually - verify current rules
+- State tax rules vary by jurisdiction
+
+## Related
+
+- [[financial-advisor-agent.mdx|Financial Advisor Agent]]
+- [[generate-tax-return-workflow.mdx|Tax Return Workflow]]
+- [[investment-portfolio-schema.mdx|Investment Portfolio Schema]]
+- [[calculate-roi-function.mdx|ROI Calculator]]

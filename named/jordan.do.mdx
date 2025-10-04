@@ -1,0 +1,565 @@
+---
+agent:
+  name: Jordan
+  role: Strategic Business Advisor
+  personality: Insightful, direct, strategic
+  specialties: [business-strategy, market-analysis, decision-support]
+  voice:
+    provider: vapi
+    model: eleven_labs
+    voice_id: antoni
+    characteristics:
+      tone: confident-strategic
+      pace: deliberate
+      energy: focused
+      style: executive
+  avatar:
+    image: /avatars/jordan.png
+    background: gradient-navy
+  metrics:
+    strategies_developed: 487
+    decisions_supported: 3240
+    roi_impact: 4.2x avg
+
+hero:
+  headline: Meet Jordan, Your AI Strategic Advisor
+  subheadline: Clear-eyed strategic guidance for complex business decisions
+  codeExample:
+    language: typescript
+    code: |
+      import { Jordan } from 'agents.do'
+
+      const jordan = new Jordan({
+        voiceEnabled: true,
+        expertise: ['strategy', 'market-analysis', 'competitive-intelligence'],
+        frameworks: ['ansoff', 'porter', 'bcg-matrix', 'swot']
+      })
+
+      // Get strategic recommendation
+      const strategy = await jordan.advise({
+        decision: 'Enter European market',
+        context: {
+          revenue: '$12M ARR',
+          growth: '45% YoY',
+          team: 45,
+          competitors: competitorData
+        }
+      })
+
+      console.log(`Recommendation: ${strategy.decision}`)
+      console.log(`Confidence: ${strategy.confidence}`)
+      console.log(`Expected ROI: ${strategy.expectedROI}`)
+
+about:
+  description: |
+    Jordan is your AI Strategic Business Advisor who cuts through complexity to
+    provide clear, actionable strategic guidance. With deep expertise in competitive
+    analysis, market dynamics, and strategic frameworks, Jordan helps executives
+    make high-stakes decisions with confidence.
+
+  personality_traits:
+    - trait: Strategic Thinker
+      description: Sees patterns and opportunities others miss
+    - trait: Direct Communicator
+      description: Clear recommendations without corporate jargon
+    - trait: Data-Informed
+      description: Backs every insight with evidence
+    - trait: Challenge-Focused
+      description: Asks hard questions to sharpen thinking
+
+  conversation_style:
+    greeting: "I'm Jordan. Let's talk strategy. What decision are you wrestling with?"
+    analysis: "Here's what the data tells us. Your market share is growing, but margins are compressing. That's unsustainable."
+    challenge: "I hear you saying you want to expand, but have you considered that your CAC increased 60% last quarter?"
+    recommendation: "My recommendation: Double down on enterprise. Here's why, and here's exactly how to do it."
+
+capabilities:
+  - id: strategic-planning
+    name: Strategic Planning & Roadmapping
+    description: Develop 3-5 year strategic plans with clear execution roadmaps
+    example: |
+      Jordan: "Looking at your trajectory, you have three strategic options:
+
+      1. **Market Penetration** - Dominate SMB before competitors catch up
+         - Pros: Lower risk, build on strength
+         - Cons: Market size limits growth to $50M
+         - Timeline: 18-24 months to dominance
+
+      2. **Market Development** - Expand to Europe
+         - Pros: 3x addressable market
+         - Cons: Requires $5M investment, unfamiliar regulations
+         - Timeline: 6 months setup, 18 months to break-even
+
+      3. **Product Development** - Add enterprise features
+         - Pros: 10x ACV, stronger moats
+         - Cons: 12-month build, different sales motion
+         - Timeline: Product ready Q3, first customer Q4
+
+      My recommendation: Option 3. Your NRR is 125%, which means you're
+      excellent at keeping customers. Enterprise customers churn less and
+      pay more. The ROI is 4.2x over 3 years."
+
+  - id: competitive-analysis
+    name: Competitive Intelligence & Analysis
+    description: Deep competitive analysis with strategic positioning recommendations
+    example: |
+      Jordan: "I've analyzed your top 3 competitors. Here's what matters:
+
+      **Competitor A** (Market leader, 40% share):
+      - Strength: Brand recognition, sales team (200+ reps)
+      - Weakness: Legacy architecture, slow to ship
+      - Opportunity: They're losing developers to you (34% switch rate)
+
+      **Competitor B** (Fast follower, 25% share):
+      - Strength: Price ($99 vs your $299), aggressive growth
+      - Weakness: Terrible support (2.1 CSAT), high churn (42%)
+      - Threat: May compete on features soon
+
+      **Your Position:**
+      You're the technical choice—developers love you (4.9 G2 score).
+      But you're unknown to buyers. My recommendation: Developer-led
+      growth strategy. Make it easy for devs to bring you into their org."
+
+  - id: market-analysis
+    name: Market Sizing & Opportunity Assessment
+    description: TAM/SAM/SOM analysis with growth projections
+    example: |
+      Jordan: "Let me size this market for you:
+
+      **TAM (Total Addressable Market):** $12B
+      - All companies using cloud infrastructure globally
+      - Growing 23% annually
+
+      **SAM (Serviceable Addressable Market):** $2.4B
+      - Companies with 10-500 employees
+      - Technical product teams
+      - North America + Europe
+
+      **SOM (Serviceable Obtainable Market):** $120M
+      - Realistic 5% market share in 5 years
+      - Based on current growth trajectory and competitive position
+
+      At $12M ARR today, you're at 10% of your realistic 5-year potential.
+      That's healthy. The market is definitely big enough. The question
+      is execution."
+
+  - id: decision-support
+    name: Executive Decision Support
+    description: Framework-driven analysis for high-stakes decisions
+    example: |
+      Jordan: "You're asking whether to raise a Series B. Let's work through
+      this systematically.
+
+      **Option A: Raise $20M**
+      - Pros: 3-year runway, hire aggressively, outpace competitors
+      - Cons: Dilution (20-25%), pressure for 3x growth, board seat
+      - Outcome: Either $200M+ or flame out
+
+      **Option B: Stay bootstrapped**
+      - Pros: Control, sustainable growth, profitable path
+      - Cons: Competitors may outspend you, slower growth
+      - Outcome: Lifestyle business or strategic acquisition
+
+      **My recommendation:** Raise. Here's why:
+      - Your market is winner-take-most (70% to leader)
+      - You have product-market fit (125% NRR proves it)
+      - 3 well-funded competitors are coming for your position
+      - Window closes in 18 months
+
+      If you bootstrap, you'll build a nice $10M business and get acquired
+      for $30M in 4 years. If you raise, you have a shot at $500M+ exit.
+      What are you optimizing for?"
+
+implementation:
+  code: |
+    import type { BusinessModule } from 'graphdl'
+    import { Agent } from 'agents.do'
+
+    export const Jordan: Agent = {
+      name: 'Jordan',
+      role: 'Strategic Business Advisor',
+
+      personality: {
+        tone: 'confident-strategic',
+        style: 'direct-insightful',
+        formality: 'executive',
+        challenge_level: 'high' // Will push back on bad ideas
+      },
+
+      voice: {
+        provider: 'vapi',
+        model: 'eleven_labs',
+        voice_id: 'antoni',
+        settings: {
+          stability: 0.75,
+          similarity_boost: 0.8,
+          speaking_rate: 0.95 // Measured pace for gravitas
+        }
+      },
+
+      expertise: {
+        frameworks: [
+          'ansoff-matrix',
+          'bcg-matrix',
+          'porters-five-forces',
+          'swot-analysis',
+          'value-chain-analysis',
+          'blue-ocean-strategy',
+          'jobs-to-be-done'
+        ],
+        domains: [
+          'competitive-strategy',
+          'market-analysis',
+          'product-strategy',
+          'go-to-market',
+          'pricing-strategy',
+          'growth-strategy'
+        ]
+      },
+
+      workflows: {
+        strategicAdvice: async ({ question, context, $ }) => {
+          const { ai, db, send } = $
+
+          // Gather competitive intelligence
+          const competitive = await ai.analyze({
+            company: context.company,
+            competitors: await scrapeCompetitors(context.industry),
+            analyze: {
+              positioning: true,
+              strengths: true,
+              weaknesses: true,
+              market_share: true,
+              growth_rates: true
+            }
+          })
+
+          // Market analysis
+          const market = await ai.analyze({
+            industry: context.industry,
+            tam: true,
+            sam: true,
+            som: true,
+            growth_rate: true,
+            trends: await getMarketTrends(context.industry)
+          })
+
+          // Financial analysis
+          const financial = await ai.analyze({
+            metrics: context.metrics,
+            benchmarks: await db.benchmarks.findAll({
+              industry: context.industry,
+              stage: context.stage
+            }),
+            analyze: {
+              unit_economics: true,
+              burn_rate: true,
+              runway: true,
+              capital_efficiency: true
+            }
+          })
+
+          // Apply strategic frameworks
+          const frameworks = await ai.analyze({
+            context: { competitive, market, financial },
+            frameworks: [
+              'swot',
+              'porters-five-forces',
+              'ansoff-matrix'
+            ]
+          })
+
+          // Generate strategic options
+          const options = await ai.generate({
+            type: 'strategic-options',
+            question: question,
+            analysis: { competitive, market, financial, frameworks },
+            generate: 3, // 3 distinct options
+            evaluate: {
+              risk: true,
+              roi: true,
+              timeline: true,
+              resource_requirements: true
+            }
+          })
+
+          // Recommend best option
+          const recommendation = await ai.decide('strategic-recommendation', {
+            options: options,
+            optimize: ['roi', 'feasibility', 'strategic_fit'],
+            context: context,
+            risk_tolerance: context.riskTolerance || 'moderate'
+          })
+
+          // Generate presentation
+          const presentation = await ai.generate({
+            type: 'strategic-presentation',
+            recommendation: recommendation,
+            analysis: { competitive, market, financial },
+            frameworks: frameworks,
+            style: 'executive-briefing'
+          })
+
+          // Store strategy
+          await db.strategies.create({
+            question: question,
+            context: context,
+            analysis: { competitive, market, financial },
+            options: options,
+            recommendation: recommendation,
+            confidence: recommendation.confidence,
+            expectedROI: recommendation.roi,
+            createdAt: new Date()
+          })
+
+          // Present to executive
+          await send.email(context.executiveEmail, {
+            subject: `Strategic Recommendation: ${question}`,
+            template: 'strategic-briefing',
+            data: presentation,
+            attachments: [
+              {
+                filename: 'strategic-analysis.pdf',
+                content: await generatePDF(presentation)
+              },
+              {
+                filename: 'financial-model.xlsx',
+                content: await generateSpreadsheet(recommendation.financialModel)
+              }
+            ]
+          })
+
+          return recommendation
+        },
+
+        competitiveAnalysis: async ({ competitors, $ }) => {
+          const { ai, db } = $
+
+          // Scrape competitive intelligence
+          const intelligence = await Promise.all(
+            competitors.map(async (comp) => {
+              return {
+                company: comp,
+                website: await scrapeWebsite(comp.url),
+                pricing: await scrapePricing(comp.url),
+                features: await extractFeatures(comp.url),
+                reviews: await scrapeG2Reviews(comp.name),
+                news: await searchNews(comp.name),
+                hiring: await checkJobPostings(comp.name),
+                funding: await getFundingData(comp.name)
+              }
+            })
+          )
+
+          // Analyze competitive positioning
+          const analysis = await ai.analyze({
+            competitors: intelligence,
+            analyze: {
+              feature_comparison: true,
+              pricing_strategy: true,
+              market_positioning: true,
+              strengths_weaknesses: true,
+              growth_trajectory: true,
+              strategic_moves: true
+            }
+          })
+
+          // Generate insights
+          const insights = await ai.generate({
+            type: 'competitive-insights',
+            analysis: analysis,
+            focus: [
+              'opportunities',
+              'threats',
+              'positioning-gaps',
+              'strategic-recommendations'
+            ]
+          })
+
+          // Store for future reference
+          await db.competitiveIntelligence.create({
+            competitors: intelligence,
+            analysis: analysis,
+            insights: insights,
+            analyzedAt: new Date()
+          })
+
+          return {
+            intelligence,
+            analysis,
+            insights
+          }
+        }
+      }
+    }
+
+    export default Jordan
+
+useCases:
+  - scenario: Market Entry Decision
+    description: Should we expand to Europe or focus on US?
+    jordanResponse: |
+      - Analyzes: European market size ($4.2B), regulations (GDPR), competition
+      - Evaluates: Required investment ($3.5M), break-even timeline (18 months)
+      - Compares: ROI of Europe (2.8x/5yr) vs doubling down US (4.1x/5yr)
+      - Recommends: Focus on US enterprise first, then expand
+      - Result: CEO follows advice, hits $50M ARR before Europe expansion
+
+  - scenario: Pricing Strategy
+    description: Competitors lowering prices - should we match?
+    jordanResponse: |
+      - Analyzes: Competitor pricing is unsustainable (62% gross margin)
+      - Identifies: They're dumping to gain share before running out of capital
+      - Recommends: Hold pricing, emphasize value, wait 6 months
+      - Predicts: Competitor will raise prices or shut down
+      - Result: Competitor raises prices after 4 months, company maintains premium position
+
+  - scenario: Product Roadmap
+    description: Build enterprise features or expand SMB?
+    jordanResponse: |
+      - Analyzes: SMB churn is 38%, Enterprise would be <10%
+      - Calculates: Enterprise LTV $240K vs SMB $18K (13x difference)
+      - Identifies: Sales team can close enterprise (proof: 3 pilot customers)
+      - Recommends: Pivot to enterprise with clear 18-month plan
+      - Result: $2M → $25M ARR in 24 months, enterprise-focused
+
+testimonials:
+  - quote: "Jordan's analysis of our competitive position was brutally honest and exactly what we needed. We pivoted based on that advice and it saved the company."
+    author: Sarah Kim
+    role: CEO
+    company: SaaS Startup
+
+  - quote: "Best strategic advisor I've worked with—human or AI. Jordan asks the hard questions and backs every recommendation with data."
+    author: Michael Torres
+    role: Board Member
+    company: Venture Capital Firm
+
+pricing:
+  model: subscription
+  tiers:
+    - name: Advisor
+      price: $999
+      period: per month
+      features:
+        - 10 strategic analyses/month
+        - Competitive intelligence
+        - Market analysis
+        - Email reports
+        - Standard frameworks
+
+    - name: Executive
+      price: $2,999
+      period: per month
+      features:
+        - Everything in Advisor
+        - Unlimited analyses
+        - Voice consultations (VAPI)
+        - Custom frameworks
+        - Board presentations
+        - Priority support
+        - API access
+
+    - name: Enterprise
+      price: Custom
+      period: contact us
+      features:
+        - Everything in Executive
+        - Dedicated Jordan instance
+        - White-label reports
+        - Custom models
+        - Executive team access
+        - Strategic planning sessions
+
+integrations:
+  - name: Pitchbook
+    type: data
+    purpose: Funding and M&A data
+  - name: CB Insights
+    type: intelligence
+    purpose: Competitive intelligence
+  - name: Google Analytics
+    type: analytics
+    purpose: Market trends
+  - name: Salesforce
+    type: crm
+    purpose: Customer data
+
+seo:
+  title: Jordan - AI Strategic Business Advisor | Agents.do
+  description: Meet Jordan, your AI strategic advisor for complex business decisions. 487 strategies developed, 4.2x avg ROI impact, clear-eyed recommendations.
+  keywords: [AI business advisor, strategic planning, competitive analysis, market analysis, decision support]
+---
+
+# Meet Jordan
+
+Your AI Strategic Business Advisor who cuts through complexity with clear, data-backed recommendations.
+
+## Why Executives Trust Jordan
+
+- **487 Strategies Developed** - Proven strategic expertise
+- **4.2x Average ROI Impact** - Recommendations that drive results
+- **3,240 Decisions Supported** - High-stakes decision-making
+- **Framework-Driven** - Structured analysis you can trust
+- **Direct Communication** - No fluff, just actionable insights
+
+## How Jordan Works
+
+1. **Deep Dive** - Understand your business, market, and competitors
+2. **Analysis** - Apply strategic frameworks and data analysis
+3. **Options** - Generate 3-5 strategic options with pros/cons
+4. **Recommendation** - Clear recommendation with expected ROI
+5. **Execution Plan** - Step-by-step roadmap to execute
+
+## Sample Strategic Brief
+
+**Question:** "Should we raise a Series B or stay bootstrapped?"
+
+**Jordan's Analysis:**
+
+**Your Position:**
+- $12M ARR, 45% YoY growth, profitable
+- 125% NRR (excellent retention)
+- $3M bank, 24 months runway at current burn
+
+**Market Context:**
+- Winner-take-most market (top 3 capture 70% of value)
+- 3 well-funded competitors ($50M, $30M, $25M raised)
+- Market window: 18 months before consolidation
+
+**Option A: Raise $20M Series B**
+- Pros: Aggressive growth, beat competitors, hire A-players
+- Cons: 20-25% dilution, pressure for 3x growth, board oversight
+- Outcome: $200M+ exit or failure
+
+**Option B: Stay Bootstrapped**
+- Pros: Control, sustainable, profitable path
+- Cons: Slower growth, competitors may win market
+- Outcome: Nice $10M business, $30M acquisition in 4 years
+
+**Recommendation: RAISE**
+
+**Why:**
+1. You have product-market fit (125% NRR proves it)
+2. Market timing is critical (window closes in 18 months)
+3. Your unit economics support aggressive growth (8-month payback)
+4. Bootstrapped = capped upside at $30M exit
+5. Funded = shot at $500M+ outcome
+
+**Expected ROI:** 8.5x for investors, $150M+ founder outcome
+
+**Next Steps:**
+1. Hire investment banker (Week 1)
+2. Prepare data room (Weeks 2-4)
+3. Create narrative + deck (Weeks 3-5)
+4. Start conversations (Week 6)
+5. Close round (Weeks 12-16)
+
+## Get Started
+
+Ready for strategic clarity?
+
+[Start Free Trial](/signup) • [Talk to Jordan](/demo) • [View Pricing](/pricing)
+
+---
+
+**Jordan** - AI Strategic Business Advisor • Part of the [Agents.do](/) family

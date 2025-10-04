@@ -1,0 +1,165 @@
+---
+title: Inventory Clerk Agent
+$type: Agent
+name: Inventory Clerk Agent
+description: Automated inventory tracking, monitoring, and reorder management
+
+capabilities:
+  - inventory-tracking
+  - stock-monitoring
+  - reorder-automation
+  - discrepancy-reconciliation
+  - alert-generation
+
+model:
+  provider: anthropic
+  model: claude-3-5-sonnet-20241022
+  temperature: 0.1
+
+systemPrompt: |
+  You are an inventory clerk agent responsible for:
+  1. Monitoring stock levels across all warehouses
+  2. Identifying products below reorder thresholds
+  3. Reconciling inventory discrepancies
+  4. Generating automated reorder requests
+  5. Alerting teams about critical stock issues
+
+functions:
+  - check-stock-levels
+  - generate-reorder-list
+  - reconcile-discrepancy
+  - send-low-stock-alert
+  - update-inventory-record
+
+memory:
+  type: conversation
+  maxTokens: 8000
+
+integrations:
+  - inventory-management-system
+  - warehouse-scanner-system
+  - purchasing-system
+---
+
+# Inventory Clerk Agent
+
+An AI agent that automates inventory tracking, stock monitoring, and reorder management with 76% AI performance efficiency.
+
+## Core Capabilities
+
+The agent handles four critical inventory functions:
+
+- **Stock Monitoring** - Real-time tracking across multiple locations
+- **Reorder Automation** - Generates purchase orders when stock low
+- **Discrepancy Resolution** - Identifies and reconciles count mismatches
+- **Alert Management** - Proactive notifications for critical issues
+
+## Inventory Tracking
+
+**Monitoring Criteria:**
+- Current quantity vs minimum threshold
+- Days of supply remaining
+- Warehouse location status
+- Pending orders in transit
+
+**Alert Thresholds:**
+- **Critical** (<7 days supply) - Immediate reorder
+- **Warning** (7-14 days) - Prepare reorder
+- **Normal** (14+ days) - Monitor only
+
+## Reorder Logic
+
+The agent calculates optimal reorder quantities:
+
+```yaml
+reorderQuantity:
+  calculation: (demandRate * leadTime * safetyFactor) - currentStock
+  safetyFactor: 1.5  # 50% buffer
+  minimumOrder: supplier.minimumOrderQuantity
+```
+
+**Decision Factors:**
+1. Historical demand patterns
+2. Supplier lead times
+3. Storage capacity constraints
+4. Budget availability
+5. Seasonal trends
+
+## Discrepancy Reconciliation
+
+**Common Issues:**
+- Physical count ≠ system count
+- Damaged/returned items not logged
+- Theft or loss detection
+- Data entry errors
+
+**Resolution Steps:**
+1. Agent identifies mismatch
+2. Reviews recent transactions
+3. Generates reconciliation report
+4. Updates system records
+5. Flags for human review if >$500 variance
+
+## Integration Points
+
+**Inventory Management System:**
+- Real-time stock level queries
+- Transaction history access
+- Reorder request submission
+
+**Warehouse Scanner System:**
+- Barcode scan imports
+- Physical count verification
+- Location tracking updates
+
+**Purchasing System:**
+- Supplier catalog access
+- Purchase order generation
+- Order status tracking
+
+## Usage Examples
+
+### Low Stock Alert
+
+```yaml
+trigger: scheduled-check (hourly)
+condition: productStock < reorderThreshold
+action:
+  - generate-reorder-list
+  - notify-purchasing-team
+  - update-dashboard
+```
+
+### Discrepancy Found
+
+```yaml
+trigger: physical-count-complete
+condition: physicalCount ≠ systemCount
+action:
+  - calculate-variance
+  - review-transactions
+  - generate-reconciliation-report
+  - flag-if-threshold-exceeded
+```
+
+## Performance Metrics
+
+**Tracked KPIs:**
+- **Stock Accuracy** - System vs physical count match rate
+- **Stockout Prevention** - % of avoided stockouts
+- **Reorder Efficiency** - Time from threshold to PO
+- **Cost Savings** - Reduced emergency orders
+
+**Target Metrics:**
+- 99%+ inventory accuracy
+- <1% stockout rate
+- <4 hour reorder generation
+- 30% reduction in rush orders
+
+## Related
+
+- [[order-processor-agent.mdx|Order Processor Agent]]
+- [[shipping-coordinator-agent.mdx|Shipping Coordinator Agent]]
+- [[processOrder.mdx|Process Order Workflow]]
+- [[manageInventory.mdx|Manage Inventory Workflow]]
+- [[ShopifyOrders.mdx|Shopify Integration]]

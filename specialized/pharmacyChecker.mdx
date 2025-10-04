@@ -1,0 +1,359 @@
+---
+title: Pharmacy Drug Interaction Checker
+$type: Agent
+name: Pharmacy Drug Interaction Checker
+description: Verifies prescriptions for drug interactions, allergies, and dosing
+
+capabilities:
+  - drug-interaction-checking
+  - allergy-verification
+  - dosage-validation
+  - contraindication-detection
+  - patient-counseling
+
+model:
+  provider: anthropic
+  model: claude-3-5-sonnet-20241022
+  temperature: 0.05
+
+systemPrompt: |
+  You are a pharmacy safety agent that checks prescriptions for potential issues. Your job is to:
+  1. Verify drug-drug interactions (major, moderate, minor)
+  2. Check against patient allergies and sensitivities
+  3. Validate dosing for age, weight, renal/hepatic function
+  4. Identify contraindications based on medical conditions
+  5. Flag duplicate therapy
+  6. Provide patient counseling points
+
+  Always consider:
+  - Severity of interaction (contraindicated, major, moderate, minor)
+  - Clinical significance vs theoretical risk
+  - Patient-specific factors (age, weight, organ function)
+  - Alternative medications available
+  - Risk vs benefit assessment
+
+  When in doubt, flag for pharmacist review.
+
+functions:
+  - check-interactions
+  - verify-allergies
+  - validate-dosing
+  - generate-counseling-points
+
+memory:
+  type: conversation
+  maxTokens: 12000
+---
+
+# Pharmacy Drug Interaction Checker
+
+An AI agent that reviews prescriptions for drug interactions, allergies, and dosing issues.
+
+## Core Capabilities
+
+### Drug-Drug Interaction Checking
+
+The agent checks all medications for interactions:
+
+**Interaction Severity Levels:**
+
+**🔴 Contraindicated (Do Not Dispense):**
+- Serious, life-threatening interaction
+- No circumstances where combination acceptable
+- Example: Warfarin + high-dose aspirin (major bleeding risk)
+
+**🟠 Major (Pharmacist Review Required):**
+- Serious interaction, may be life-threatening
+- Requires monitoring or dose adjustment
+- Example: Statins + clarithromycin (rhabdomyolysis risk)
+
+**🟡 Moderate (Document & Monitor):**
+- Moderate clinical significance
+- Patient should be monitored
+- Example: ACE inhibitors + potassium supplements
+
+**🟢 Minor (Informational):**
+- Limited clinical significance
+- Usually no intervention needed
+- Example: Calcium + tetracyclines (reduced absorption)
+
+### Drug Interaction Database
+
+**Common Interactions Checked:**
+
+**Cardiovascular:**
+- Warfarin + NSAIDs → Bleeding risk
+- Beta-blockers + calcium channel blockers → Heart block
+- Digoxin + diuretics → Toxicity from electrolyte changes
+
+**CNS:**
+- Multiple sedatives → Excessive CNS depression
+- SSRIs + MAOIs → Serotonin syndrome
+- Opioids + benzodiazepines → Respiratory depression
+
+**Metabolic:**
+- Statins + fibrates → Rhabdomyolysis
+- Methotrexate + NSAIDs → Toxicity
+- Lithium + ACE inhibitors → Lithium toxicity
+
+**Antibiotics:**
+- Fluoroquinolones + NSAIDs → Seizure risk
+- Macrolides + statins → Rhabdomyolysis
+- Rifampin + many drugs → Decreased effectiveness
+
+### Allergy Checking
+
+The agent verifies against documented allergies:
+
+**Allergy Types:**
+- **True Allergy** - IgE-mediated (rash, anaphylaxis)
+- **Intolerance** - Non-immune side effect (nausea)
+- **Cross-Sensitivity** - Related drug classes
+
+**Common Cross-Sensitivities:**
+- Penicillin → Cephalosporins (~10% cross-reactivity)
+- Sulfonamides → Sulfonylureas (theoretical)
+- ASA → Other NSAIDs
+
+**Agent Actions:**
+- Flag if drug matches allergy
+- Check cross-sensitivities
+- Suggest alternatives
+- Document allergy severity
+
+### Dosage Validation
+
+The agent verifies appropriate dosing:
+
+**Factors Considered:**
+
+**Patient Demographics:**
+- Age (pediatric, geriatric dosing)
+- Weight (mg/kg dosing)
+- Pregnancy/lactation status
+
+**Organ Function:**
+- Renal function (CrCl, eGFR)
+  - Adjust vancomycin, gabapentin, many others
+- Hepatic function (Child-Pugh score)
+  - Adjust warfarin, statins, many others
+
+**Clinical Indication:**
+- Dosing varies by condition
+- Example: ASA 81mg for prevention, 650mg for pain
+
+**Dosing Alerts:**
+- 🔴 Dose >max recommended → Potential toxicity
+- 🟡 Dose below usual range → Reduced efficacy
+- 🟢 Within normal range → No concerns
+
+### Contraindication Detection
+
+The agent flags contraindications based on:
+
+**Medical Conditions:**
+- Beta-blockers in severe asthma
+- NSAIDs in severe kidney disease
+- Metformin in renal impairment (eGFR <30)
+
+**Age-Related:**
+- Anticholinergics in elderly (fall risk)
+- Tetracyclines in children <8 (teeth staining)
+- Aspirin in children (Reye's syndrome)
+
+**Pregnancy Categories:**
+- Category X drugs (contraindicated)
+- Category D drugs (potential risk)
+- Require documented benefit-risk discussion
+
+### Duplicate Therapy Detection
+
+The agent identifies:
+
+**Same Drug, Different Names:**
+- Acetaminophen in multiple products
+- Same active ingredient, different brands
+
+**Same Therapeutic Class:**
+- Multiple NSAIDs
+- Multiple benzodiazepines
+- Multiple SSRIs
+
+**Action:** Flag and recommend consolidation
+
+## Prescription Review Workflow
+
+### Step 1: Prescription Received
+1. Scan or enter prescription details
+2. Identify drug name, strength, quantity, directions
+3. Retrieve patient profile from database
+
+### Step 2: Safety Checks
+1. **Allergy Check** - Match against patient allergies
+2. **Interaction Check** - Compare with current medications
+3. **Dosing Check** - Verify appropriate for patient
+4. **Contraindication Check** - Compare with medical conditions
+5. **Duplicate Check** - Look for therapeutic duplication
+
+### Step 3: Flag Resolution
+For each flag:
+1. Assess clinical significance
+2. Consider patient-specific factors
+3. Decide: Dispense with monitoring, contact prescriber, or refuse to fill
+
+### Step 4: Patient Counseling
+Generate counseling points:
+- How to take medication
+- Expected effects and duration
+- Common side effects
+- Warning signs requiring medical attention
+- Storage instructions
+
+## Example Prescription Review
+
+**Prescription:**
+- Patient: Jane Doe, 72yo, female, 60kg
+- Drug: Metformin 1000mg BID
+- Current Meds: Lisinopril, Atorvastatin, Warfarin
+
+**Patient Conditions:**
+- Diabetes, hypertension, atrial fibrillation
+- eGFR: 45 mL/min/1.73m²
+- No known drug allergies
+
+**Agent Analysis:**
+
+**✅ Allergy Check:** Pass (no allergies documented)
+
+**⚠️  Drug Interactions:**
+- Metformin + Lisinopril (minor) - Monitor renal function
+- No major interactions detected
+
+**🔴 Dosing Alert:**
+```
+WARNING: Metformin dose excessive for renal function
+
+Current dose: 1000mg BID (2000mg/day)
+Patient eGFR: 45 mL/min/1.73m²
+
+Recommendation:
+- eGFR 30-45: Max dose 1000mg/day
+- Current dose exceeds safe limit
+- Contact prescriber for dose reduction
+```
+
+**Action:** Hold prescription, contact prescriber, recommend 500mg BID max
+
+**✅ Contraindications:** None detected
+
+**🟢 Duplicate Therapy:** None detected
+
+**Counseling Points (if approved at lower dose):**
+- Take with meals to reduce GI upset
+- Monitor blood sugar as directed
+- Report muscle weakness, breathing problems (lactic acidosis signs)
+- Hold if undergoing contrast studies
+- Annual vitamin B12 levels recommended
+
+## Clinical Decision Support
+
+### When to Override Alerts
+
+**Minor interactions with established therapy:**
+- Patient stable on regimen >6 months
+- Benefits outweigh theoretical risks
+- Document rationale
+
+**Allergy vs Intolerance:**
+- "Allergy" is actually side effect
+- Drug needed, no alternatives
+- Risk manageable with monitoring
+
+**Off-Label Dosing:**
+- Prescriber note documenting rationale
+- Evidence-based off-label use
+- Patient informed and consents
+
+### When to Contact Prescriber
+
+**Always contact for:**
+- 🔴 Contraindicated interactions
+- 🔴 Documented true allergy match
+- 🔴 Dosing outside safe range
+- 🔴 Absolute contraindication
+
+**Consider contacting for:**
+- 🟡 Major interaction without documented plan
+- 🟡 Duplicate therapy without clear reason
+- 🟡 Unusual dosing for indication
+
+## Use Cases
+
+### Community Pharmacy
+**Workflow:** Prescription dropped off → Agent review → Pharmacist verification → Dispense
+
+**Agent Value:**
+- Pre-screens all prescriptions
+- Highlights critical issues
+- Reduces pharmacist review time
+- Improves safety
+
+### Hospital Pharmacy
+**Workflow:** Order entry → Agent review → Pharmacist approval → Dose preparation
+
+**Agent Value:**
+- Real-time alerts in EHR
+- Catches issues before preparation
+- Reduces medication errors
+- Supports clinical decisions
+
+### Long-Term Care Facility
+**Workflow:** Monthly med review → Agent scans all residents → Pharmacist consult report
+
+**Agent Value:**
+- Comprehensive interaction checking
+- Identifies inappropriate meds for elderly
+- Deprescribing opportunities
+- Regulatory compliance
+
+## Integration Points
+
+- **Patient Records:** Uses [[patient-record-schema.mdx|Patient EHR]]
+- **Dispensing Workflow:** Part of [[dispense-medication-workflow.mdx|Medication Workflow]]
+- **Drug Database:** External API (First Databank, Lexicomp)
+- **EHR Integration:** Bidirectional with hospital systems
+
+## Limitations
+
+**Agent Cannot:**
+- Replace pharmacist clinical judgment
+- Account for all patient-specific factors
+- Predict individual patient responses
+- Make final dispensing decisions
+
+**Requires:**
+- Complete patient medication history
+- Accurate allergy documentation
+- Current lab values (renal/hepatic function)
+- Pharmacist verification of all alerts
+
+## Regulatory Compliance
+
+**Standards Met:**
+- USP <797> for sterile compounding
+- USP <800> for hazardous drugs
+- State pharmacy board requirements
+- HIPAA privacy standards
+
+**Documentation:**
+- All alerts logged
+- Pharmacist interventions recorded
+- Prescriber communications documented
+- Patient counseling documented
+
+## Related
+
+- [[medical-triager-agent.mdx|Medical Triage Agent]]
+- [[dispense-medication-workflow.mdx|Medication Dispensing Workflow]]
+- [[assess-patient-workflow.mdx|Patient Assessment Workflow]]
+- [[patient-record-schema.mdx|Patient Records Schema]]

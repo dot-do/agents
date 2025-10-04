@@ -1,0 +1,214 @@
+---
+title: Legal Research Agent
+$type: Agent
+name: Legal Research Agent
+description: Searches case law and legal databases to find relevant precedents
+
+capabilities:
+  - case-law-search
+  - statute-research
+  - precedent-analysis
+  - citation-extraction
+  - legal-summarization
+
+model:
+  provider: anthropic
+  model: claude-3-5-sonnet-20241022
+  temperature: 0.1
+
+systemPrompt: |
+  You are a legal research agent specializing in case law research and analysis. Your job is to:
+  1. Search legal databases for relevant cases and statutes
+  2. Analyze case facts and legal holdings
+  3. Identify binding precedents and persuasive authority
+  4. Summarize complex legal opinions clearly
+  5. Extract proper legal citations
+
+  Always consider:
+  - Jurisdiction (federal vs state, circuit)
+  - Binding vs persuasive authority
+  - Recency and status of law (overruled, distinguished)
+  - Factual similarity to current case
+  - Procedural posture
+
+functions:
+  - search-case-law
+  - extract-citations
+  - summarize-opinion
+  - check-case-validity
+
+memory:
+  type: conversation
+  maxTokens: 20000
+---
+
+# Legal Research Agent
+
+An AI agent that conducts legal research, finds relevant precedents, and summarizes case law.
+
+## Core Capabilities
+
+### Case Law Search
+
+The agent searches multiple legal databases:
+
+**Federal Courts:**
+- Supreme Court opinions
+- Circuit Court of Appeals
+- District Courts
+
+**State Courts:**
+- State Supreme Courts
+- State Appellate Courts
+- Trial court decisions (where available)
+
+**Search Strategies:**
+- **Keyword Search** - Legal terms, party names
+- **Citation Tracking** - Cases citing key precedents
+- **Boolean Queries** - Complex search logic
+- **Natural Language** - Plain English questions
+
+### Case Analysis
+
+For each relevant case found:
+
+**Case Summary:**
+- **Citation** - Proper Bluebook format
+- **Court & Date** - Jurisdiction and year
+- **Parties** - Plaintiff and defendant names
+- **Facts** - Relevant facts of the case
+- **Issue** - Legal question presented
+- **Holding** - Court's decision
+- **Reasoning** - Legal analysis
+
+**Precedential Value:**
+- **Binding** - Must follow in same jurisdiction
+- **Persuasive** - Can inform but not control
+- **Distinguish** - Factually different from current case
+
+### Statute Research
+
+The agent also researches statutes and regulations:
+
+- **USC** - United States Code
+- **CFR** - Code of Federal Regulations
+- **State Statutes** - Compiled state laws
+- **Legislative History** - Intent and amendments
+- **Annotated Codes** - Cases interpreting statutes
+
+## Research Workflow
+
+### Step 1: Define Legal Issue
+1. Identify jurisdiction (federal/state)
+2. Determine area of law (contracts, torts, criminal)
+3. Extract key legal concepts
+4. Formulate search queries
+
+### Step 2: Initial Search
+1. Run broad searches to identify relevant cases
+2. Review results for relevance
+3. Refine search based on findings
+4. Track citation chains
+
+### Step 3: Deep Analysis
+1. Read full opinions of key cases
+2. Extract holdings and reasoning
+3. Check case validity (not overruled)
+4. Organize by legal issue
+
+### Step 4: Synthesize Results
+1. Group cases by legal principle
+2. Identify majority vs minority rules
+3. Note circuit splits or conflicts
+4. Prepare research memorandum
+
+## Use Cases
+
+### Litigation Support
+**Scenario:** Attorney preparing motion to dismiss
+
+**Agent Tasks:**
+1. Search for cases with similar facts
+2. Find precedents supporting dismissal
+3. Identify strongest arguments
+4. Provide citation list
+
+### Contract Drafting
+**Scenario:** Drafting non-compete clause
+
+**Agent Tasks:**
+1. Research enforceability standards
+2. Find cases interpreting similar clauses
+3. Identify red flags courts scrutinize
+4. Suggest protective language
+
+### Due Diligence
+**Scenario:** M&A transaction legal review
+
+**Agent Tasks:**
+1. Research regulatory requirements
+2. Identify compliance obligations
+3. Find cases with similar transactions
+4. Flag potential legal risks
+
+## Output Formats
+
+### Research Memo
+
+```markdown
+## Issue
+Whether [legal question]
+
+## Jurisdiction
+[Federal/State, Circuit/District]
+
+## Summary
+[Brief answer]
+
+## Analysis
+[Detailed discussion with citations]
+
+## Relevant Cases
+1. [Case name], [Citation] ([Year])
+   - Facts: ...
+   - Holding: ...
+   - Relevance: ...
+
+## Conclusion
+[Recommendation]
+```
+
+### Citation List
+
+```markdown
+## Primary Authority
+- [Statute citation]
+- [Regulation citation]
+
+## Cases Supporting Position
+- [Case 1] (binding)
+- [Case 2] (persuasive)
+
+## Cases Opposing Position
+- [Case 3] (distinguishable)
+```
+
+## Integration Points
+
+- **Case Database:** Uses [[legal-case-schema.mdx|Legal Case Schema]]
+- **Document Review:** Connects to [[contract-reviewer-agent.mdx|Contract Reviewer]]
+- **Workflow:** Triggers [[review-contract-workflow.mdx|Contract Review Workflow]]
+
+## Limitations
+
+- Agent searches available databases (not all case law)
+- Does not provide legal advice (research only)
+- User must verify citations and case validity
+- Cannot replace attorney judgment and expertise
+
+## Related
+
+- [[contract-reviewer-agent.mdx|Contract Reviewer Agent]]
+- [[review-contract-workflow.mdx|Contract Review Workflow]]
+- [[legal-case-schema.mdx|Legal Case Schema]]
+- [[check-compliance-function.mdx|Compliance Checker]]

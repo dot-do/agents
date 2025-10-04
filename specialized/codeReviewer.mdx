@@ -1,0 +1,371 @@
+---
+title: Code Reviewer
+$type: https://do.industries/types/Agent
+name: Code Reviewer
+description: Automated code review agent that analyzes code for bugs, security issues, and style violations
+category: Development
+occupation: [[Software Developer]]
+capabilities:
+  - Static code analysis
+  - Security vulnerability detection
+  - Code style enforcement
+  - Best practices validation
+tools:
+  - [[functions/parseCode]]
+  - [[functions/analyzePerformance]]
+workflows:
+  - [[workflows/reviewPullRequest]]
+model: claude-3-5-sonnet-20241022
+temperature: (number) 0.2
+maxTokens: (number) 4096
+systemPrompt: |
+  You are an expert code reviewer. Analyze code submissions for:
+
+  1. **Bugs and Logic Errors**
+     - Null pointer dereferences
+     - Off-by-one errors
+     - Race conditions
+     - Memory leaks
+
+  2. **Security Issues**
+     - SQL injection vulnerabilities
+     - XSS vulnerabilities
+     - Insecure dependencies
+     - Exposed secrets or credentials
+
+  3. **Code Style and Best Practices**
+     - Naming conventions
+     - Function complexity
+     - Code duplication
+     - Missing error handling
+
+  4. **Performance Concerns**
+     - Inefficient algorithms
+     - N+1 queries
+     - Unnecessary allocations
+     - Blocking operations
+
+  Provide specific, actionable feedback with line numbers and suggested fixes.
+examples:
+  - input: |
+      ```python
+      def get_user(user_id):
+          query = f"SELECT * FROM users WHERE id = {user_id}"
+          return db.execute(query)
+      ```
+    output: |
+      **Security Issue (High): SQL Injection Vulnerability**
+
+      Line 2: The query uses string interpolation which is vulnerable to SQL injection.
+
+      **Recommendation:**
+      ```python
+      def get_user(user_id):
+          query = "SELECT * FROM users WHERE id = ?"
+          return db.execute(query, (user_id,))
+      ```
+
+      Use parameterized queries to prevent SQL injection attacks.
+
+  - input: |
+      ```javascript
+      async function processItems(items) {
+        for (const item of items) {
+          await processItem(item)
+        }
+      }
+      ```
+    output: |
+      **Performance Issue (Medium): Sequential Processing**
+
+      Line 2-4: Items are processed sequentially, which is inefficient for I/O operations.
+
+      **Recommendation:**
+      ```javascript
+      async function processItems(items) {
+        await Promise.all(items.map(item => processItem(item)))
+      }
+      ```
+
+      Process items in parallel for better performance. Add error handling if needed.
+metrics:
+  - Issues found per review (number)
+  - False positive rate (number)
+  - Time saved vs manual review (number)
+integrations:
+  - service: [[GitHub]]
+    type: Pull Request Comments
+  - service: [[GitLab]]
+    type: Merge Request Comments
+  - service: [[Slack]]
+    type: Review notifications
+---
+
+# Code Reviewer Agent
+
+The Code Reviewer agent provides automated code review capabilities, analyzing submitted code for bugs, security vulnerabilities, style violations, and performance issues.
+
+## Capabilities
+
+### Static Analysis
+- Parse and analyze code structure using [[functions/parseCode]]
+- Detect common bug patterns and anti-patterns
+- Identify code smells and technical debt
+
+### Security Scanning
+- Check for OWASP Top 10 vulnerabilities
+- Scan dependencies for known CVEs
+- Detect exposed secrets and credentials
+- Validate input sanitization
+
+### Style Enforcement
+- Verify naming conventions
+- Check code formatting
+- Enforce architectural patterns
+- Validate documentation completeness
+
+### Performance Analysis
+- Identify algorithmic inefficiencies using [[functions/analyzePerformance]]
+- Detect N+1 query problems
+- Find unnecessary allocations
+- Highlight blocking operations
+
+## Integration with Workflows
+
+This agent is typically used as part of [[workflows/reviewPullRequest]], automatically analyzing code changes before human review.
+
+## Configuration
+
+```yaml
+codeReviewer:
+  rules:
+    security: strict
+    style: recommended
+    performance: advisory
+  thresholds:
+    maxComplexity: 10
+    minCoverage: 80
+    maxDuplication: 5
+  autoFix: false
+  blockOnCritical: true
+```
+
+## Example Review Output
+
+```markdown
+## Code Review Summary
+
+**Files Reviewed:** 5
+**Issues Found:** 3 high, 2 medium, 1 low
+
+### High Priority Issues
+
+1. **SQL Injection Vulnerability** (security/sql-injection)
+   - File: `api/users.py`, Line 45
+   - Use parameterized queries instead of string interpolation
+
+2. **Missing Error Handling** (reliability/no-error-handling)
+   - File: `api/orders.py`, Line 123
+   - Add try/catch block for database operations
+
+3. **Hardcoded Credentials** (security/hardcoded-secret)
+   - File: `config/database.js`, Line 12
+   - Move credentials to environment variables
+
+### Medium Priority Issues
+
+1. **Code Duplication** (maintainability/duplicate-code)
+   - Files: `utils/format.js`, `utils/helpers.js`
+   - Extract common logic into shared function
+
+2. **High Complexity** (maintainability/complexity)
+   - File: `services/payment.js`, Function: `processPayment`
+   - Complexity: 15 (threshold: 10)
+   - Consider breaking into smaller functions
+
+### Low Priority Issues
+
+1. **Missing JSDoc** (documentation/missing-jsdoc)
+   - File: `utils/validation.js`, Function: `validateEmail`
+   - Add function documentation
+```
+
+## Metrics and Reporting
+
+The agent tracks:
+- Issues found per review
+- Issue severity distribution
+- False positive rate
+- Time saved vs manual review
+- Most common issue types
+
+## Related Examples
+
+- [[agents/SecurityAuditor]] - Dedicated security scanning
+- [[agents/TestGenerator]] - Generate tests for found issues
+- [[workflows/reviewPullRequest]] - Complete PR review process
+- [[workflows/fixBug]] - Fix issues found in review
+
+## Implementation
+
+```typescript
+import type { BusinessModule } from 'graphdl'
+
+interface PullRequest {
+  id: string
+  title: string
+  author: string
+  files: CodeFile[]
+  targetBranch: string
+  createdAt: Date
+}
+
+interface CodeFile {
+  path: string
+  content: string
+  diff: string
+}
+
+interface Issue {
+  type: 'bug' | 'security' | 'style' | 'performance'
+  severity: 'critical' | 'high' | 'medium' | 'low'
+  file: string
+  line: number
+  message: string
+  suggestion?: string
+}
+
+/**
+ * Code Reviewer - Automated code quality analysis
+ *
+ * Relationships:
+ * - PullRequest submitted by Developer
+ * - Code analyzed by AI for bugs, security, style, performance
+ * - Issues created for each finding
+ * - Comments posted on PullRequest
+ * - Approval or rejection based on severity
+ */
+export const CodeReviewer: BusinessModule = $ => {
+  const { db, ai, send, on, decide } = $
+
+  on.pullRequest.opened(async (pr: PullRequest) => {
+    const issues: Issue[] = []
+
+    // Analyze each file
+    for (const file of pr.files) {
+      // AI-powered code analysis
+      const analysis = await ai.extract({
+        prompt: `Review this code diff for bugs, security issues, style violations, and performance concerns:\n\nFile: ${file.path}\n\n${file.diff}`,
+        schema: {
+          bugs: 'array<{ line: number, description: string, severity: string, fix: string }>',
+          security: 'array<{ line: number, vulnerability: string, severity: string, fix: string }>',
+          style: 'array<{ line: number, issue: string, suggestion: string }>',
+          performance: 'array<{ line: number, issue: string, optimization: string }>',
+        },
+      })
+
+      // Convert to issue objects
+      analysis.bugs?.forEach((bug: any) => {
+        issues.push({
+          type: 'bug',
+          severity: bug.severity,
+          file: file.path,
+          line: bug.line,
+          message: bug.description,
+          suggestion: bug.fix,
+        })
+      })
+
+      analysis.security?.forEach((sec: any) => {
+        issues.push({
+          type: 'security',
+          severity: sec.severity,
+          file: file.path,
+          line: sec.line,
+          message: sec.vulnerability,
+          suggestion: sec.fix,
+        })
+      })
+
+      analysis.style?.forEach((style: any) => {
+        issues.push({
+          type: 'style',
+          severity: 'low',
+          file: file.path,
+          line: style.line,
+          message: style.issue,
+          suggestion: style.suggestion,
+        })
+      })
+
+      analysis.performance?.forEach((perf: any) => {
+        issues.push({
+          type: 'performance',
+          severity: 'medium',
+          file: file.path,
+          line: perf.line,
+          message: perf.issue,
+          suggestion: perf.optimization,
+        })
+      })
+    }
+
+    // Store issues in database
+    await db.codeReviews.create({
+      pullRequestId: pr.id,
+      issues,
+      reviewedAt: new Date(),
+    })
+
+    // Post comments on PR
+    for (const issue of issues) {
+      const comment = `**${issue.type.toUpperCase()} (${issue.severity})**: ${issue.message}\n\n${issue.suggestion ? `**Suggested fix:**\n\`\`\`\n${issue.suggestion}\n\`\`\`` : ''}`
+
+      await send.github.comment(pr.id, {
+        path: issue.file,
+        line: issue.line,
+        body: comment,
+      })
+    }
+
+    // Determine approval status
+    const criticalIssues = issues.filter(i => i.severity === 'critical')
+    const highIssues = issues.filter(i => i.severity === 'high')
+
+    decide
+      .if(criticalIssues.length > 0)
+      .then(async () => {
+        // Block merge on critical issues
+        await send.github.review(pr.id, {
+          event: 'REQUEST_CHANGES',
+          body: `❌ **Review failed** - ${criticalIssues.length} critical issue(s) must be fixed before merge.\n\nCritical issues:\n${criticalIssues.map(i => `- ${i.file}:${i.line} - ${i.message}`).join('\n')}`,
+        })
+      })
+      .elseif(highIssues.length > 2)
+      .then(async () => {
+        // Request changes for multiple high issues
+        await send.github.review(pr.id, {
+          event: 'REQUEST_CHANGES',
+          body: `⚠️ **Review requires attention** - ${highIssues.length} high-priority issues found.\n\nPlease address these issues before merge.`,
+        })
+      })
+      .else(async () => {
+        // Approve with optional comments
+        const summary = `✅ **Code review passed**\n\n- ${issues.length} total issues found\n- ${issues.filter(i => i.severity === 'medium').length} medium priority\n- ${issues.filter(i => i.severity === 'low').length} low priority\n\nConsider addressing the comments above.`
+
+        await send.github.review(pr.id, {
+          event: 'APPROVE',
+          body: summary,
+        })
+      })
+  })
+
+  return {
+    async reviewPullRequest(prId: string) {
+      const pr = await db.pullRequests.findById(prId)
+      await on.pullRequest.opened(pr)
+      return pr
+    },
+  }
+}
+```

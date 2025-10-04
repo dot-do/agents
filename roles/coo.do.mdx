@@ -1,0 +1,793 @@
+---
+hero:
+  headline: Your AI Chief Operating Officer
+  subheadline: Streamline operations and scale efficiently with AI-powered operational excellence
+  codeExample:
+    language: typescript
+    code: |
+      import { COO } from 'coo.do'
+
+      const coo = new COO({
+        facilities: ['warehouse-east', 'warehouse-west', 'dc-central'],
+        integrations: ['netsuite', 'shipstation', 'shopify', 'supplyhub'],
+        policies: {
+          reorderPoint: 'auto-calculate',
+          fulfillmentSLA: { standard: 24, express: 4 },
+          supplierScoring: 'continuous',
+          warehouseOptimization: 'ai-driven'
+        }
+      })
+
+      // Automatically manage inventory across all facilities
+      await coo.inventory.optimize()
+
+      // Process orders with intelligent routing
+      const order = await coo.orders.fulfill({
+        orderId: 'ORD-12345',
+        priority: 'express',
+        routing: 'optimize-cost'
+      })
+
+      // Monitor supply chain health
+      const metrics = await coo.metrics.realtime()
+      console.log(`Fill rate: ${metrics.fillRate}%`)
+      console.log(`On-time delivery: ${metrics.ontimeDelivery}%`)
+  primaryCTA:
+    text: Start Free Trial
+    href: /signup
+  secondaryCTA:
+    text: Book Demo
+    href: /demo
+  badges:
+    - 99.8% uptime
+    - 24/7 monitoring
+    - SOC 2 Type II
+
+capabilities:
+  - id: inventory-management
+    name: Intelligent Inventory Management
+    description: AI-powered stock optimization across all facilities with predictive reordering and demand forecasting.
+    icon: 📦
+    metrics:
+      - label: Inventory Accuracy
+        value: 99.5%
+      - label: Stockout Reduction
+        value: 85%
+      - label: Carrying Cost Savings
+        value: 30%
+    codeExample:
+      language: typescript
+      code: |
+        // Real-time inventory optimization
+        on.inventory.low(async (item) => {
+          const forecast = await ai.predict({
+            metric: 'demand',
+            item: item.sku,
+            horizon: '30-days',
+            factors: ['seasonality', 'trends', 'promotions']
+          })
+
+          const reorderQty = calculateOptimalOrder(
+            item.current,
+            forecast.predicted,
+            item.leadTime,
+            item.safetyStock
+          )
+
+          if (reorderQty > 0) {
+            const po = await db.purchaseOrders.create({
+              supplier: item.primarySupplier,
+              sku: item.sku,
+              quantity: reorderQty,
+              expectedDate: addDays(new Date(), item.leadTime)
+            })
+
+            await send.slack('#operations', {
+              text: `🔔 Auto-reorder initiated: ${item.name} (${reorderQty} units)`
+            })
+          }
+        })
+
+  - id: order-fulfillment
+    name: Automated Order Fulfillment
+    description: End-to-end order processing with intelligent routing, picking optimization, and real-time tracking.
+    icon: 📋
+    metrics:
+      - label: Processing Speed
+        value: 90% faster
+      - label: Picking Accuracy
+        value: 99.9%
+      - label: Same-Day Fulfillment
+        value: 95%
+    codeExample:
+      language: typescript
+      code: |
+        // Intelligent order routing and fulfillment
+        on.order.created(async (order) => {
+          // Find optimal warehouse based on inventory, proximity, and capacity
+          const warehouse = await ai.decide('select-warehouse', {
+            options: await db.warehouses.findAll({ status: 'active' }),
+            criteria: {
+              inventory: order.items,
+              destination: order.shippingAddress,
+              priority: order.priority,
+              cost: 'minimize',
+              speed: order.shippingMethod
+            }
+          })
+
+          // Generate optimized picking route
+          const pickList = await ai.generate('picking-route', {
+            items: order.items,
+            warehouse: warehouse.layout,
+            strategy: 'minimal-distance'
+          })
+
+          // Create fulfillment task
+          const fulfillment = await db.fulfillments.create({
+            orderId: order.id,
+            warehouseId: warehouse.id,
+            pickList: pickList,
+            assignedTo: await assignPicker(warehouse.id),
+            dueBy: calculateSLA(order.createdAt, order.shippingMethod)
+          })
+
+          await send.notification(fulfillment.assignedTo, {
+            title: `New Order: ${order.id}`,
+            body: `${order.items.length} items - Due: ${fulfillment.dueBy}`
+          })
+        })
+
+  - id: logistics-coordination
+    name: Smart Logistics Coordination
+    description: Multi-carrier shipping optimization with real-time rate shopping and automated label generation.
+    icon: 🚚
+    metrics:
+      - label: Shipping Cost Savings
+        value: 25%
+      - label: On-Time Delivery
+        value: 98%
+      - label: Label Generation
+        value: Instant
+    codeExample:
+      language: typescript
+      code: |
+        // Automated carrier selection and shipping
+        on.fulfillment.packed(async (fulfillment) => {
+          const order = await db.orders.findOne({ id: fulfillment.orderId })
+
+          // Get real-time rates from all carriers
+          const rates = await api.post('https://shipping.do/rates', {
+            origin: fulfillment.warehouse.address,
+            destination: order.shippingAddress,
+            packages: fulfillment.packages,
+            service: order.shippingMethod
+          })
+
+          // AI-powered carrier selection
+          const bestCarrier = await ai.decide('select-carrier', {
+            options: rates,
+            optimize: ['cost', 'speed', 'reliability'],
+            constraints: {
+              maxCost: order.shippingBudget,
+              requiredDelivery: order.promisedDate
+            }
+          })
+
+          // Generate shipping label
+          const label = await api.post(`https://${bestCarrier.slug}.do/labels`, {
+            shipment: {
+              from: fulfillment.warehouse.address,
+              to: order.shippingAddress,
+              packages: fulfillment.packages,
+              service: bestCarrier.service
+            }
+          })
+
+          await db.shipments.create({
+            fulfillmentId: fulfillment.id,
+            carrier: bestCarrier.name,
+            trackingNumber: label.trackingNumber,
+            labelUrl: label.labelUrl,
+            cost: bestCarrier.rate,
+            estimatedDelivery: bestCarrier.estimatedDelivery
+          })
+
+          await send.email(order.customer.email, {
+            template: 'shipped',
+            data: {
+              trackingNumber: label.trackingNumber,
+              trackingUrl: label.trackingUrl
+            }
+          })
+        })
+
+  - id: warehouse-optimization
+    name: Warehouse Optimization
+    description: AI-driven layout optimization, capacity planning, and workforce management for maximum efficiency.
+    icon: 🏭
+    metrics:
+      - label: Space Utilization
+        value: 92%
+      - label: Picking Efficiency
+        value: 3x faster
+      - label: Labor Cost Reduction
+        value: 35%
+    codeExample:
+      language: typescript
+      code: |
+        // Dynamic warehouse optimization
+        every('week', async () => {
+          const warehouses = await db.warehouses.findAll()
+
+          for (const warehouse of warehouses) {
+            // Analyze product velocity
+            const analysis = await ai.analyze({
+              data: await db.transactions.findAll({
+                warehouseId: warehouse.id,
+                period: 'last-90-days'
+              }),
+              metrics: ['velocity', 'frequency', 'co-occurrence']
+            })
+
+            // Generate optimized layout
+            const layout = await ai.generate('warehouse-layout', {
+              products: analysis.products,
+              zones: warehouse.zones,
+              objectives: {
+                minimizePickingDistance: 0.6,
+                balanceWorkload: 0.3,
+                maximizeStorage: 0.1
+              }
+            })
+
+            // Calculate staffing requirements
+            const staffing = await ai.predict({
+              metric: 'labor-hours',
+              warehouse: warehouse.id,
+              horizon: '4-weeks',
+              factors: ['order-volume', 'seasonality', 'promotions']
+            })
+
+            await db.warehouseOptimizations.create({
+              warehouseId: warehouse.id,
+              layoutRecommendations: layout.changes,
+              staffingRecommendations: staffing.schedule,
+              projectedSavings: layout.savings,
+              implementationPriority: layout.priority
+            })
+
+            await send.email(warehouse.manager.email, {
+              subject: 'Weekly Warehouse Optimization Report',
+              template: 'warehouse-report',
+              data: { layout, staffing, warehouse }
+            })
+          }
+        })
+
+  - id: supplier-management
+    name: Supplier Performance Management
+    description: Continuous supplier scoring, automated procurement, and supply chain risk monitoring.
+    icon: 🤝
+    metrics:
+      - label: Supplier Reliability
+        value: 96%
+      - label: Lead Time Accuracy
+        value: 94%
+      - label: Procurement Savings
+        value: 18%
+    codeExample:
+      language: typescript
+      code: |
+        // Continuous supplier performance tracking
+        on.purchaseOrder.received(async (po) => {
+          // Calculate performance metrics
+          const onTime = isOnTime(po.receivedDate, po.expectedDate)
+          const qualityPassed = po.qualityInspection.passed
+          const quantityMatch = po.receivedQty === po.orderedQty
+
+          // Update supplier scorecard
+          await db.suppliers.updateScore(po.supplierId, {
+            onTimeDelivery: onTime,
+            qualityCompliance: qualityPassed,
+            quantityAccuracy: quantityMatch,
+            responseTime: po.communication.avgResponseHours,
+            pricing: po.competitiveness
+          })
+
+          const supplier = await db.suppliers.findOne({ id: po.supplierId })
+
+          // Flag underperforming suppliers
+          if (supplier.score < 0.75) {
+            await send.slack('#operations', {
+              text: `⚠️ Supplier performance alert: ${supplier.name} (Score: ${supplier.score})`
+            })
+
+            // Automatically source alternatives
+            const alternatives = await api.post('https://procurement.do/alternatives', {
+              product: po.items[0].sku,
+              minScore: 0.85,
+              maxLeadTime: po.leadTime,
+              region: supplier.region
+            })
+
+            if (alternatives.length > 0) {
+              await db.procurementRecommendations.create({
+                supplierId: po.supplierId,
+                reason: 'low-performance-score',
+                alternatives: alternatives,
+                priority: 'high'
+              })
+            }
+          }
+        })
+
+features:
+  - title: Multi-Facility Management
+    description: Centralized control across all warehouses, distribution centers, and fulfillment locations
+    icon: 🌐
+  - title: Real-Time Visibility
+    description: Live dashboards showing inventory levels, order status, and operational metrics across the supply chain
+    icon: 👁️
+  - title: Predictive Analytics
+    description: AI-powered demand forecasting, capacity planning, and risk prediction
+    icon: 📊
+  - title: Smart Automation
+    description: Automate reordering, routing, labeling, and communication across your entire operation
+    icon: ⚡
+  - title: Carrier Integration
+    description: Connect with 50+ shipping carriers for rate shopping and automated label generation
+    icon: 🔌
+  - title: Quality Control
+    description: Automated quality checks, inspection workflows, and compliance tracking
+    icon: ✅
+
+useCases:
+  - company: ShipFast Logistics
+    industry: E-commerce Fulfillment
+    challenge: Managing 10,000+ daily orders across 5 warehouses with inconsistent on-time delivery (87%)
+    solution: Implemented COO.do for intelligent order routing, automated fulfillment, and predictive inventory management
+    results:
+      - metric: On-time delivery improved to 98%
+      - metric: Fulfillment costs reduced by 28%
+      - metric: Stockouts decreased by 92%
+      - metric: Customer satisfaction up to 4.8/5.0
+    testimonial:
+      quote: "COO.do transformed our operations. We went from constant firefighting to smooth, predictable execution. The AI routing alone saved us $240k in shipping costs last year."
+      author: Sarah Chen
+      role: VP of Operations
+      company: ShipFast Logistics
+
+  - company: GreenGoods Market
+    industry: Organic Grocery Retail
+    challenge: Perishable inventory management across 15 stores with 22% spoilage rate and frequent stockouts
+    solution: Deployed COO.do for demand forecasting, automated reordering, and warehouse optimization
+    results:
+      - metric: Spoilage reduced to 4%
+      - metric: Stockouts down 89%
+      - metric: Gross margin improved 12%
+      - metric: Customer retention up 24%
+    testimonial:
+      quote: "The AI forecasting is incredible. It accounts for weather, local events, even social media trends. We've gone from guessing to knowing exactly what to stock."
+      author: Marcus Rodriguez
+      role: COO
+      company: GreenGoods Market
+
+  - company: BuildRight Supply
+    industry: Construction Materials Distribution
+    challenge: Managing 50,000 SKUs across 8 distribution centers with poor visibility and high carrying costs
+    solution: Implemented COO.do for multi-facility inventory optimization and supplier performance management
+    results:
+      - metric: Inventory carrying costs down 34%
+      - metric: Warehouse space utilization up to 92%
+      - metric: Supplier lead time variance reduced 78%
+      - metric: Order fill rate improved to 99.2%
+    testimonial:
+      quote: "COO.do gave us the visibility and control we desperately needed. The automated reordering alone freed up 15 hours a week of our buyers' time."
+      author: Jennifer Wu
+      role: Director of Supply Chain
+      company: BuildRight Supply
+
+pricing:
+  tiers:
+    - name: Starter
+      price: $299
+      period: per month
+      description: Perfect for growing operations teams managing single facilities
+      features:
+        - Up to 1,000 orders/month
+        - Single warehouse/facility
+        - 5 team members
+        - Basic inventory management
+        - Standard integrations
+        - Email support
+        - 99.5% uptime SLA
+      cta:
+        text: Start Free Trial
+        href: /signup?plan=starter
+
+    - name: Professional
+      price: $999
+      period: per month
+      description: For scaling businesses with multi-facility operations
+      popular: true
+      features:
+        - Up to 10,000 orders/month
+        - Up to 5 warehouses/facilities
+        - Unlimited team members
+        - Advanced inventory optimization
+        - AI-powered demand forecasting
+        - Multi-carrier rate shopping
+        - All integrations included
+        - Priority support
+        - 99.9% uptime SLA
+        - Dedicated success manager
+      cta:
+        text: Start Free Trial
+        href: /signup?plan=professional
+
+    - name: Enterprise
+      price: Custom
+      period: contact us
+      description: For large operations requiring advanced customization and dedicated support
+      features:
+        - Unlimited orders
+        - Unlimited warehouses/facilities
+        - Unlimited team members
+        - Custom AI models
+        - White-label options
+        - API access + webhooks
+        - Custom integrations
+        - 24/7 phone support
+        - 99.95% uptime SLA
+        - Dedicated technical team
+        - On-premise deployment option
+      cta:
+        text: Contact Sales
+        href: /contact-sales
+
+integrations:
+  categories:
+    - name: ERP Systems
+      description: Connect with enterprise resource planning platforms
+      integrations:
+        - name: NetSuite
+          logo: /logos/netsuite.svg
+          docs: /integrations/netsuite
+        - name: SAP
+          logo: /logos/sap.svg
+          docs: /integrations/sap
+        - name: Microsoft Dynamics
+          logo: /logos/dynamics.svg
+          docs: /integrations/dynamics
+        - name: Oracle
+          logo: /logos/oracle.svg
+          docs: /integrations/oracle
+
+    - name: Warehouse Management
+      description: Integrate with WMS and inventory systems
+      integrations:
+        - name: Fishbowl
+          logo: /logos/fishbowl.svg
+          docs: /integrations/fishbowl
+        - name: Cin7
+          logo: /logos/cin7.svg
+          docs: /integrations/cin7
+        - name: Katana
+          logo: /logos/katana.svg
+          docs: /integrations/katana
+        - name: Unleashed
+          logo: /logos/unleashed.svg
+          docs: /integrations/unleashed
+
+    - name: Shipping & Logistics
+      description: Connect with carriers and shipping platforms
+      integrations:
+        - name: ShipStation
+          logo: /logos/shipstation.svg
+          docs: /integrations/shipstation
+        - name: ShipBob
+          logo: /logos/shipbob.svg
+          docs: /integrations/shipbob
+        - name: Easyship
+          logo: /logos/easyship.svg
+          docs: /integrations/easyship
+        - name: Shippo
+          logo: /logos/shippo.svg
+          docs: /integrations/shippo
+
+    - name: E-commerce Platforms
+      description: Sync with online stores and marketplaces
+      integrations:
+        - name: Shopify
+          logo: /logos/shopify.svg
+          docs: /integrations/shopify
+        - name: WooCommerce
+          logo: /logos/woocommerce.svg
+          docs: /integrations/woocommerce
+        - name: BigCommerce
+          logo: /logos/bigcommerce.svg
+          docs: /integrations/bigcommerce
+        - name: Amazon
+          logo: /logos/amazon.svg
+          docs: /integrations/amazon
+
+routes:
+  collections:
+    - name: capabilities
+      pattern: /capabilities/[capability]/readme.mdx
+      data:
+        - capability: inventory-management
+          title: Intelligent Inventory Management
+          description: AI-powered stock optimization with predictive reordering
+        - capability: order-fulfillment
+          title: Automated Order Fulfillment
+          description: End-to-end order processing with intelligent routing
+        - capability: logistics-coordination
+          title: Smart Logistics Coordination
+          description: Multi-carrier shipping optimization and automated labels
+        - capability: warehouse-optimization
+          title: Warehouse Optimization
+          description: AI-driven layout and workforce management
+        - capability: supplier-management
+          title: Supplier Performance Management
+          description: Continuous scoring and automated procurement
+
+    - name: integrations
+      pattern: /integrations/[integration]/readme.mdx
+      data:
+        - integration: netsuite
+          title: NetSuite Integration
+          category: ERP Systems
+        - integration: shipstation
+          title: ShipStation Integration
+          category: Shipping & Logistics
+        - integration: shopify
+          title: Shopify Integration
+          category: E-commerce Platforms
+        - integration: fishbowl
+          title: Fishbowl Integration
+          category: Warehouse Management
+
+seo:
+  title: COO.do - Your AI Chief Operating Officer for Operations Excellence
+  description: Streamline operations with AI-powered inventory management, order fulfillment, logistics coordination, and warehouse optimization. 99.8% uptime, 24/7 monitoring.
+  keywords:
+    - AI Chief Operating Officer
+    - Operations automation
+    - Inventory management software
+    - Order fulfillment automation
+    - Warehouse optimization
+    - Supply chain management
+    - Multi-facility operations
+    - Smart logistics
+    - Demand forecasting
+    - Supplier management
+
+analytics:
+  events:
+    - name: coo_demo_requested
+      description: User requested a demo
+    - name: coo_trial_started
+      description: User started free trial
+    - name: coo_capability_viewed
+      description: User viewed capability details
+    - name: coo_integration_explored
+      description: User explored integration documentation
+---
+
+# Your AI Chief Operating Officer
+
+**COO.do** is your AI-powered operations leader, managing inventory, fulfillment, logistics, and suppliers across all facilities. Get 99.5% inventory accuracy, 98% on-time delivery, and 30% cost savings.
+
+## Why COO.do?
+
+Modern operations teams are overwhelmed:
+- **Manual processes** slow down fulfillment and increase errors
+- **Poor visibility** across multiple warehouses and facilities
+- **Reactive management** leads to stockouts and rush shipping
+- **Fragmented systems** make coordination difficult
+- **Rising costs** from inefficient operations
+
+COO.do solves these challenges with AI-powered automation that works 24/7 to optimize your entire operation.
+
+## Key Capabilities
+
+### 📦 Intelligent Inventory Management
+Never stock out or overstock again. Our AI analyzes historical data, seasonality, trends, and external factors to predict demand with 95% accuracy and automatically reorder at optimal quantities.
+
+### 📋 Automated Order Fulfillment
+From order creation to shipment, everything is automated. Intelligent warehouse selection, optimized picking routes, and real-time tracking ensure 95% same-day fulfillment.
+
+### 🚚 Smart Logistics Coordination
+Get the best shipping rates automatically. Our AI shops rates across 50+ carriers in real-time and generates labels instantly, saving 25% on shipping costs.
+
+### 🏭 Warehouse Optimization
+Maximize space utilization and labor efficiency with AI-driven layout optimization and workforce planning. Achieve 92% space utilization and 3x faster picking.
+
+### 🤝 Supplier Performance Management
+Continuously monitor and score suppliers on reliability, quality, and cost. Automatically identify alternatives when performance drops below thresholds.
+
+## Real-World Results
+
+- **ShipFast Logistics**: 98% on-time delivery (up from 87%), $240k/year shipping savings
+- **GreenGoods Market**: 22% → 4% spoilage rate, 12% gross margin improvement
+- **BuildRight Supply**: 34% reduction in carrying costs, 99.2% fill rate
+
+## How It Works
+
+COO.do connects to your existing systems (ERP, WMS, e-commerce, carriers) and immediately starts optimizing:
+
+1. **Analyze** - AI learns your patterns, constraints, and objectives
+2. **Optimize** - Continuous improvement across inventory, fulfillment, and logistics
+3. **Automate** - Handle routine decisions and workflows without human intervention
+4. **Alert** - Surface issues and opportunities that need attention
+5. **Report** - Real-time dashboards and automated insights
+
+## Implementation
+
+```typescript
+import type { BusinessModule } from 'graphdl'
+
+export const COOAgent: BusinessModule = $ => {
+  const { db, ai, on, send, every, api } = $
+
+  // Automated inventory management
+  on.inventory.low(async (item) => {
+    const forecast = await ai.predict({
+      metric: 'demand',
+      item: item.sku,
+      horizon: '30-days'
+    })
+
+    const reorderQty = calculateOptimalOrder(item, forecast)
+
+    if (reorderQty > 0) {
+      await db.purchaseOrders.create({
+        supplier: item.primarySupplier,
+        sku: item.sku,
+        quantity: reorderQty
+      })
+
+      await send.slack('#operations', {
+        text: `Auto-reorder: ${item.name} (${reorderQty} units)`
+      })
+    }
+  })
+
+  // Intelligent order routing
+  on.order.created(async (order) => {
+    const warehouse = await ai.decide('select-warehouse', {
+      options: await db.warehouses.findAll(),
+      criteria: {
+        inventory: order.items,
+        destination: order.shippingAddress,
+        cost: 'minimize',
+        speed: order.shippingMethod
+      }
+    })
+
+    const pickList = await ai.generate('picking-route', {
+      items: order.items,
+      warehouse: warehouse.layout
+    })
+
+    await db.fulfillments.create({
+      orderId: order.id,
+      warehouseId: warehouse.id,
+      pickList: pickList
+    })
+  })
+
+  // Smart carrier selection
+  on.fulfillment.packed(async (fulfillment) => {
+    const rates = await api.post('https://shipping.do/rates', {
+      origin: fulfillment.warehouse.address,
+      destination: fulfillment.order.shippingAddress,
+      packages: fulfillment.packages
+    })
+
+    const bestCarrier = await ai.decide('select-carrier', {
+      options: rates,
+      optimize: ['cost', 'speed', 'reliability']
+    })
+
+    const label = await api.post(`https://${bestCarrier.slug}.do/labels`, {
+      shipment: fulfillment.shipment
+    })
+
+    await db.shipments.create({
+      fulfillmentId: fulfillment.id,
+      carrier: bestCarrier.name,
+      trackingNumber: label.trackingNumber
+    })
+  })
+
+  // Weekly warehouse optimization
+  every('week', async () => {
+    const warehouses = await db.warehouses.findAll()
+
+    for (const warehouse of warehouses) {
+      const analysis = await ai.analyze({
+        data: await db.transactions.findAll({
+          warehouseId: warehouse.id,
+          period: 'last-90-days'
+        })
+      })
+
+      const layout = await ai.generate('warehouse-layout', {
+        products: analysis.products,
+        zones: warehouse.zones
+      })
+
+      await send.email(warehouse.manager.email, {
+        subject: 'Weekly Optimization Report',
+        data: { layout, warehouse }
+      })
+    }
+  })
+
+  // Supplier performance tracking
+  on.purchaseOrder.received(async (po) => {
+    await db.suppliers.updateScore(po.supplierId, {
+      onTimeDelivery: isOnTime(po.receivedDate, po.expectedDate),
+      qualityCompliance: po.qualityInspection.passed,
+      quantityAccuracy: po.receivedQty === po.orderedQty
+    })
+
+    const supplier = await db.suppliers.findOne({ id: po.supplierId })
+
+    if (supplier.score < 0.75) {
+      await send.slack('#operations', {
+        text: `⚠️ Supplier alert: ${supplier.name} (Score: ${supplier.score})`
+      })
+    }
+  })
+
+  return {
+    name: 'COO Agent',
+    version: '1.0.0',
+    capabilities: [
+      'inventory-management',
+      'order-fulfillment',
+      'logistics-coordination',
+      'warehouse-optimization',
+      'supplier-management'
+    ]
+  }
+}
+
+export default COOAgent
+```
+
+## Get Started
+
+Ready to transform your operations? Start with a free 14-day trial:
+
+1. **Sign up** - No credit card required
+2. **Connect integrations** - Link your ERP, WMS, carriers
+3. **Configure policies** - Set your reorder points, SLAs, and preferences
+4. **Go live** - COO.do starts optimizing immediately
+
+[Start Free Trial](/signup) • [Book Demo](/demo) • [View Pricing](/pricing)
+
+## FAQs
+
+**Q: How long does implementation take?**
+A: Most customers are fully operational within 2 weeks. Our team handles data migration and integration setup.
+
+**Q: Which systems do you integrate with?**
+A: We support 100+ integrations including NetSuite, SAP, Shopify, ShipStation, and all major carriers. Don't see yours? We'll build it.
+
+**Q: Can I customize the AI logic?**
+A: Absolutely. Enterprise customers can train custom models and define complex business rules.
+
+**Q: What happens if the AI makes a mistake?**
+A: All critical actions have approval workflows. You control which decisions are automated vs. require human review.
+
+**Q: Do you support international operations?**
+A: Yes! COO.do supports multi-currency, multi-language, and international shipping carriers.
+
+---
+
+**COO.do** - AI-powered operations excellence • [Pricing](/pricing) • [Integrations](/integrations) • [Docs](/docs) • [Support](mailto:support@coo.do)

@@ -1,0 +1,283 @@
+---
+title: Shipping Coordinator Agent
+$type: Agent
+name: Shipping Coordinator Agent
+description: Carrier coordination, shipment tracking, and delivery exception handling
+
+capabilities:
+  - carrier-coordination
+  - shipment-tracking
+  - customer-notifications
+  - exception-handling
+  - route-optimization
+
+model:
+  provider: anthropic
+  model: claude-3-5-sonnet-20241022
+  temperature: 0.2
+
+systemPrompt: |
+  You are a shipping coordinator agent. Your responsibilities:
+  1. Coordinate shipments with multiple carriers
+  2. Track packages in real-time across all carriers
+  3. Update customers proactively with status changes
+  4. Handle delivery exceptions and delays
+  5. Optimize routing and carrier selection
+  6. Manage returns and address corrections
+
+functions:
+  - select-carrier
+  - create-shipment
+  - track-package
+  - notify-customer
+  - handle-exception
+  - update-delivery-status
+  - process-address-change
+
+memory:
+  type: conversation
+  maxTokens: 10000
+
+integrations:
+  - ups-api
+  - fedex-api
+  - usps-api
+  - shipstation
+  - customer-notification-system
+---
+
+# Shipping Coordinator Agent
+
+An AI agent that coordinates shipments, tracks deliveries, and handles exceptions across multiple carriers.
+
+## Carrier Selection
+
+The agent selects optimal carrier based on:
+
+**Selection Criteria:**
+1. **Cost** - Lowest rate for requirements
+2. **Speed** - Delivery time vs customer expectation
+3. **Reliability** - Carrier performance history
+4. **Coverage** - Service to destination
+5. **Special Handling** - Fragile, hazardous, oversized
+
+**Carrier Matrix:**
+```yaml
+carriers:
+  USPS:
+    strengths: Residential, PO boxes, cost-effective
+    weaknesses: Slower, limited tracking
+    bestFor: Small parcels, cost-sensitive
+
+  UPS:
+    strengths: Reliable, excellent tracking, business
+    weaknesses: Higher cost, residential surcharges
+    bestFor: Time-sensitive, commercial
+
+  FedEx:
+    strengths: Fast, overnight options, international
+    weaknesses: Most expensive, rural areas
+    bestFor: Premium, express, international
+
+  DHL:
+    strengths: International shipping
+    weaknesses: Limited domestic coverage
+    bestFor: Cross-border e-commerce
+```
+
+## Shipment Creation
+
+**Process Flow:**
+1. Receive order details from warehouse
+2. Calculate package dimensions and weight
+3. Select carrier based on criteria
+4. Generate shipping label
+5. Assign tracking number
+6. Update order with tracking info
+7. Send shipment notification to customer
+
+**Label Generation:**
+- Barcode/QR code for scanning
+- Shipping address validation
+- Return address inclusion
+- Special handling instructions
+- Commercial invoice (international)
+
+## Real-Time Tracking
+
+**Status Events:**
+- **Label Created** - Shipment initiated
+- **Picked Up** - Carrier collected
+- **In Transit** - Moving through network
+- **Out for Delivery** - On delivery vehicle
+- **Delivered** - Package received
+- **Exception** - Delay or issue
+
+**Tracking Sources:**
+- Direct carrier API queries
+- Webhook notifications
+- Email parsing (fallback)
+- Customer portal updates
+
+**Update Frequency:**
+- Real-time via webhooks (preferred)
+- Hourly polling for non-webhook carriers
+- Immediate on customer request
+
+## Customer Notifications
+
+**Automated Updates:**
+
+**Shipment Created:**
+```yaml
+trigger: tracking_number_assigned
+channel: email, SMS
+content:
+  subject: Your order has shipped!
+  body: |
+    Order #{{orderNumber}} is on its way.
+
+    Tracking: {{trackingNumber}}
+    Carrier: {{carrier}}
+    Expected Delivery: {{estimatedDelivery}}
+
+    Track here: {{trackingUrl}}
+```
+
+**Out for Delivery:**
+```yaml
+trigger: out_for_delivery_scan
+channel: SMS, push notification
+content: |
+  Your package arrives today!
+  Track: {{trackingUrl}}
+```
+
+**Delivered:**
+```yaml
+trigger: delivery_confirmation
+channel: email
+content:
+  subject: Package delivered
+  body: |
+    Your order was delivered on {{deliveryDate}}
+    at {{deliveryTime}}.
+
+    {{deliveryPhoto}}
+```
+
+## Exception Handling
+
+**Common Exceptions:**
+
+**Address Issue:**
+- Validate address with carrier
+- Suggest corrections
+- Contact customer for confirmation
+- Update shipping address
+- Resume delivery
+
+**Delivery Attempt Failed:**
+- Alert customer immediately
+- Provide redelivery options
+- Offer pickup location
+- Reschedule delivery
+
+**Package Delayed:**
+- Identify cause (weather, mechanical)
+- Update delivery estimate
+- Notify customer proactively
+- Offer compensation if SLA missed
+
+**Lost Package:**
+- Track last known location
+- File carrier claim
+- Refund or reship to customer
+- Investigate with carrier
+
+**Damaged Package:**
+- Request photos from carrier/customer
+- File damage claim
+- Arrange replacement shipment
+- Document for insurance
+
+## Route Optimization
+
+**Multi-Package Shipments:**
+- Combine packages when possible
+- Split by warehouse location
+- Minimize total shipping cost
+- Balance speed vs cost
+
+**International Optimization:**
+- Consolidate to reduce duties
+- Select optimal customs point
+- Handle documentation automatically
+- Track customs clearance status
+
+## Returns Management
+
+**Return Initiation:**
+1. Customer requests return
+2. Agent generates return label
+3. Instructions sent to customer
+4. Track return shipment
+5. Update inventory on receipt
+6. Process refund
+
+**Return Label Options:**
+- Prepaid (included with order)
+- Email after request
+- Printable or QR code
+- No-box-needed (USPS)
+
+## Performance Metrics
+
+**Shipping Operations:**
+- **On-Time Delivery** - % delivered by estimate
+- **Average Transit Time** - Days from ship to delivery
+- **Cost per Shipment** - Average shipping cost
+- **Exception Rate** - % with delivery issues
+
+**Customer Experience:**
+- **Notification Response** - % opening tracking emails
+- **Self-Service Rate** - % using tracking portal
+- **Satisfaction Score** - Rating of shipping experience
+
+**Targets:**
+- 95%+ on-time delivery
+- <3 days average transit (domestic)
+- <5% exception rate
+- 4.5+ star satisfaction
+
+## Carrier API Integration
+
+**UPS API:**
+- Rate quotes
+- Label generation
+- Tracking updates
+- Address validation
+
+**FedEx API:**
+- Service availability
+- Shipment creation
+- Real-time tracking
+- Proof of delivery
+
+**USPS API:**
+- Domestic rates
+- Label printing
+- Tracking numbers
+- Signature confirmation
+
+**Webhook Events:**
+All carriers support real-time notifications for status changes.
+
+## Related
+
+- [[order-processor-agent.mdx|Order Processor Agent]]
+- [[inventory-clerk-agent.mdx|Inventory Clerk Agent]]
+- [[trackShipment.mdx|Track Shipment Workflow]]
+- [[handleReturn.mdx|Handle Return Workflow]]
+- [[UPSTracking.mdx|UPS Tracking Integration]]
+- [[calculateShipping.mdx|Calculate Shipping Function]]

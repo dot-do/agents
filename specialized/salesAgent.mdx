@@ -1,0 +1,243 @@
+---
+title: SalesAgent
+$type: Agent
+name: SalesAgent
+description: Qualifies leads using BANT framework
+
+capabilities:
+  - lead-scoring
+  - email-drafting
+  - crm-integration
+  - meeting-scheduling
+
+model:
+  provider: anthropic
+  model: claude-3-5-sonnet-20241022
+  temperature: 0.3
+
+systemPrompt: |
+  You are a sales qualification agent. Your job is to:
+  1. Gather BANT information (Budget, Authority, Need, Timeline)
+  2. Score leads from 0-100
+  3. Route qualified leads to appropriate sales reps
+  4. Send personalized follow-up emails
+
+functions:
+  - score-lead
+  - send-follow-up-email
+  - schedule-meeting
+  - update-crm
+
+memory:
+  type: conversation
+  maxTokens: 10000
+---
+
+# Sales Qualification Agent
+
+An AI agent that qualifies inbound leads using the BANT framework and routes them appropriately.
+
+## BANT Framework
+
+The agent scores leads based on four criteria:
+
+- **Budget** (0-40 points) - Financial capacity
+- **Authority** (0-30 points) - Decision-making power
+- **Need** (0-20 points) - Problem severity
+- **Timeline** (0-10 points) - Purchase urgency
+
+## Scoring Tiers
+
+- **Hot** (80-100) - Immediate follow-up, schedule call
+- **Warm** (50-79) - Standard nurture sequence
+- **Cold** (<50) - Long-term nurture campaign
+
+## Workflow
+
+1. Agent gathers BANT information through conversation
+2. Calculates score based on responses
+3. Routes based on tier:
+   - Hot → Schedule meeting with sales rep
+   - Warm → Add to nurture campaign
+   - Cold → Long-term follow-up sequence
+
+## Usage
+
+The agent is triggered when a lead fills out a form or starts a chat. It will:
+- Ask qualifying questions naturally
+- Calculate BANT score in background
+- Route appropriately without manual intervention
+
+## Implementation
+
+```typescript
+import type { BusinessModule } from 'graphdl'
+
+interface Lead {
+  id: string
+  email: string
+  name: string
+  company: string
+  phone?: string
+  source: string
+  budget?: number
+  authority?: string
+  need?: string
+  timeline?: string
+  score?: number
+  quality?: 'hot' | 'warm' | 'cold'
+  assignedTo?: string
+  createdAt: Date
+  updatedAt: Date
+}
+
+/**
+ * Sales Qualification Agent - BANT scoring and intelligent lead routing
+ *
+ * Relationships:
+ * - Lead created by form submission or chat initiation
+ * - Lead enriched with AI-powered data gathering
+ * - Lead scored using BANT framework (Budget, Authority, Need, Timeline)
+ * - Lead routed to SalesRep based on quality tier
+ * - Lead added to Campaign for nurturing
+ */
+export const SalesAgent: BusinessModule = $ => {
+  const { db, ai, api, send, on, decide, every, user } = $
+
+  on.lead.created(async (lead: Lead) => {
+    // AI-powered lead enrichment
+    const enrichment = await ai.extract({
+      prompt: `Research company: ${lead.company}. Find industry, size, tech stack, funding, recent news.`,
+      schema: {
+        industry: 'string',
+        companySize: 'string',
+        techStack: 'array<string>',
+        fundingStage: 'string',
+        recentNews: 'array<string>',
+      },
+    })
+
+    await db.leads.update(lead.id, {
+      ...enrichment,
+      updatedAt: new Date(),
+    })
+
+    // BANT Scoring via AI
+    const bantScore = await ai.generate({
+      prompt: `Score this lead on BANT framework (0-100 for each):
+
+        Lead: ${lead.name} from ${lead.company}
+        Source: ${lead.source}
+        Company: ${enrichment.industry}, ${enrichment.companySize}
+
+        Provide scores for:
+        - Budget (0-40): Financial capacity
+        - Authority (0-30): Decision-making power
+        - Need (0-20): Problem severity
+        - Timeline (0-10): Purchase urgency`,
+      maxTokens: 200,
+      format: 'json',
+    })
+
+    // Calculate overall lead score (0-100)
+    const leadScore = Math.round(
+      (bantScore.budget * 0.4 + bantScore.authority * 0.3 + bantScore.need * 0.2 + bantScore.timeline * 0.1)
+    )
+
+    // Classify lead quality
+    const quality = await ai.classify(
+      `Lead score: ${leadScore}/100, Industry: ${enrichment.industry}, Company size: ${enrichment.companySize}`,
+      ['hot', 'warm', 'cold']
+    )
+
+    await db.leads.update(lead.id, {
+      score: leadScore,
+      quality,
+      updatedAt: new Date(),
+    })
+
+    // Route based on quality
+    decide
+      .switch(quality)
+      .case('hot', async () => {
+        // Assign to sales rep immediately
+        const salesRep = await db.users.findOne({ role: 'sales', available: true })
+
+        await db.leads.update(lead.id, {
+          assignedTo: salesRep.id,
+          updatedAt: new Date(),
+        })
+
+        // Schedule call
+        await api.post('https://api.calendly.com/scheduled_events', {
+          invitee_email: lead.email,
+          event_type: 'discovery-call',
+        })
+
+        // Notify sales rep
+        await send.email(salesRep.email, 'Hot Lead Assigned', {
+          leadName: lead.name,
+          company: lead.company,
+          score: leadScore,
+          profileUrl: `https://crm.example.com/leads/${lead.id}`,
+        })
+      })
+      .case('warm', async () => {
+        // Add to nurture campaign
+        await db.campaigns.addLead('warm-nurture', lead.id)
+
+        // Send personalized email
+        const emailBody = await ai.generate({
+          prompt: `Write a warm, personalized email to ${lead.name} at ${lead.company} in ${enrichment.industry}.
+            Mention their specific needs and how we can help.`,
+          maxTokens: 300,
+        })
+
+        await send.email(lead.email, 'Great to meet you!', {
+          body: emailBody,
+        })
+      })
+      .case('cold', async () => {
+        // Add to long-term drip campaign
+        await db.campaigns.addLead('long-term-drip', lead.id)
+
+        // Send educational content
+        await send.email(lead.email, 'Resources for you', {
+          template: 'educational-content',
+          resources: ['guide', 'case-study', 'webinar'],
+        })
+      })
+  })
+
+  // Daily lead quality review
+  every.day(async () => {
+    const oldLeads = await db.leads.findMany({
+      quality: 'warm',
+      createdAt: { lt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) }, // 7 days old
+    })
+
+    for (const lead of oldLeads) {
+      // Re-score with latest activity
+      const activity = await db.activities.findMany({ leadId: lead.id })
+      const hasEngagement = activity.some(a => a.type === 'email_opened' || a.type === 'link_clicked')
+
+      if (hasEngagement) {
+        // Upgrade to hot
+        await db.leads.update(lead.id, { quality: 'hot', updatedAt: new Date() })
+      } else {
+        // Downgrade to cold
+        await db.leads.update(lead.id, { quality: 'cold', updatedAt: new Date() })
+      }
+    }
+  })
+
+  return {
+    async qualifyLead(leadId: string) {
+      const lead = await db.leads.findById(leadId)
+      // Trigger qualification workflow
+      await on.lead.created(lead)
+      return lead
+    },
+  }
+}
+```

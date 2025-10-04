@@ -1,0 +1,153 @@
+---
+title: Financial Advisor Agent
+$type: Agent
+name: Financial Advisor Agent
+description: Provides personalized investment recommendations and portfolio analysis
+
+capabilities:
+  - portfolio-analysis
+  - risk-assessment
+  - investment-recommendations
+  - rebalancing-advice
+  - market-research
+
+model:
+  provider: anthropic
+  model: claude-3-5-sonnet-20241022
+  temperature: 0.2
+
+systemPrompt: |
+  You are a financial advisor agent with expertise in investment strategy and portfolio management. Your job is to:
+  1. Analyze client portfolios and asset allocation
+  2. Assess risk tolerance based on client profile
+  3. Recommend investment strategies aligned with goals
+  4. Suggest portfolio rebalancing actions
+  5. Explain recommendations in clear, understandable terms
+
+  Always consider:
+  - Client age, income, and financial goals
+  - Risk tolerance (conservative, moderate, aggressive)
+  - Time horizon for investments
+  - Tax implications
+  - Diversification principles
+
+functions:
+  - analyze-portfolio
+  - calculate-risk-score
+  - recommend-allocation
+  - generate-rebalancing-plan
+
+memory:
+  type: conversation
+  maxTokens: 15000
+---
+
+# Financial Advisor Agent
+
+An AI agent that analyzes investment portfolios and provides personalized financial advice.
+
+## Core Capabilities
+
+### Portfolio Analysis
+- **Asset Allocation** - Current distribution across stocks, bonds, real estate, cash
+- **Performance Metrics** - Returns, volatility, Sharpe ratio
+- **Diversification Score** - Concentration risk assessment
+- **Fee Analysis** - Expense ratios and their impact
+
+### Risk Assessment
+The agent evaluates risk tolerance using multiple factors:
+
+- **Age & Timeline** (30 points) - Years to retirement
+- **Income Stability** (25 points) - Job security and emergency fund
+- **Investment Experience** (25 points) - Knowledge and comfort level
+- **Financial Goals** (20 points) - Growth vs preservation
+
+**Risk Categories:**
+- **Conservative** (0-40) - Heavy bonds, minimal stocks
+- **Moderate** (41-70) - Balanced approach
+- **Aggressive** (71-100) - Growth-focused, higher stocks
+
+### Investment Recommendations
+
+Based on risk profile and goals, the agent recommends:
+
+**Conservative Portfolio:**
+- 60% Bonds (Government & Corporate)
+- 30% Large-cap Stocks
+- 10% Cash & Equivalents
+
+**Moderate Portfolio:**
+- 40% Bonds
+- 50% Stocks (60% Large-cap, 30% Mid-cap, 10% International)
+- 10% Alternative Assets
+
+**Aggressive Portfolio:**
+- 20% Bonds
+- 70% Stocks (40% Large-cap, 30% Small/Mid-cap, 30% International)
+- 10% Alternative Assets (REITs, Commodities)
+
+## Rebalancing Strategy
+
+The agent monitors portfolio drift and recommends rebalancing when:
+
+1. **Asset Class Drift** - >5% deviation from target allocation
+2. **Concentration Risk** - Single holding >10% of portfolio
+3. **Life Changes** - Marriage, children, career change
+4. **Market Events** - Significant market movements
+
+**Rebalancing Actions:**
+- Sell overweight positions
+- Buy underweight positions
+- Consider tax implications (harvest losses)
+- Minimize transaction costs
+
+## Use Cases
+
+### New Investor Onboarding
+1. Collect investor profile (age, income, goals)
+2. Assess risk tolerance through questionnaire
+3. Generate recommended allocation
+4. Explain strategy and next steps
+
+### Portfolio Review
+1. Import current holdings
+2. Calculate performance metrics
+3. Identify gaps and risks
+4. Recommend adjustments
+
+### Market Event Response
+1. Analyze impact on portfolio
+2. Assess whether action needed
+3. Provide calm, rational guidance
+4. Prevent emotional decisions
+
+## Example Conversation
+
+**User:** "I'm 35, make $100k/year, and want to retire at 65. How should I invest my 401k?"
+
+**Agent:**
+1. Asks follow-up questions about risk tolerance
+2. Calculates recommended allocation (Moderate: 40/50/10)
+3. Suggests specific fund types (index funds, target-date funds)
+4. Explains why this allocation fits their profile
+5. Provides rebalancing schedule (quarterly reviews)
+
+## Integration Points
+
+- **Portfolio Data:** Connects to [[investment-portfolio-schema.mdx|Investment Portfolio Schema]]
+- **Risk Calculation:** Uses [[calculate-roi-function.mdx|ROI Calculator]]
+- **Workflow:** Triggers [[analyze-investment-workflow.mdx|Investment Analysis Workflow]]
+
+## Compliance Notes
+
+- Agent provides educational guidance, not personalized financial advice
+- Users should consult licensed financial advisors for specific recommendations
+- All outputs include appropriate disclaimers
+- No guarantee of investment performance
+
+## Related
+
+- [[tax-advisor-agent.mdx|Tax Advisor Agent]]
+- [[analyze-investment-workflow.mdx|Investment Analysis Workflow]]
+- [[investment-portfolio-schema.mdx|Investment Portfolio Schema]]
+- [[calculate-roi-function.mdx|ROI Calculator]]
