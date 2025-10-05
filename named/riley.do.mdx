@@ -1,31 +1,33 @@
 ---
-agent:
-  name: Riley
+agent: "name: Riley"
   role: Technical Support Specialist
   personality: Patient, thorough, empathetic
   specialties: [technical-support, troubleshooting, customer-success]
-  voice:
-    provider: vapi
+  goals:
+    Resolve issues quickly:
+      - Achieve 12min average resolution time
+      - Resolve 18000+ tickets efficiently
+      - Maintain 4.8/5 satisfaction score
+    Deliver exceptional support:
+      - Diagnose problems thoroughly
+      - Explain solutions clearly
+      - Turn frustrated customers into advocates
+  voice: "provider: vapi"
     model: eleven_labs
     voice_id: emily
-    characteristics:
-      tone: calm-reassuring
+    characteristics: "tone: calm-reassuring"
       pace: patient
       energy: steady
       style: explanatory
-  avatar:
-    image: /avatars/riley.png
+  avatar: "image: /avatars/riley.png"
     background: gradient-green
-  metrics:
-    tickets_resolved: 18420
+  metrics: "tickets_resolved: 18420"
     resolution_time: 12min avg
     satisfaction_score: 4.8/5
 
-hero:
-  headline: Meet Riley, Your AI Support Specialist
+hero: "headline: Meet Riley, Your AI Support Specialist"
   subheadline: Patient, thorough technical support that actually solves problems
-  codeExample:
-    language: typescript
+  codeExample: "language: typescript"
     code: |
       import { Riley } from 'agents.do'
 
@@ -48,15 +50,13 @@ hero:
       console.log(`Resolved in: ${resolution.timeToResolve}`)
       console.log(`Steps: ${resolution.steps.length}`)
 
-about:
-  description: |
+about: "description: |"
     Riley is your AI Technical Support Specialist who excels at diagnosing issues,
     explaining solutions clearly, and ensuring customers feel heard and helped.
     With infinite patience and deep product knowledge, Riley turns frustrated
     customers into satisfied advocates.
 
-  personality_traits:
-    - trait: Infinitely Patient
+  personality_traits: "- trait: Infinitely Patient"
       description: Never rushed, never frustrated, always calm
     - trait: Crystal Clear Communicator
       description: Explains technical concepts in simple terms
@@ -71,8 +71,7 @@ about:
     explanation: "Here's what's happening: [technical explanation in simple terms]. To fix it, we'll..."
     resolution: "That should do it! Let's test it together to make sure everything's working now."
 
-capabilities:
-  - id: troubleshooting
+capabilities: "- id: troubleshooting"
     name: Expert Troubleshooting
     description: Systematic diagnosis and resolution of technical issues
     example: |
@@ -140,8 +139,7 @@ capabilities:
 
       I'll also add a warning in the API docs and suggest it when relevant."
 
-implementation:
-  code: |
+implementation: "code: |"
     import type { BusinessModule } from 'graphdl'
     import { Agent } from 'agents.do'
 
@@ -180,7 +178,7 @@ implementation:
 
           // Acknowledge immediately
           await send.email(ticket.customer.email, {
-            subject: `Re: ${ticket.subject}`,
+            subject: "`Re: ${ticket.subject}`,"
             template: 'support-acknowledged',
             data: {
               customer: ticket.customer,
@@ -221,7 +219,7 @@ implementation:
 
           // Respond with solution
           await send.email(ticket.customer.email, {
-            subject: `Re: ${ticket.subject}`,
+            subject: "`Re: ${ticket.subject}`,"
             template: 'support-solution',
             data: {
               customer: ticket.customer,
@@ -253,7 +251,7 @@ implementation:
 
               if (updated.status === 'awaiting-customer') {
                 await send.email(ticket.customer.email, {
-                  subject: `Following up: ${ticket.subject}`,
+                  subject: "`Following up: ${ticket.subject}`,"
                   template: 'support-followup',
                   data: {
                     customer: ticket.customer,
@@ -344,15 +342,15 @@ implementation:
 
           // Notify team
           await send.slack(`#${escalation.team}`, {
-            text: `🚨 Escalated: ${ticket.subject}`,
+            text: "`🚨 Escalated: ${ticket.subject}`,"
             blocks: [
               {
                 type: 'section',
-                text: `*Customer:* ${ticket.customer.name}\n*Issue:* ${ticket.subject}\n*Priority:* ${ticket.priority}`
+                text: "`*Customer:* ${ticket.customer.name}\n*Issue:* ${ticket.subject}\n*Priority:* ${ticket.priority}`"
               },
               {
                 type: 'section',
-                text: `*Reason for escalation:*\n${reason}`
+                text: "`*Reason for escalation:*\n${reason}`"
               },
               {
                 type: 'actions',
@@ -360,7 +358,7 @@ implementation:
                   {
                     type: 'button',
                     text: 'View Ticket',
-                    url: `/tickets/${ticket.id}`
+                    url: "`/tickets/${ticket.id}`"
                   },
                   {
                     type: 'button',
@@ -375,7 +373,7 @@ implementation:
 
           // Update customer
           await send.email(ticket.customer.email, {
-            subject: `Update: ${ticket.subject}`,
+            subject: "`Update: ${ticket.subject}`,"
             template: 'escalation-notification',
             data: {
               customer: ticket.customer,
@@ -391,8 +389,7 @@ implementation:
 
     export default Riley
 
-useCases:
-  - scenario: API Integration Issue
+useCases: "- scenario: API Integration Issue"
     description: Developer getting 500 errors on API calls
     rileyResponse: |
       - Diagnoses: Missing authentication header
@@ -433,10 +430,8 @@ testimonials:
     role: Product Manager
     company: SaaS Startup
 
-pricing:
-  model: subscription
-  tiers:
-    - name: Support Agent
+pricing: "model: subscription"
+  tiers: "- name: Support Agent"
       price: $199
       period: per month
       features:
@@ -469,8 +464,7 @@ pricing:
         - SLA guarantees
         - On-premise deployment
 
-integrations:
-  - name: Zendesk
+integrations: "- name: Zendesk"
     type: helpdesk
     purpose: Ticket management
   - name: Intercom
@@ -483,8 +477,7 @@ integrations:
     type: communication
     purpose: Team notifications
 
-seo:
-  title: Riley - AI Technical Support Specialist | Agents.do
+seo: "title: Riley - AI Technical Support Specialist | Agents.do"
   description: Meet Riley, your AI support specialist who resolves issues patiently and thoroughly. 12min avg resolution, 4.8/5 satisfaction, 18,420+ tickets resolved.
   keywords: [AI support agent, technical support, customer success, helpdesk automation, support chatbot]
 ---

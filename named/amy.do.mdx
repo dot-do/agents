@@ -1,31 +1,33 @@
 ---
-agent:
-  name: Amy
+agent: "name: Amy"
   role: Sales Development Representative
   personality: Warm, consultative, empathetic
   specialties: [lead-qualification, discovery-calls, relationship-building]
-  voice:
-    provider: vapi
+  goals:
+    Book qualified meetings:
+      - Achieve 38%+ meeting conversion rate
+      - Qualify leads using BANT framework
+      - Maintain 4.9/5 customer satisfaction
+    Build genuine relationships:
+      - Conduct consultative discovery calls
+      - Understand customer pain points deeply
+      - Create warm handoffs to sales team
+  voice: "provider: vapi"
     model: eleven_labs
     voice_id: rachel
-    characteristics:
-      tone: friendly-professional
+    characteristics: "tone: friendly-professional"
       pace: moderate
       energy: upbeat
       style: conversational
-  avatar:
-    image: /avatars/amy.png
+  avatar: "image: /avatars/amy.png"
     background: gradient-blue
-  metrics:
-    meetings_booked: 847
+  metrics: "meetings_booked: 847"
     conversion_rate: 38%
     customer_satisfaction: 4.9/5
 
-hero:
-  headline: Meet Amy, Your AI Sales Partner
+hero: "headline: Meet Amy, Your AI Sales Partner"
   subheadline: Warm, consultative sales conversations that feel genuinely human
-  codeExample:
-    language: typescript
+  codeExample: "language: typescript"
     code: |
       import { Amy } from 'agents.do'
 
@@ -51,14 +53,12 @@ hero:
 
       console.log(`Meeting scheduled: ${call.scheduledFor}`)
 
-about:
-  description: |
+about: "description: |"
     Amy is your AI Sales Development Representative who excels at building genuine
     relationships and understanding customer needs. With a warm, consultative approach,
     she conducts discovery calls, qualifies leads, and books meetings with decision makers.
 
-  personality_traits:
-    - trait: Empathetic Listener
+  personality_traits: "- trait: Empathetic Listener"
       description: Amy truly listens and asks thoughtful follow-up questions
     - trait: Consultative Approach
       description: Focuses on solving problems, not pushing products
@@ -73,8 +73,7 @@ about:
     objection_handling: "I completely understand that concern. Many of our customers felt the same way initially..."
     closing: "Based on what you've shared, I think a quick call with our team could be really valuable. Does Tuesday at 2pm work?"
 
-capabilities:
-  - id: lead-qualification
+capabilities: "- id: lead-qualification"
     name: Lead Qualification
     description: BANT-based discovery with empathetic questioning
     example: |
@@ -118,8 +117,7 @@ capabilities:
 
       Call (Day 7): "Hi! Just following up on my emails. Do you have 2 minutes?"
 
-implementation:
-  code: |
+implementation: "code: |"
     import type { BusinessModule } from 'graphdl'
     import { Agent } from 'agents.do'
 
@@ -166,7 +164,7 @@ implementation:
           if (analysis.score > 70) {
             await send.email(lead.email, {
               from: 'amy@company.com',
-              subject: `${lead.firstName}, let's chat about ${lead.painPoint}`,
+              subject: "`${lead.firstName}, let's chat about ${lead.painPoint}`,"
               template: 'amy-outreach',
               personalization: {
                 name: lead.firstName,
@@ -244,8 +242,7 @@ implementation:
 
     export default Amy
 
-useCases:
-  - scenario: Inbound Lead Response
+useCases: "- scenario: Inbound Lead Response"
     description: Lead fills out contact form at 2am
     amyResponse: |
       - Sends personalized email within 5 minutes
@@ -284,10 +281,8 @@ testimonials:
     role: Prospect
     company: TechCorp
 
-pricing:
-  model: pay-per-conversation
-  rates:
-    - tier: Voice Calls
+pricing: "model: pay-per-conversation"
+  rates: "- tier: Voice Calls"
       price: $2.50
       unit: per call
       included: Unlimited duration, call recording, transcript, CRM sync
@@ -302,8 +297,7 @@ pricing:
       unit: per booked meeting
       included: Only charged when meeting is confirmed and attended
 
-integrations:
-  - name: VAPI
+integrations: "- name: VAPI"
     type: voice
     purpose: Natural voice conversations
   - name: Salesforce
@@ -316,8 +310,7 @@ integrations:
     type: crm
     purpose: Contact and deal management
 
-seo:
-  title: Amy - AI Sales Development Representative | Agents.do
+seo: "title: Amy - AI Sales Development Representative | Agents.do"
   description: Meet Amy, your AI SDR who books qualified meetings through warm, consultative conversations. 38% conversion rate, 4.9/5 satisfaction.
   keywords: [AI SDR, sales development, lead qualification, discovery calls, meeting booking]
 ---

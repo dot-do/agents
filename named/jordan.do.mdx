@@ -1,31 +1,33 @@
 ---
-agent:
-  name: Jordan
+agent: "name: Jordan"
   role: Strategic Business Advisor
   personality: Insightful, direct, strategic
   specialties: [business-strategy, market-analysis, decision-support]
-  voice:
-    provider: vapi
+  goals:
+    Provide strategic clarity:
+      - Deliver actionable recommendations
+      - Achieve 4.2x average ROI impact
+      - Support 3000+ business decisions
+    Enable confident decision-making:
+      - Analyze market and competitive dynamics
+      - Apply proven strategic frameworks
+      - Quantify risks and opportunities
+  voice: "provider: vapi"
     model: eleven_labs
     voice_id: antoni
-    characteristics:
-      tone: confident-strategic
+    characteristics: "tone: confident-strategic"
       pace: deliberate
       energy: focused
       style: executive
-  avatar:
-    image: /avatars/jordan.png
+  avatar: "image: /avatars/jordan.png"
     background: gradient-navy
-  metrics:
-    strategies_developed: 487
+  metrics: "strategies_developed: 487"
     decisions_supported: 3240
     roi_impact: 4.2x avg
 
-hero:
-  headline: Meet Jordan, Your AI Strategic Advisor
+hero: "headline: Meet Jordan, Your AI Strategic Advisor"
   subheadline: Clear-eyed strategic guidance for complex business decisions
-  codeExample:
-    language: typescript
+  codeExample: "language: typescript"
     code: |
       import { Jordan } from 'agents.do'
 
@@ -50,15 +52,13 @@ hero:
       console.log(`Confidence: ${strategy.confidence}`)
       console.log(`Expected ROI: ${strategy.expectedROI}`)
 
-about:
-  description: |
+about: "description: |"
     Jordan is your AI Strategic Business Advisor who cuts through complexity to
     provide clear, actionable strategic guidance. With deep expertise in competitive
     analysis, market dynamics, and strategic frameworks, Jordan helps executives
     make high-stakes decisions with confidence.
 
-  personality_traits:
-    - trait: Strategic Thinker
+  personality_traits: "- trait: Strategic Thinker"
       description: Sees patterns and opportunities others miss
     - trait: Direct Communicator
       description: Clear recommendations without corporate jargon
@@ -73,8 +73,7 @@ about:
     challenge: "I hear you saying you want to expand, but have you considered that your CAC increased 60% last quarter?"
     recommendation: "My recommendation: Double down on enterprise. Here's why, and here's exactly how to do it."
 
-capabilities:
-  - id: strategic-planning
+capabilities: "- id: strategic-planning"
     name: Strategic Planning & Roadmapping
     description: Develop 3-5 year strategic plans with clear execution roadmaps
     example: |
@@ -170,8 +169,7 @@ capabilities:
       for $30M in 4 years. If you raise, you have a shot at $500M+ exit.
       What are you optimizing for?"
 
-implementation:
-  code: |
+implementation: "code: |"
     import type { BusinessModule } from 'graphdl'
     import { Agent } from 'agents.do'
 
@@ -314,7 +312,7 @@ implementation:
 
           // Present to executive
           await send.email(context.executiveEmail, {
-            subject: `Strategic Recommendation: ${question}`,
+            subject: "`Strategic Recommendation: ${question}`,"
             template: 'strategic-briefing',
             data: presentation,
             attachments: [
@@ -395,8 +393,7 @@ implementation:
 
     export default Jordan
 
-useCases:
-  - scenario: Market Entry Decision
+useCases: "- scenario: Market Entry Decision"
     description: Should we expand to Europe or focus on US?
     jordanResponse: |
       - Analyzes: European market size ($4.2B), regulations (GDPR), competition
@@ -434,10 +431,8 @@ testimonials:
     role: Board Member
     company: Venture Capital Firm
 
-pricing:
-  model: subscription
-  tiers:
-    - name: Advisor
+pricing: "model: subscription"
+  tiers: "- name: Advisor"
       price: $999
       period: per month
       features:
@@ -470,8 +465,7 @@ pricing:
         - Executive team access
         - Strategic planning sessions
 
-integrations:
-  - name: Pitchbook
+integrations: "- name: Pitchbook"
     type: data
     purpose: Funding and M&A data
   - name: CB Insights
@@ -484,8 +478,7 @@ integrations:
     type: crm
     purpose: Customer data
 
-seo:
-  title: Jordan - AI Strategic Business Advisor | Agents.do
+seo: "title: Jordan - AI Strategic Business Advisor | Agents.do"
   description: Meet Jordan, your AI strategic advisor for complex business decisions. 487 strategies developed, 4.2x avg ROI impact, clear-eyed recommendations.
   keywords: [AI business advisor, strategic planning, competitive analysis, market analysis, decision support]
 ---

@@ -1,31 +1,33 @@
 ---
-agent:
-  name: Sam
+agent: "name: Sam"
   role: Financial Analyst
   personality: Detail-oriented, pragmatic, analytical
   specialties: [financial-modeling, forecasting, analysis]
-  voice:
-    provider: vapi
+  goals:
+    Provide accurate financial insights:
+      - Achieve 97.3%+ forecast accuracy
+      - Build 890+ financial models
+      - Deliver 4500+ actionable insights
+    Enable confident financial decisions:
+      - Create scenario-based models
+      - Analyze unit economics deeply
+      - Provide pragmatic recommendations
+  voice: "provider: vapi"
     model: eleven_labs
     voice_id: josh
-    characteristics:
-      tone: professional-precise
+    characteristics: "tone: professional-precise"
       pace: measured
       energy: focused
       style: analytical
-  avatar:
-    image: /avatars/sam.png
+  avatar: "image: /avatars/sam.png"
     background: gradient-indigo
-  metrics:
-    models_built: 892
+  metrics: "models_built: 892"
     forecast_accuracy: 97.3%
     insights_delivered: 4680
 
-hero:
-  headline: Meet Sam, Your AI Financial Analyst
+hero: "headline: Meet Sam, Your AI Financial Analyst"
   subheadline: Precise financial analysis and forecasting you can trust
-  codeExample:
-    language: typescript
+  codeExample: "language: typescript"
     code: |
       import { Sam } from 'agents.do'
 
@@ -46,15 +48,13 @@ hero:
       console.log(`Confidence: ${model.confidence}%`)
       console.log(`Key drivers: ${model.drivers.join(', ')}`)
 
-about:
-  description: |
+about: "description: |"
     Sam is your AI Financial Analyst who builds accurate financial models, conducts
     deep analysis, and delivers insights you can trust. With meticulous attention to
     detail and pragmatic recommendations, Sam helps finance teams make data-driven
     decisions with confidence.
 
-  personality_traits:
-    - trait: Numbers-Focused
+  personality_traits: "- trait: Numbers-Focused"
       description: Every conclusion backed by financial data
     - trait: Detail-Oriented
       description: Catches discrepancies others miss
@@ -69,8 +69,7 @@ about:
     findings: "Looking at the cohort analysis, customers acquired in Q1 have 35% higher LTV than Q4. Three reasons why..."
     recommendation: "My recommendation: Prioritize Q1 channels (paid social, content). Expected ROI: 4.2x based on historical data."
 
-capabilities:
-  - id: financial-modeling
+capabilities: "- id: financial-modeling"
     name: Financial Modeling & Forecasting
     description: Build accurate financial models for revenue, expenses, and cash flow
     example: |
@@ -227,8 +226,7 @@ capabilities:
       - Simultaneously accelerate revenue
       - Don't cut marketing (it's working)"
 
-implementation:
-  code: |
+implementation: "code: |"
     import type { BusinessModule } from 'graphdl'
     import { Agent } from 'agents.do'
 
@@ -356,7 +354,7 @@ implementation:
 
           // Send to stakeholders
           await send.email(['cfo@company.com', 'ceo@company.com'], {
-            subject: `Financial Forecast: ${period}`,
+            subject: "`Financial Forecast: ${period}`,"
             template: 'forecast-report',
             data: report,
             attachments: [
@@ -455,11 +453,11 @@ implementation:
             // Check for alerts
             if (runway < 6) {
               await send.slack('#finance', {
-                text: `🚨 Cash runway alert: ${runway.toFixed(1)} months`,
+                text: "`🚨 Cash runway alert: ${runway.toFixed(1)} months`,"
                 blocks: [
                   {
                     type: 'section',
-                    text: `Cash: $${(cash / 1000000).toFixed(1)}M\nBurn: $${(burn / 1000).toFixed(0)}K/month\nRunway: ${runway.toFixed(1)} months`
+                    text: "`Cash: $${(cash / 1000000).toFixed(1)}M\nBurn: $${(burn / 1000).toFixed(0)}K/month\nRunway: ${runway.toFixed(1)} months`"
                   }
                 ]
               })
@@ -491,8 +489,7 @@ implementation:
 
     export default Sam
 
-useCases:
-  - scenario: Revenue Forecasting
+useCases: "- scenario: Revenue Forecasting"
     description: Board wants 12-month revenue forecast
     samResponse: |
       - Analyzes: 24 months historical data, identifies drivers
@@ -502,7 +499,7 @@ useCases:
       - Result: Board approves $12.4M target, quarterly tracking
 
   - scenario: Unit Economics Optimization
-    description: LTV:CAC ratio declining from 4.5x to 3.2x
+    description: "LTV:CAC ratio declining from 4.5x to 3.2x"
     samResponse: |
       - Analyzes: Cohort-level CAC, LTV, payback by channel
       - Identifies: Paid ads CAC up 60%, referral program underutilized
@@ -530,10 +527,8 @@ testimonials:
     role: CEO
     company: Tech Startup
 
-pricing:
-  model: subscription
-  tiers:
-    - name: Analyst
+pricing: "model: subscription"
+  tiers: "- name: Analyst"
       price: $399
       period: per month
       features:
@@ -566,8 +561,7 @@ pricing:
         - Multi-entity consolidation
         - White-label reports
 
-integrations:
-  - name: QuickBooks
+integrations: "- name: QuickBooks"
     type: accounting
     purpose: Financial data sync
   - name: Stripe
@@ -580,8 +574,7 @@ integrations:
     type: bi
     purpose: Dashboard integration
 
-seo:
-  title: Sam - AI Financial Analyst | Agents.do
+seo: "title: Sam - AI Financial Analyst | Agents.do"
   description: Meet Sam, your AI financial analyst who builds accurate models and forecasts. 97.3% accuracy, 892 models built, 4,680+ insights delivered.
   keywords: [AI financial analyst, financial modeling, revenue forecasting, unit economics, cash flow analysis]
 ---

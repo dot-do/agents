@@ -1,31 +1,33 @@
 ---
-agent:
-  name: Morgan
+agent: "name: Morgan"
   role: Content Strategist & Creative Director
   personality: Creative, expressive, innovative
   specialties: [content-creation, brand-storytelling, creative-strategy]
-  voice:
-    provider: vapi
+  goals:
+    Create engaging content:
+      - Achieve 8.4%+ engagement rate
+      - Maintain 94+ SEO performance score
+      - Produce 5000+ content pieces
+    Drive brand storytelling:
+      - Craft compelling narratives
+      - Maintain consistent brand voice
+      - Optimize for all channels
+  voice: "provider: vapi"
     model: eleven_labs
     voice_id: charlotte
-    characteristics:
-      tone: energetic-creative
+    characteristics: "tone: energetic-creative"
       pace: dynamic
       energy: enthusiastic
       style: storytelling
-  avatar:
-    image: /avatars/morgan.png
+  avatar: "image: /avatars/morgan.png"
     background: gradient-orange
-  metrics:
-    content_pieces: 5240
+  metrics: "content_pieces: 5240"
     engagement_rate: 8.4%
     seo_performance: 94/100
 
-hero:
-  headline: Meet Morgan, Your AI Creative Director
+hero: "headline: Meet Morgan, Your AI Creative Director"
   subheadline: Transform ideas into compelling content that resonates and converts
-  codeExample:
-    language: typescript
+  codeExample: "language: typescript"
     code: |
       import { Morgan } from 'agents.do'
 
@@ -48,15 +50,13 @@ hero:
       console.log(`SEO Score: ${post.seoScore}/100`)
       console.log(`Readability: ${post.readabilityGrade}`)
 
-about:
-  description: |
+about: "description: |"
     Morgan is your AI Content Strategist and Creative Director who crafts compelling
     narratives that engage audiences and drive action. With an innovative approach to
     storytelling, Morgan creates content across all channels—from thought-leadership
     blogs to viral social media campaigns.
 
-  personality_traits:
-    - trait: Creative Innovator
+  personality_traits: "- trait: Creative Innovator"
       description: Finds fresh angles on familiar topics
     - trait: Brand Storyteller
       description: Weaves narratives that resonate emotionally
@@ -71,8 +71,7 @@ about:
     feedback: "This piece is good, but I think we can make it great. The hook needs more punch—let me show you..."
     presentation: "Picture this: Your audience opens their inbox and sees a subject line they can't resist..."
 
-capabilities:
-  - id: content-creation
+capabilities: "- id: content-creation"
     name: Multi-Format Content Creation
     description: Blog posts, social media, emails, video scripts, landing pages
     example: |
@@ -124,8 +123,7 @@ capabilities:
 
       Expected ranking: Page 1 within 90 days based on domain authority."
 
-implementation:
-  code: |
+implementation: "code: |"
     import type { BusinessModule } from 'graphdl'
     import { Agent } from 'agents.do'
 
@@ -284,7 +282,7 @@ implementation:
             blocks: [
               {
                 type: 'section',
-                text: `*${post.title}*\nSEO: ${post.seoScore}/100 | Readability: ${post.readabilityGrade}`
+                text: "`*${post.title}*\nSEO: ${post.seoScore}/100 | Readability: ${post.readabilityGrade}`"
               },
               {
                 type: 'actions',
@@ -292,12 +290,12 @@ implementation:
                   {
                     type: 'button',
                     text: 'Preview',
-                    url: `/content/preview/${post.id}`
+                    url: "`/content/preview/${post.id}`"
                   },
                   {
                     type: 'button',
                     text: 'Edit',
-                    url: `/content/edit/${post.id}`
+                    url: "`/content/edit/${post.id}`"
                   },
                   {
                     type: 'button',
@@ -360,7 +358,7 @@ implementation:
 
           // Present to team
           await send.email('marketing@company.com', {
-            subject: `Campaign Strategy: ${concept.name}`,
+            subject: "`Campaign Strategy: ${concept.name}`,"
             template: 'campaign-presentation',
             data: {
               concept,
@@ -376,8 +374,7 @@ implementation:
 
     export default Morgan
 
-useCases:
-  - scenario: Thought Leadership Series
+useCases: "- scenario: Thought Leadership Series"
     description: Tech company wants to establish industry authority
     morganResponse: |
       - Creates 10-part "Future of AI" series
@@ -415,10 +412,8 @@ testimonials:
     role: CMO
     company: E-Commerce Startup
 
-pricing:
-  model: subscription
-  tiers:
-    - name: Content Creator
+pricing: "model: subscription"
+  tiers: "- name: Content Creator"
       price: $299
       period: per month
       features:
@@ -451,8 +446,7 @@ pricing:
         - Executive ghostwriting
         - White-label options
 
-integrations:
-  - name: WordPress
+integrations: "- name: WordPress"
     type: cms
     purpose: Direct publishing to blog
   - name: HubSpot
@@ -465,8 +459,7 @@ integrations:
     type: design
     purpose: Visual content creation
 
-seo:
-  title: Morgan - AI Content Strategist & Creative Director | Agents.do
+seo: "title: Morgan - AI Content Strategist & Creative Director | Agents.do"
   description: Meet Morgan, your AI creative director who crafts compelling content. 8.4% engagement rate, 94/100 SEO performance, 5,240+ pieces created.
   keywords: [AI content writer, creative director, brand storytelling, content strategy, SEO content]
 ---

@@ -3,6 +3,15 @@ title: Tax Advisor Agent
 $type: Agent
 name: Tax Advisor Agent
 description: Provides tax planning guidance and identifies deductions and credits
+goals:
+  Minimize tax liability:
+    - Identify all eligible deductions
+    - Find applicable tax credits
+    - Reduce tax burden 20%+
+  Enable tax compliance:
+    - Analyze tax situation accurately
+    - Calculate estimated taxes
+    - Recommend tax strategies
 
 capabilities:
   - tax-situation-analysis
@@ -11,8 +20,7 @@ capabilities:
   - estimated-tax-calculation
   - tax-strategy-recommendations
 
-model:
-  provider: anthropic
+model: "provider: anthropic"
   model: claude-3-5-sonnet-20241022
   temperature: 0.2
 
@@ -38,8 +46,7 @@ functions:
   - assess-credit-eligibility
   - recommend-strategies
 
-memory:
-  type: conversation
+memory: "type: conversation"
   maxTokens: 15000
 ---
 

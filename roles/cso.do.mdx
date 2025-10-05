@@ -1,9 +1,17 @@
 ---
-hero:
-  headline: Your AI Chief Sales Officer
+goals:
+  Drive revenue growth:
+    - Achieve 90%+ forecast accuracy
+    - Maintain healthy pipeline coverage
+    - Close 25%+ of qualified deals
+  Optimize sales performance:
+    - Score leads with AI accuracy
+    - Progress deals automatically
+    - Balance territory assignments
+
+hero: "headline: Your AI Chief Sales Officer"
   subheadline: Accelerate revenue growth with AI-powered sales intelligence, pipeline optimization, and predictive forecasting
-  codeExample:
-    language: typescript
+  codeExample: "language: typescript"
     code: |
       import { CSO } from 'cso.do'
 
@@ -30,31 +38,26 @@ hero:
       const insights = await cso.insights.generate()
       console.log(`At-risk deals: ${insights.atRiskDeals.length}`)
       console.log(`Recommended actions: ${insights.actions.length}`)
-  primaryCTA:
-    text: Start Free Trial
+  primaryCTA: "text: Start Free Trial"
     href: /signup
-  secondaryCTA:
-    text: Book Demo
+  secondaryCTA: "text: Book Demo"
     href: /demo
   badges:
     - 42% faster sales cycles
     - 3.2x lead conversion
     - 95% forecast accuracy
 
-capabilities:
-  - id: lead-scoring
+capabilities: "- id: lead-scoring"
     name: Intelligent Lead Scoring & Qualification
     description: AI-powered BANT scoring with enrichment, predictive scoring, and automatic prioritization.
     icon: 🎯
-    metrics:
-      - label: Lead Quality Improvement
+    metrics: "- label: Lead Quality Improvement"
         value: 3.2x
       - label: Qualification Time Reduction
         value: 85%
       - label: Conversion Rate Increase
         value: 67%
-    codeExample:
-      language: typescript
+    codeExample: "language: typescript"
       code: |
         // Automatic lead enrichment and qualification
         on.lead.created(async (lead) => {
@@ -107,14 +110,14 @@ capabilities:
           if (score > 70) {
             const rep = await ai.decide('assign-rep', {
               lead: lead,
-              reps: await db.salesReps.findAll({ active: true }),
+              reps: "await db.salesReps.findAll({ active: true }),"
               optimize: ['workload', 'expertise', 'win-rate']
             })
 
             await db.leads.assign(lead.id, rep.id)
 
             await send.email(rep.email, {
-              subject: `New hot lead: ${lead.company}`,
+              subject: "`New hot lead: ${lead.company}`,"
               template: 'lead-assignment',
               data: { lead, score, bant }
             })
@@ -125,15 +128,13 @@ capabilities:
     name: Sales Pipeline Optimization
     description: Real-time pipeline analysis with stage progression recommendations and bottleneck identification.
     icon: 📊
-    metrics:
-      - label: Deal Velocity Increase
+    metrics: "- label: Deal Velocity Increase"
         value: 42%
       - label: Win Rate Improvement
         value: 28%
       - label: Pipeline Visibility
         value: 100%
-    codeExample:
-      language: typescript
+    codeExample: "language: typescript"
       code: |
         // Continuous pipeline health monitoring
         every('day', async () => {
@@ -158,24 +159,24 @@ capabilities:
 
               // Generate recommended actions
               const actions = await ai.generate({
-                prompt: `Analyze this at-risk deal and recommend specific actions to improve health score:`,
+                prompt: "`Analyze this at-risk deal and recommend specific actions to improve health score:`,"
                 data: { deal, health }
               })
 
               await send.slack(deal.owner.slackId, {
-                text: `⚠️ Deal at risk: ${deal.customer.name}`,
+                text: "`⚠️ Deal at risk: ${deal.customer.name}`,"
                 blocks: [
                   {
                     type: 'section',
-                    text: `*${deal.customer.name}* ($${deal.value})`
+                    text: "`*${deal.customer.name}* ($${deal.value})`"
                   },
                   {
                     type: 'section',
-                    text: `Health score: ${Math.round(health.score * 100)}%`
+                    text: "`Health score: ${Math.round(health.score * 100)}%`"
                   },
                   {
                     type: 'section',
-                    text: `*Recommended actions:*\n${actions.join('\n')}`
+                    text: "`*Recommended actions:*\n${actions.join('\n')}`"
                   }
                 ]
               })
@@ -199,7 +200,7 @@ capabilities:
               })
 
               await send.email(deal.owner.email, {
-                subject: `Action needed: ${deal.customer.name}`,
+                subject: "`Action needed: ${deal.customer.name}`,"
                 template: 'deal-stagnant',
                 data: { deal, nextSteps }
               })
@@ -211,15 +212,13 @@ capabilities:
     name: Predictive Revenue Forecasting
     description: ML-powered revenue forecasts with scenario modeling, confidence intervals, and variance analysis.
     icon: 📈
-    metrics:
-      - label: Forecast Accuracy
+    metrics: "- label: Forecast Accuracy"
         value: 95%
       - label: Variance Reduction
         value: 73%
       - label: Confidence Level
         value: 90%
-    codeExample:
-      language: typescript
+    codeExample: "language: typescript"
       code: |
         // Monthly revenue forecast generation
         every('month-start', async () => {
@@ -269,7 +268,7 @@ capabilities:
           })
 
           await send.email(['ceo@company.com', 'cfo@company.com'], {
-            subject: `Q${getQuarter()} Revenue Forecast`,
+            subject: "`Q${getQuarter()} Revenue Forecast`,"
             attachments: [
               { filename: 'forecast.pdf', content: report.pdf },
               { filename: 'scenarios.xlsx', content: forecast.spreadsheet }
@@ -277,11 +276,11 @@ capabilities:
           })
 
           await send.slack('#leadership', {
-            text: `📊 Q${getQuarter()} Forecast Published`,
+            text: "`📊 Q${getQuarter()} Forecast Published`,"
             blocks: [
               {
                 type: 'section',
-                text: `*Conservative:* $${forecast.scenarios.conservative.toLocaleString()}\n*Realistic:* $${forecast.scenarios.realistic.toLocaleString()}\n*Optimistic:* $${forecast.scenarios.optimistic.toLocaleString()}`
+                text: "`*Conservative:* $${forecast.scenarios.conservative.toLocaleString()}\n*Realistic:* $${forecast.scenarios.realistic.toLocaleString()}\n*Optimistic:* $${forecast.scenarios.optimistic.toLocaleString()}`"
               }
             ]
           })
@@ -291,15 +290,13 @@ capabilities:
     name: AI-Powered Sales Coaching
     description: Real-time call analysis, performance coaching, and personalized training recommendations.
     icon: 🎓
-    metrics:
-      - label: Rep Ramp Time
+    metrics: "- label: Rep Ramp Time"
         value: 50% faster
       - label: Quota Attainment
         value: +32%
       - label: Call Quality Score
         value: +45%
-    codeExample:
-      language: typescript
+    codeExample: "language: typescript"
       code: |
         // Real-time call analysis and coaching
         on.call.completed(async (call) => {
@@ -321,7 +318,7 @@ capabilities:
           const coaching = await ai.generate({
             prompt: 'Analyze this sales call and provide specific coaching feedback',
             analysis: analysis,
-            rep: await db.salesReps.findOne({ id: call.repId }),
+            rep: "await db.salesReps.findOne({ id: call.repId }),"
             best_practices: await db.playbooks.findAll()
           })
 
@@ -342,7 +339,7 @@ capabilities:
 
           // Send feedback to rep
           await send.email(call.rep.email, {
-            subject: `Call analysis: ${call.customer.name}`,
+            subject: "`Call analysis: ${call.customer.name}`,"
             template: 'call-coaching',
             data: {
               call: call,
@@ -357,7 +354,7 @@ capabilities:
           // Flag critical issues for manager review
           if (analysis.overallScore < 0.6) {
             await send.slack(call.rep.manager.slackId, {
-              text: `⚠️ Low-scoring call: ${call.rep.name} with ${call.customer.name}`,
+              text: "`⚠️ Low-scoring call: ${call.rep.name} with ${call.customer.name}`,"
               actions: [
                 {
                   text: 'Review Call',
@@ -372,26 +369,24 @@ capabilities:
     name: Deal Intelligence & Next Best Actions
     description: AI-powered deal insights with competitive intelligence, stakeholder mapping, and winning strategies.
     icon: 🧠
-    metrics:
-      - label: Win Rate Increase
+    metrics: "- label: Win Rate Increase"
         value: 34%
       - label: Competitive Wins
         value: +28%
       - label: Deal Acceleration
         value: 38%
-    codeExample:
-      language: typescript
+    codeExample: "language: typescript"
       code: |
         // Generate deal intelligence and recommendations
         on.deal.stageChanged(async (deal) => {
           // Gather comprehensive deal context
           const context = {
             deal: deal,
-            customer: await db.customers.findOne({ id: deal.customerId }),
-            contacts: await db.contacts.findAll({ customerId: deal.customerId }),
-            competitors: await db.competitors.findAll({ dealId: deal.id }),
-            activities: await db.activities.findAll({ dealId: deal.id }),
-            similar: await db.deals.findSimilar(deal.id, { limit: 10 })
+            customer: "await db.customers.findOne({ id: deal.customerId }),"
+            contacts: "await db.contacts.findAll({ customerId: deal.customerId }),"
+            competitors: "await db.competitors.findAll({ dealId: deal.id }),"
+            activities: "await db.activities.findAll({ dealId: deal.id }),"
+            similar: "await db.deals.findSimilar(deal.id, { limit: 10 })"
           }
 
           // AI-powered deal analysis
@@ -410,7 +405,7 @@ capabilities:
           const recommendations = await ai.generate({
             prompt: `Based on this deal analysis, what are the top 3 specific actions the sales rep should take next?`,
             intelligence: intelligence,
-            playbook: await db.playbooks.findOne({ stage: deal.stage })
+            playbook: "await db.playbooks.findOne({ stage: deal.stage })"
           })
 
           // Create action items
@@ -436,8 +431,8 @@ capabilities:
 
           // Notify rep with insights
           await send.notification(deal.ownerId, {
-            title: `New insights: ${deal.customer.name}`,
-            body: `Win probability: ${Math.round(intelligence.successProbability * 100)}%`,
+            title: "`New insights: ${deal.customer.name}`,"
+            body: "`Win probability: ${Math.round(intelligence.successProbability * 100)}%`,"
             data: {
               dealId: deal.id,
               actions: recommendations.actions
@@ -445,8 +440,7 @@ capabilities:
           })
         })
 
-features:
-  - title: CRM Integration
+features: "- title: CRM Integration"
     description: Seamless integration with Salesforce, HubSpot, Pipedrive, and 20+ other CRMs
     icon: 🔗
   - title: Sales Intelligence
@@ -465,13 +459,11 @@ features:
     description: Build custom reports and dashboards with drag-and-drop interface
     icon: 📊
 
-useCases:
-  - company: CloudScale SaaS
+useCases: "- company: CloudScale SaaS"
     industry: B2B Software
     challenge: 42-day average sales cycle with 18% win rate and $2.4M annual quota attainment gap
     solution: Implemented CSO.do for lead scoring, pipeline optimization, and AI coaching
-    results:
-      - metric: Sales cycle reduced to 24 days (43% faster)
+    results: "- metric: Sales cycle reduced to 24 days (43% faster)"
       - metric: Win rate improved to 24% (+33%)
       - metric: Quota attainment up to 94% (+$2.2M)
       - metric: Lead-to-opportunity conversion up 3.2x
@@ -485,8 +477,7 @@ useCases:
     industry: Financial Technology
     challenge: Complex enterprise sales with long cycles (6-9 months) and inconsistent rep performance
     solution: Deployed CSO.do for deal intelligence, competitive analysis, and sales coaching
-    results:
-      - metric: Average deal cycle reduced to 4.5 months
+    results: "- metric: Average deal cycle reduced to 4.5 months"
       - metric: Competitive win rate up 28%
       - metric: New rep ramp time cut by 50%
       - metric: Revenue per rep increased 42%
@@ -500,8 +491,7 @@ useCases:
     industry: Medical Devices
     challenge: Managing 120-person sales team across 8 regions with inconsistent forecasting (±35% variance)
     solution: Implemented CSO.do for territory management, forecasting, and performance analytics
-    results:
-      - metric: Forecast variance reduced to ±8%
+    results: "- metric: Forecast variance reduced to ±8%"
       - metric: Sales team productivity up 31%
       - metric: Territory coverage improved 24%
       - metric: Customer acquisition cost down 19%
@@ -512,8 +502,7 @@ useCases:
       company: MedTech Devices
 
 pricing:
-  tiers:
-    - name: Starter
+  tiers: "- name: Starter"
       price: $249
       period: per month
       description: Perfect for small sales teams just getting started with AI
@@ -525,8 +514,7 @@ pricing:
         - CRM integration (1)
         - Email support
         - 99.5% uptime SLA
-      cta:
-        text: Start Free Trial
+      cta: "text: Start Free Trial"
         href: /signup?plan=starter
 
     - name: Professional
@@ -545,8 +533,7 @@ pricing:
         - Priority support
         - 99.9% uptime SLA
         - Dedicated CSM
-      cta:
-        text: Start Free Trial
+      cta: "text: Start Free Trial"
         href: /signup?plan=professional
 
     - name: Enterprise
@@ -565,16 +552,13 @@ pricing:
         - 24/7 phone support
         - 99.95% uptime SLA
         - Dedicated technical team
-      cta:
-        text: Contact Sales
+      cta: "text: Contact Sales"
         href: /contact-sales
 
 integrations:
-  categories:
-    - name: CRM Platforms
+  categories: "- name: CRM Platforms"
       description: Sync with your customer relationship management system
-      integrations:
-        - name: Salesforce
+      integrations: "- name: Salesforce"
           logo: /logos/salesforce.svg
           docs: /integrations/salesforce
         - name: HubSpot
@@ -589,8 +573,7 @@ integrations:
 
     - name: Sales Intelligence
       description: Enrich leads with real-time data
-      integrations:
-        - name: Clearbit
+      integrations: "- name: Clearbit"
           logo: /logos/clearbit.svg
           docs: /integrations/clearbit
         - name: ZoomInfo
@@ -605,8 +588,7 @@ integrations:
 
     - name: Call Analytics
       description: Analyze sales calls with AI
-      integrations:
-        - name: Gong
+      integrations: "- name: Gong"
           logo: /logos/gong.svg
           docs: /integrations/gong
         - name: Chorus
@@ -621,8 +603,7 @@ integrations:
 
     - name: Communication
       description: Connect with email and messaging platforms
-      integrations:
-        - name: Gmail
+      integrations: "- name: Gmail"
           logo: /logos/gmail.svg
           docs: /integrations/gmail
         - name: Outlook
@@ -636,11 +617,9 @@ integrations:
           docs: /integrations/intercom
 
 routes:
-  collections:
-    - name: capabilities
+  collections: "- name: capabilities"
       pattern: /capabilities/[capability]/readme.mdx
-      data:
-        - capability: lead-scoring
+      data: "- capability: lead-scoring"
           title: Intelligent Lead Scoring & Qualification
           description: AI-powered BANT scoring with automatic enrichment
         - capability: pipeline-optimization
@@ -658,8 +637,7 @@ routes:
 
     - name: integrations
       pattern: /integrations/[integration]/readme.mdx
-      data:
-        - integration: salesforce
+      data: "- integration: salesforce"
           title: Salesforce Integration
           category: CRM Platforms
         - integration: gong
@@ -669,8 +647,7 @@ routes:
           title: Clearbit Integration
           category: Sales Intelligence
 
-seo:
-  title: CSO.do - Your AI Chief Sales Officer for Revenue Growth
+seo: "title: CSO.do - Your AI Chief Sales Officer for Revenue Growth"
   description: Accelerate revenue with AI-powered lead scoring, pipeline optimization, predictive forecasting, and sales coaching. 42% faster sales cycles, 3.2x lead conversion.
   keywords:
     - AI Chief Sales Officer
@@ -685,8 +662,7 @@ seo:
     - Deal intelligence
 
 analytics:
-  events:
-    - name: cso_demo_requested
+  events: "- name: cso_demo_requested"
       description: User requested a demo
     - name: cso_trial_started
       description: User started free trial

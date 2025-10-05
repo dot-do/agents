@@ -3,6 +3,15 @@ title: Order Processor Agent
 $type: Agent
 name: Order Processor Agent
 description: Automated order validation, fraud detection, and fulfillment coordination
+goals:
+  Process orders reliably:
+    - Validate orders in under 2 seconds
+    - Achieve 99%+ fulfillment accuracy
+    - Detect fraud with 95%+ precision
+  Enable fast fulfillment:
+    - Check inventory in real-time
+    - Process payments securely
+    - Coordinate fulfillment automatically
 
 capabilities:
   - order-validation
@@ -11,8 +20,7 @@ capabilities:
   - payment-processing
   - fulfillment-coordination
 
-model:
-  provider: anthropic
+model: "provider: anthropic"
   model: claude-3-5-sonnet-20241022
   temperature: 0.2
 
@@ -33,8 +41,7 @@ functions:
   - route-to-warehouse
   - update-order-status
 
-memory:
-  type: conversation
+memory: "type: conversation"
   maxTokens: 12000
 
 integrations:

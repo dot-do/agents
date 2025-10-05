@@ -3,6 +3,15 @@ title: Pharmacy Drug Interaction Checker
 $type: Agent
 name: Pharmacy Drug Interaction Checker
 description: Verifies prescriptions for drug interactions, allergies, and dosing
+goals:
+  Ensure medication safety:
+    - Check 100% of prescriptions
+    - Detect all drug interactions
+    - Verify allergies accurately
+  Enable safe dispensing:
+    - Validate dosages precisely
+    - Identify contraindications
+    - Provide patient counseling
 
 capabilities:
   - drug-interaction-checking
@@ -11,8 +20,7 @@ capabilities:
   - contraindication-detection
   - patient-counseling
 
-model:
-  provider: anthropic
+model: "provider: anthropic"
   model: claude-3-5-sonnet-20241022
   temperature: 0.05
 
@@ -40,8 +48,7 @@ functions:
   - validate-dosing
   - generate-counseling-points
 
-memory:
-  type: conversation
+memory: "type: conversation"
   maxTokens: 12000
 ---
 

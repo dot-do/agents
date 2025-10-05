@@ -1,9 +1,17 @@
 ---
-hero:
-  headline: Your AI Chief Operating Officer
+goals:
+  Streamline operations:
+    - Achieve 95%+ on-time fulfillment
+    - Maintain 24hr standard SLA
+    - Reduce operational costs 20%
+  Scale efficiently:
+    - Optimize warehouse utilization
+    - Automate reorder calculations
+    - Score suppliers continuously
+
+hero: "headline: Your AI Chief Operating Officer"
   subheadline: Streamline operations and scale efficiently with AI-powered operational excellence
-  codeExample:
-    language: typescript
+  codeExample: "language: typescript"
     code: |
       import { COO } from 'coo.do'
 
@@ -32,31 +40,26 @@ hero:
       const metrics = await coo.metrics.realtime()
       console.log(`Fill rate: ${metrics.fillRate}%`)
       console.log(`On-time delivery: ${metrics.ontimeDelivery}%`)
-  primaryCTA:
-    text: Start Free Trial
+  primaryCTA: "text: Start Free Trial"
     href: /signup
-  secondaryCTA:
-    text: Book Demo
+  secondaryCTA: "text: Book Demo"
     href: /demo
   badges:
     - 99.8% uptime
     - 24/7 monitoring
     - SOC 2 Type II
 
-capabilities:
-  - id: inventory-management
+capabilities: "- id: inventory-management"
     name: Intelligent Inventory Management
     description: AI-powered stock optimization across all facilities with predictive reordering and demand forecasting.
     icon: 📦
-    metrics:
-      - label: Inventory Accuracy
+    metrics: "- label: Inventory Accuracy"
         value: 99.5%
       - label: Stockout Reduction
         value: 85%
       - label: Carrying Cost Savings
         value: 30%
-    codeExample:
-      language: typescript
+    codeExample: "language: typescript"
       code: |
         // Real-time inventory optimization
         on.inventory.low(async (item) => {
@@ -83,7 +86,7 @@ capabilities:
             })
 
             await send.slack('#operations', {
-              text: `🔔 Auto-reorder initiated: ${item.name} (${reorderQty} units)`
+              text: "`🔔 Auto-reorder initiated: ${item.name} (${reorderQty} units)`"
             })
           }
         })
@@ -92,21 +95,19 @@ capabilities:
     name: Automated Order Fulfillment
     description: End-to-end order processing with intelligent routing, picking optimization, and real-time tracking.
     icon: 📋
-    metrics:
-      - label: Processing Speed
+    metrics: "- label: Processing Speed"
         value: 90% faster
       - label: Picking Accuracy
         value: 99.9%
       - label: Same-Day Fulfillment
         value: 95%
-    codeExample:
-      language: typescript
+    codeExample: "language: typescript"
       code: |
         // Intelligent order routing and fulfillment
         on.order.created(async (order) => {
           // Find optimal warehouse based on inventory, proximity, and capacity
           const warehouse = await ai.decide('select-warehouse', {
-            options: await db.warehouses.findAll({ status: 'active' }),
+            options: "await db.warehouses.findAll({ status: 'active' }),"
             criteria: {
               inventory: order.items,
               destination: order.shippingAddress,
@@ -133,8 +134,8 @@ capabilities:
           })
 
           await send.notification(fulfillment.assignedTo, {
-            title: `New Order: ${order.id}`,
-            body: `${order.items.length} items - Due: ${fulfillment.dueBy}`
+            title: "`New Order: ${order.id}`,"
+            body: "`${order.items.length} items - Due: ${fulfillment.dueBy}`"
           })
         })
 
@@ -142,15 +143,13 @@ capabilities:
     name: Smart Logistics Coordination
     description: Multi-carrier shipping optimization with real-time rate shopping and automated label generation.
     icon: 🚚
-    metrics:
-      - label: Shipping Cost Savings
+    metrics: "- label: Shipping Cost Savings"
         value: 25%
       - label: On-Time Delivery
         value: 98%
       - label: Label Generation
         value: Instant
-    codeExample:
-      language: typescript
+    codeExample: "language: typescript"
       code: |
         // Automated carrier selection and shipping
         on.fulfillment.packed(async (fulfillment) => {
@@ -206,15 +205,13 @@ capabilities:
     name: Warehouse Optimization
     description: AI-driven layout optimization, capacity planning, and workforce management for maximum efficiency.
     icon: 🏭
-    metrics:
-      - label: Space Utilization
+    metrics: "- label: Space Utilization"
         value: 92%
       - label: Picking Efficiency
         value: 3x faster
       - label: Labor Cost Reduction
         value: 35%
-    codeExample:
-      language: typescript
+    codeExample: "language: typescript"
       code: |
         // Dynamic warehouse optimization
         every('week', async () => {
@@ -269,15 +266,13 @@ capabilities:
     name: Supplier Performance Management
     description: Continuous supplier scoring, automated procurement, and supply chain risk monitoring.
     icon: 🤝
-    metrics:
-      - label: Supplier Reliability
+    metrics: "- label: Supplier Reliability"
         value: 96%
       - label: Lead Time Accuracy
         value: 94%
       - label: Procurement Savings
         value: 18%
-    codeExample:
-      language: typescript
+    codeExample: "language: typescript"
       code: |
         // Continuous supplier performance tracking
         on.purchaseOrder.received(async (po) => {
@@ -300,7 +295,7 @@ capabilities:
           // Flag underperforming suppliers
           if (supplier.score < 0.75) {
             await send.slack('#operations', {
-              text: `⚠️ Supplier performance alert: ${supplier.name} (Score: ${supplier.score})`
+              text: "`⚠️ Supplier performance alert: ${supplier.name} (Score: ${supplier.score})`"
             })
 
             // Automatically source alternatives
@@ -322,8 +317,7 @@ capabilities:
           }
         })
 
-features:
-  - title: Multi-Facility Management
+features: "- title: Multi-Facility Management"
     description: Centralized control across all warehouses, distribution centers, and fulfillment locations
     icon: 🌐
   - title: Real-Time Visibility
@@ -342,13 +336,11 @@ features:
     description: Automated quality checks, inspection workflows, and compliance tracking
     icon: ✅
 
-useCases:
-  - company: ShipFast Logistics
+useCases: "- company: ShipFast Logistics"
     industry: E-commerce Fulfillment
     challenge: Managing 10,000+ daily orders across 5 warehouses with inconsistent on-time delivery (87%)
     solution: Implemented COO.do for intelligent order routing, automated fulfillment, and predictive inventory management
-    results:
-      - metric: On-time delivery improved to 98%
+    results: "- metric: On-time delivery improved to 98%"
       - metric: Fulfillment costs reduced by 28%
       - metric: Stockouts decreased by 92%
       - metric: Customer satisfaction up to 4.8/5.0
@@ -362,8 +354,7 @@ useCases:
     industry: Organic Grocery Retail
     challenge: Perishable inventory management across 15 stores with 22% spoilage rate and frequent stockouts
     solution: Deployed COO.do for demand forecasting, automated reordering, and warehouse optimization
-    results:
-      - metric: Spoilage reduced to 4%
+    results: "- metric: Spoilage reduced to 4%"
       - metric: Stockouts down 89%
       - metric: Gross margin improved 12%
       - metric: Customer retention up 24%
@@ -377,8 +368,7 @@ useCases:
     industry: Construction Materials Distribution
     challenge: Managing 50,000 SKUs across 8 distribution centers with poor visibility and high carrying costs
     solution: Implemented COO.do for multi-facility inventory optimization and supplier performance management
-    results:
-      - metric: Inventory carrying costs down 34%
+    results: "- metric: Inventory carrying costs down 34%"
       - metric: Warehouse space utilization up to 92%
       - metric: Supplier lead time variance reduced 78%
       - metric: Order fill rate improved to 99.2%
@@ -389,8 +379,7 @@ useCases:
       company: BuildRight Supply
 
 pricing:
-  tiers:
-    - name: Starter
+  tiers: "- name: Starter"
       price: $299
       period: per month
       description: Perfect for growing operations teams managing single facilities
@@ -402,8 +391,7 @@ pricing:
         - Standard integrations
         - Email support
         - 99.5% uptime SLA
-      cta:
-        text: Start Free Trial
+      cta: "text: Start Free Trial"
         href: /signup?plan=starter
 
     - name: Professional
@@ -422,8 +410,7 @@ pricing:
         - Priority support
         - 99.9% uptime SLA
         - Dedicated success manager
-      cta:
-        text: Start Free Trial
+      cta: "text: Start Free Trial"
         href: /signup?plan=professional
 
     - name: Enterprise
@@ -442,16 +429,13 @@ pricing:
         - 99.95% uptime SLA
         - Dedicated technical team
         - On-premise deployment option
-      cta:
-        text: Contact Sales
+      cta: "text: Contact Sales"
         href: /contact-sales
 
 integrations:
-  categories:
-    - name: ERP Systems
+  categories: "- name: ERP Systems"
       description: Connect with enterprise resource planning platforms
-      integrations:
-        - name: NetSuite
+      integrations: "- name: NetSuite"
           logo: /logos/netsuite.svg
           docs: /integrations/netsuite
         - name: SAP
@@ -466,8 +450,7 @@ integrations:
 
     - name: Warehouse Management
       description: Integrate with WMS and inventory systems
-      integrations:
-        - name: Fishbowl
+      integrations: "- name: Fishbowl"
           logo: /logos/fishbowl.svg
           docs: /integrations/fishbowl
         - name: Cin7
@@ -482,8 +465,7 @@ integrations:
 
     - name: Shipping & Logistics
       description: Connect with carriers and shipping platforms
-      integrations:
-        - name: ShipStation
+      integrations: "- name: ShipStation"
           logo: /logos/shipstation.svg
           docs: /integrations/shipstation
         - name: ShipBob
@@ -498,8 +480,7 @@ integrations:
 
     - name: E-commerce Platforms
       description: Sync with online stores and marketplaces
-      integrations:
-        - name: Shopify
+      integrations: "- name: Shopify"
           logo: /logos/shopify.svg
           docs: /integrations/shopify
         - name: WooCommerce
@@ -513,11 +494,9 @@ integrations:
           docs: /integrations/amazon
 
 routes:
-  collections:
-    - name: capabilities
+  collections: "- name: capabilities"
       pattern: /capabilities/[capability]/readme.mdx
-      data:
-        - capability: inventory-management
+      data: "- capability: inventory-management"
           title: Intelligent Inventory Management
           description: AI-powered stock optimization with predictive reordering
         - capability: order-fulfillment
@@ -535,8 +514,7 @@ routes:
 
     - name: integrations
       pattern: /integrations/[integration]/readme.mdx
-      data:
-        - integration: netsuite
+      data: "- integration: netsuite"
           title: NetSuite Integration
           category: ERP Systems
         - integration: shipstation
@@ -549,8 +527,7 @@ routes:
           title: Fishbowl Integration
           category: Warehouse Management
 
-seo:
-  title: COO.do - Your AI Chief Operating Officer for Operations Excellence
+seo: "title: COO.do - Your AI Chief Operating Officer for Operations Excellence"
   description: Streamline operations with AI-powered inventory management, order fulfillment, logistics coordination, and warehouse optimization. 99.8% uptime, 24/7 monitoring.
   keywords:
     - AI Chief Operating Officer
@@ -565,8 +542,7 @@ seo:
     - Supplier management
 
 analytics:
-  events:
-    - name: coo_demo_requested
+  events: "- name: coo_demo_requested"
       description: User requested a demo
     - name: coo_trial_started
       description: User started free trial

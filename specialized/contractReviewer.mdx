@@ -3,6 +3,15 @@ title: Contract Review Agent
 $type: Agent
 name: Contract Review Agent
 description: Analyzes contracts to identify risks, obligations, and suggest revisions
+goals:
+  Identify contract risks:
+    - Review 100% of contracts before signing
+    - Detect 95%+ of hidden risks
+    - Extract obligations accurately
+  Enable informed decisions:
+    - Generate redlines automatically
+    - Compare clauses against standards
+    - Suggest protective revisions
 
 capabilities:
   - contract-analysis
@@ -11,8 +20,7 @@ capabilities:
   - redline-generation
   - clause-comparison
 
-model:
-  provider: anthropic
+model: "provider: anthropic"
   model: claude-3-5-sonnet-20241022
   temperature: 0.15
 
@@ -38,8 +46,7 @@ functions:
   - generate-redlines
   - compare-to-template
 
-memory:
-  type: conversation
+memory: "type: conversation"
   maxTokens: 25000
 ---
 

@@ -3,6 +3,15 @@ title: Shipping Coordinator Agent
 $type: Agent
 name: Shipping Coordinator Agent
 description: Carrier coordination, shipment tracking, and delivery exception handling
+goals:
+  Optimize shipping operations:
+    - Select best carrier automatically
+    - Achieve 95%+ on-time delivery
+    - Minimize shipping costs 20%
+  Enable delivery tracking:
+    - Track shipments in real-time
+    - Notify customers proactively
+    - Handle exceptions quickly
 
 capabilities:
   - carrier-coordination
@@ -11,8 +20,7 @@ capabilities:
   - exception-handling
   - route-optimization
 
-model:
-  provider: anthropic
+model: "provider: anthropic"
   model: claude-3-5-sonnet-20241022
   temperature: 0.2
 
@@ -34,8 +42,7 @@ functions:
   - update-delivery-status
   - process-address-change
 
-memory:
-  type: conversation
+memory: "type: conversation"
   maxTokens: 10000
 
 integrations:

@@ -1,9 +1,17 @@
 ---
-hero:
-  headline: Your AI Chief Legal Officer
+goals:
+  Mitigate legal risks:
+    - Review 100% of contracts
+    - Maintain continuous compliance
+    - Identify risks proactively
+  Enable legal efficiency:
+    - Automate contract analysis
+    - Monitor regulatory changes
+    - Assess risks automatically
+
+hero: "headline: Your AI Chief Legal Officer"
   subheadline: Streamline legal operations with AI-powered contract analysis, compliance monitoring, and risk management
-  codeExample:
-    language: typescript
+  codeExample: "language: typescript"
     code: |
       import { CLO } from 'clo.do'
 
@@ -32,31 +40,26 @@ hero:
       // Assess legal risks
       const risks = await clo.risk.assess()
       console.log(`High risks: ${risks.high.length}`)
-  primaryCTA:
-    text: Start Free Trial
+  primaryCTA: "text: Start Free Trial"
     href: /signup
-  secondaryCTA:
-    text: Book Demo
+  secondaryCTA: "text: Book Demo"
     href: /demo
   badges:
     - 95% review accuracy
     - 80% time savings
     - 100% compliance coverage
 
-capabilities:
-  - id: contract-analysis
+capabilities: "- id: contract-analysis"
     name: AI Contract Analysis & Review
     description: Automated contract review with risk identification, clause extraction, and redlining recommendations.
     icon: 📄
-    metrics:
-      - label: Review Accuracy
+    metrics: "- label: Review Accuracy"
         value: 95%
       - label: Time Savings
         value: 80%
       - label: Risk Detection
         value: 98%
-    codeExample:
-      language: typescript
+    codeExample: "language: typescript"
       code: |
         // Automated contract review
         on.contract.uploaded(async (contract) => {
@@ -90,7 +93,7 @@ capabilities:
           const risks = await ai.evaluate({
             contract: extracted.text,
             analysis: analysis,
-            playbook: await db.contractPlaybooks.findOne({ type: contract.type }),
+            playbook: "await db.contractPlaybooks.findOne({ type: contract.type }),"
             precedents: await db.contracts.findSimilar({
               type: contract.type,
               approved: true
@@ -109,8 +112,8 @@ capabilities:
             type: 'contract-redlines',
             contract: extracted.text,
             risks: risks,
-            standards: await db.contractStandards.findOne({ type: contract.type }),
-            templates: await db.clauseLibrary.findAll({ category: contract.type })
+            standards: "await db.contractStandards.findOne({ type: contract.type }),"
+            templates: "await db.clauseLibrary.findAll({ category: contract.type })"
           })
 
           // Store analysis
@@ -132,15 +135,15 @@ capabilities:
               blocks: [
                 {
                   type: 'section',
-                  text: `*${contract.counterparty}* - ${contract.type}`
+                  text: "`*${contract.counterparty}* - ${contract.type}`"
                 },
                 {
                   type: 'section',
-                  text: `**High-risk issues:**\n${risks.high_risks.map(r => `• ${r.description}`).join('\n')}`
+                  text: "`**High-risk issues:**\n${risks.high_risks.map(r => `• ${r.description}`).join('\n')}`"
                 },
                 {
                   type: 'section',
-                  text: `**Recommended changes:**\n${redlines.critical.map(r => `• ${r.recommendation}`).join('\n')}`
+                  text: "`**Recommended changes:**\n${redlines.critical.map(r => `• ${r.recommendation}`).join('\n')}`"
                 },
                 {
                   type: 'actions',
@@ -148,7 +151,7 @@ capabilities:
                     {
                       type: 'button',
                       text: 'View Analysis',
-                      url: `https://legal.company.com/contracts/${contract.id}`
+                      url: "`https://legal.company.com/contracts/${contract.id}`"
                     },
                     {
                       type: 'button',
@@ -161,7 +164,7 @@ capabilities:
             })
 
             await send.email(contract.assignedTo || 'legal@company.com', {
-              subject: `Contract requires review: ${contract.counterparty}`,
+              subject: "`Contract requires review: ${contract.counterparty}`,"
               template: 'contract-review',
               data: {
                 contract,
@@ -193,15 +196,13 @@ capabilities:
     name: AI Legal Research & Case Law Analysis
     description: Automated legal research with case law analysis, precedent identification, and citation verification.
     icon: 🔍
-    metrics:
-      - label: Research Speed
+    metrics: "- label: Research Speed"
         value: 95% faster
       - label: Case Law Coverage
         value: 100%
       - label: Citation Accuracy
         value: 99%
-    codeExample:
-      language: typescript
+    codeExample: "language: typescript"
       code: |
         // AI-powered legal research
         on.research.requested(async (request) => {
@@ -287,7 +288,7 @@ capabilities:
 
           // Send memo
           await send.email(request.userEmail, {
-            subject: `Legal Research: ${request.question}`,
+            subject: "`Legal Research: ${request.question}`,"
             template: 'research-memo',
             data: { memo },
             attachments: [
@@ -319,15 +320,13 @@ capabilities:
     name: Continuous Compliance Monitoring
     description: Automated monitoring of regulatory compliance with alerts for new regulations and deadline tracking.
     icon: ✅
-    metrics:
-      - label: Compliance Coverage
+    metrics: "- label: Compliance Coverage"
         value: 100%
       - label: Deadline Adherence
         value: 100%
       - label: Regulatory Updates
         value: Real-time
-    codeExample:
-      language: typescript
+    codeExample: "language: typescript"
       code: |
         // Continuous compliance monitoring
         every('day', async () => {
@@ -342,11 +341,11 @@ capabilities:
               regulation: regulation,
               requirements: regulation.requirements,
               evidence: {
-                policies: await db.policies.findAll({ regulation: regulation.id }),
-                controls: await db.controls.findAll({ regulation: regulation.id }),
-                procedures: await db.procedures.findAll({ regulation: regulation.id }),
-                training: await db.training.findAll({ topic: regulation.topic }),
-                audits: await db.audits.findAll({ regulation: regulation.id, period: 'last-year' })
+                policies: "await db.policies.findAll({ regulation: regulation.id }),"
+                controls: "await db.controls.findAll({ regulation: regulation.id }),"
+                procedures: "await db.procedures.findAll({ regulation: regulation.id }),"
+                training: "await db.training.findAll({ topic: regulation.topic }),"
+                audits: "await db.audits.findAll({ regulation: regulation.id, period: 'last-year' })"
               }
             })
 
@@ -362,19 +361,19 @@ capabilities:
             // Alert on non-compliance
             if (!status.compliant) {
               await send.slack('#legal', {
-                text: `⚠️ Compliance gap: ${regulation.name}`,
+                text: "`⚠️ Compliance gap: ${regulation.name}`,"
                 blocks: [
                   {
                     type: 'section',
-                    text: `*${regulation.name}* (${regulation.jurisdiction})`
+                    text: "`*${regulation.name}* (${regulation.jurisdiction})`"
                   },
                   {
                     type: 'section',
-                    text: `**Gaps:**\n${status.gaps.map(g => `• ${g.description}`).join('\n')}`
+                    text: "`**Gaps:**\n${status.gaps.map(g => `• ${g.description}`).join('\n')}`"
                   },
                   {
                     type: 'section',
-                    text: `**Recommendations:**\n${status.recommendations.map(r => `• ${r.action}`).join('\n')}`
+                    text: "`**Recommendations:**\n${status.recommendations.map(r => `• ${r.action}`).join('\n')}`"
                   }
                 ]
               })
@@ -425,7 +424,7 @@ capabilities:
               })
 
               await send.email('legal@company.com', {
-                subject: `New Regulation: ${update.title}`,
+                subject: "`New Regulation: ${update.title}`,"
                 template: 'new-regulation',
                 data: {
                   regulation: update,
@@ -441,27 +440,25 @@ capabilities:
     name: Legal Risk Assessment & Management
     description: Automated risk identification, scoring, and mitigation tracking across all business activities.
     icon: ⚖️
-    metrics:
-      - label: Risk Identification
+    metrics: "- label: Risk Identification"
         value: 96%
       - label: Incident Prevention
         value: 78%
       - label: Mitigation Tracking
         value: 100%
-    codeExample:
-      language: typescript
+    codeExample: "language: typescript"
       code: |
         // Continuous legal risk assessment
         every('week', async () => {
           // Identify legal risks across all business areas
           const risks = await ai.analyze({
             activities: {
-              contracts: await db.contracts.findAll({ status: 'active' }),
-              litigation: await db.litigation.findAll({ status: 'open' }),
-              compliance: await db.complianceStatus.findAll({ compliant: false }),
+              contracts: "await db.contracts.findAll({ status: 'active' }),"
+              litigation: "await db.litigation.findAll({ status: 'open' }),"
+              compliance: "await db.complianceStatus.findAll({ compliant: false }),"
               ip: await db.intellectualProperty.findAll(),
-              employment: await db.employees.findAll({ status: 'active' }),
-              regulatory: await db.regulations.findAll({ applicable: true })
+              employment: "await db.employees.findAll({ status: 'active' }),"
+              regulatory: "await db.regulations.findAll({ applicable: true })"
             },
             identify: {
               contractual_risks: true,
@@ -533,7 +530,7 @@ capabilities:
 
             // Alert stakeholders
             await send.email([risk.owner, 'legal@company.com', 'ceo@company.com'], {
-              subject: `High Legal Risk Identified: ${risk.category}`,
+              subject: "`High Legal Risk Identified: ${risk.category}`,"
               template: 'risk-alert',
               data: {
                 risk: stored,
@@ -575,15 +572,13 @@ capabilities:
     name: Intellectual Property Management
     description: Track patents, trademarks, copyrights with automated filing reminders and infringement monitoring.
     icon: 💡
-    metrics:
-      - label: Filing Compliance
+    metrics: "- label: Filing Compliance"
         value: 100%
       - label: Infringement Detection
         value: 94%
       - label: Portfolio Optimization
         value: 32%
-    codeExample:
-      language: typescript
+    codeExample: "language: typescript"
       code: |
         // IP portfolio management
         every('day', async () => {
@@ -596,7 +591,7 @@ capabilities:
 
               if (nextDeadline && getDaysBetween(new Date(), nextDeadline) < 90) {
                 await send.email('legal@company.com', {
-                  subject: `Patent maintenance fee due: ${ip.title}`,
+                  subject: "`Patent maintenance fee due: ${ip.title}`,"
                   template: 'ip-deadline',
                   data: {
                     ip: ip,
@@ -608,7 +603,7 @@ capabilities:
                 await db.tasks.create({
                   type: 'ip-maintenance',
                   ipId: ip.id,
-                  description: `Pay maintenance fee for ${ip.patentNumber}`,
+                  description: "`Pay maintenance fee for ${ip.patentNumber}`,"
                   dueDate: subDays(nextDeadline, 30),
                   priority: 'high'
                 })
@@ -629,15 +624,15 @@ capabilities:
 
               if (potential.length > 0) {
                 await send.slack('#legal', {
-                  text: `⚠️ Potential trademark infringement: ${ip.mark}`,
+                  text: "`⚠️ Potential trademark infringement: ${ip.mark}`,"
                   blocks: [
                     {
                       type: 'section',
-                      text: `Found ${potential.length} similar marks`
+                      text: "`Found ${potential.length} similar marks`"
                     },
                     {
                       type: 'section',
-                      text: potential.map(p => `• ${p.mark} (${p.applicant})`).join('\n')
+                      text: "potential.map(p => `• ${p.mark} (${p.applicant})`).join('\n')"
                     }
                   ]
                 })
@@ -646,7 +641,7 @@ capabilities:
                   await db.ipThreats.create({
                     ipId: ip.id,
                     type: 'trademark-infringement',
-                    description: `Similar mark: ${p.mark}`,
+                    description: "`Similar mark: ${p.mark}`,"
                     party: p.applicant,
                     similarity: p.similarity,
                     status: 'monitoring',
@@ -672,7 +667,7 @@ capabilities:
 
             if (analysis.opportunities.length > 0) {
               await send.email('legal@company.com', {
-                subject: `IP opportunities: ${product.name}`,
+                subject: "`IP opportunities: ${product.name}`,"
                 template: 'ip-opportunities',
                 data: {
                   product,
@@ -683,8 +678,7 @@ capabilities:
           }
         })
 
-features:
-  - title: Contract Management
+features: "- title: Contract Management"
     description: Centralized contract repository with version control, e-signature integration, and renewal tracking
     icon: 📑
   - title: Matter Management
@@ -703,13 +697,11 @@ features:
     description: Searchable legal knowledge base with precedents, templates, and research memos
     icon: 🧠
 
-useCases:
-  - company: SaaS Platform
+useCases: "- company: SaaS Platform"
     industry: Technology
     challenge: Contract review bottleneck causing 3-4 week delays in deal closure and rising legal spend
     solution: Implemented CLO.do for contract review automation, template management, and playbook-driven approvals
-    results:
-      - metric: Contract review time reduced from 3 weeks to 2 days (90% faster)
+    results: "- metric: Contract review time reduced from 3 weeks to 2 days (90% faster)"
       - metric: Legal spend down 42% through automation
       - metric: Deal velocity improved 3.2x
       - metric: Risk identification up 28%
@@ -723,8 +715,7 @@ useCases:
     industry: Healthcare
     challenge: Managing HIPAA compliance across 50 locations with manual audit processes and inconsistent documentation
     solution: Deployed CLO.do for compliance monitoring, policy management, and audit automation
-    results:
-      - metric: 100% HIPAA compliance maintained
+    results: "- metric: 100% HIPAA compliance maintained"
       - metric: Audit preparation time reduced 85%
       - metric: Policy distribution automated
       - metric: Incident response time down 73%
@@ -738,8 +729,7 @@ useCases:
     industry: Financial Services
     challenge: Rapid growth requiring compliance with SEC, FINRA, state regulations with 2-person legal team
     solution: Implemented CLO.do for regulatory monitoring, contract automation, and risk management
-    results:
-      - metric: Compliance coverage expanded to 15 jurisdictions
+    results: "- metric: Compliance coverage expanded to 15 jurisdictions"
       - metric: Legal team productivity 4.8x
       - metric: Contract cycle time reduced 78%
       - metric: Zero regulatory violations
@@ -750,8 +740,7 @@ useCases:
       company: FinTech Startup
 
 pricing:
-  tiers:
-    - name: Starter
+  tiers: "- name: Starter"
       price: $699
       period: per month
       description: For small legal teams managing foundational operations
@@ -764,8 +753,7 @@ pricing:
         - E-signature integration
         - Email support
         - 99.5% uptime SLA
-      cta:
-        text: Start Free Trial
+      cta: "text: Start Free Trial"
         href: /signup?plan=starter
 
     - name: Professional
@@ -786,8 +774,7 @@ pricing:
         - Priority support
         - 99.9% uptime SLA
         - Dedicated legal advisor
-      cta:
-        text: Start Free Trial
+      cta: "text: Start Free Trial"
         href: /signup?plan=professional
 
     - name: Enterprise
@@ -807,16 +794,13 @@ pricing:
         - 24/7 legal hotline
         - 99.95% uptime SLA
         - Dedicated technical team
-      cta:
-        text: Contact Sales
+      cta: "text: Contact Sales"
         href: /contact-sales
 
 integrations:
-  categories:
-    - name: Contract Management
+  categories: "- name: Contract Management"
       description: Sync with contract lifecycle management platforms
-      integrations:
-        - name: Ironclad
+      integrations: "- name: Ironclad"
           logo: /logos/ironclad.svg
           docs: /integrations/ironclad
         - name: Agiloft
@@ -831,8 +815,7 @@ integrations:
 
     - name: E-Signature
       description: Integrate with electronic signature platforms
-      integrations:
-        - name: DocuSign
+      integrations: "- name: DocuSign"
           logo: /logos/docusign.svg
           docs: /integrations/docusign
         - name: Adobe Sign
@@ -847,8 +830,7 @@ integrations:
 
     - name: Legal Research
       description: Connect with legal research databases
-      integrations:
-        - name: Westlaw
+      integrations: "- name: Westlaw"
           logo: /logos/westlaw.svg
           docs: /integrations/westlaw
         - name: LexisNexis
@@ -863,8 +845,7 @@ integrations:
 
     - name: CRM & Ticketing
       description: Integrate with business systems
-      integrations:
-        - name: Salesforce
+      integrations: "- name: Salesforce"
           logo: /logos/salesforce.svg
           docs: /integrations/salesforce
         - name: Jira
@@ -878,11 +859,9 @@ integrations:
           docs: /integrations/zendesk
 
 routes:
-  collections:
-    - name: capabilities
+  collections: "- name: capabilities"
       pattern: /capabilities/[capability]/readme.mdx
-      data:
-        - capability: contract-analysis
+      data: "- capability: contract-analysis"
           title: AI Contract Analysis & Review
           description: Automated contract review with risk identification
         - capability: legal-research
@@ -900,8 +879,7 @@ routes:
 
     - name: integrations
       pattern: /integrations/[integration]/readme.mdx
-      data:
-        - integration: ironclad
+      data: "- integration: ironclad"
           title: Ironclad Integration
           category: Contract Management
         - integration: docusign
@@ -914,8 +892,7 @@ routes:
           title: Salesforce Integration
           category: CRM & Ticketing
 
-seo:
-  title: CLO.do - Your AI Chief Legal Officer for Legal Operations
+seo: "title: CLO.do - Your AI Chief Legal Officer for Legal Operations"
   description: Streamline legal ops with AI-powered contract analysis, compliance monitoring, legal research, and risk management. 95% review accuracy, 80% time savings.
   keywords:
     - AI Chief Legal Officer
@@ -930,8 +907,7 @@ seo:
     - Legal tech
 
 analytics:
-  events:
-    - name: clo_demo_requested
+  events: "- name: clo_demo_requested"
       description: User requested a demo
     - name: clo_trial_started
       description: User started free trial

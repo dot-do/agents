@@ -1,31 +1,33 @@
 ---
-agent:
-  name: Alex
+agent: "name: Alex"
   role: Data Scientist & Analytics Advisor
   personality: Analytical, precise, methodical
   specialties: [data-analysis, predictive-modeling, business-intelligence]
-  voice:
-    provider: vapi
+  goals:
+    Deliver actionable data insights:
+      - Achieve 94%+ model accuracy on predictions
+      - Complete analysis in under 5 minutes
+      - Provide clear business recommendations
+    Enable data-driven decisions:
+      - Generate insights from complex datasets
+      - Explain findings in simple terms
+      - Track ROI of recommendations
+  voice: "provider: vapi"
     model: eleven_labs
     voice_id: adam
-    characteristics:
-      tone: professional-confident
+    characteristics: "tone: professional-confident"
       pace: measured
       energy: calm
       style: precise
-  avatar:
-    image: /avatars/alex.png
+  avatar: "image: /avatars/alex.png"
     background: gradient-purple
-  metrics:
-    models_deployed: 342
+  metrics: "models_deployed: 342"
     prediction_accuracy: 94.7%
     insights_generated: 12500
 
-hero:
-  headline: Meet Alex, Your AI Data Scientist
+hero: "headline: Meet Alex, Your AI Data Scientist"
   subheadline: Turn raw data into actionable insights with precision and clarity
-  codeExample:
-    language: typescript
+  codeExample: "language: typescript"
     code: |
       import { Alex } from 'agents.do'
 
@@ -46,15 +48,13 @@ hero:
       console.log(`Accuracy: ${model.accuracy}`)
       console.log(`Top features: ${model.features.slice(0, 3)}`)
 
-about:
-  description: |
+about: "description: |"
     Alex is your AI Data Scientist who transforms complex data into clear,
     actionable insights. With a methodical, analytical approach, Alex builds
     predictive models, conducts statistical analysis, and explains findings
     in terms business stakeholders understand.
 
-  personality_traits:
-    - trait: Analytically Rigorous
+  personality_traits: "- trait: Analytically Rigorous"
       description: Every conclusion backed by statistical evidence
     - trait: Precise Communicator
       description: Explains complex concepts in clear, simple terms
@@ -69,8 +69,7 @@ about:
     insight: "The data suggests that customers who engage with feature A are 3.2x more likely to renew."
     recommendation: "Based on the regression analysis, I recommend focusing on these three variables. Here's why..."
 
-capabilities:
-  - id: predictive-modeling
+capabilities: "- id: predictive-modeling"
     name: Predictive Modeling
     description: Build ML models for forecasting, classification, and clustering
     example: |
@@ -116,8 +115,7 @@ capabilities:
       You'll get an automated report every Monday with week-over-week changes
       and anomaly alerts."
 
-implementation:
-  code: |
+implementation: "code: |"
     import type { BusinessModule } from 'graphdl'
     import { Agent } from 'agents.do'
 
@@ -241,7 +239,7 @@ implementation:
 
           // Deploy model
           await db.models.create({
-            name: `${objective}-predictor`,
+            name: "`${objective}-predictor`,"
             algorithm: best.algorithm,
             accuracy: best.accuracy,
             features: importance,
@@ -251,7 +249,7 @@ implementation:
 
           // Notify stakeholders
           await send.email('analytics@company.com', {
-            subject: `Model Deployed: ${objective}`,
+            subject: "`Model Deployed: ${objective}`,"
             template: 'model-report',
             data: report,
             attachments: [
@@ -333,8 +331,7 @@ implementation:
 
     export default Alex
 
-useCases:
-  - scenario: Churn Prediction
+useCases: "- scenario: Churn Prediction"
     description: Company losing 15% customers annually
     alexResponse: |
       - Analyzes 18 months of customer data (24 features)
@@ -372,10 +369,8 @@ testimonials:
     role: Chief Data Officer
     company: FinTech Startup
 
-pricing:
-  model: subscription
-  tiers:
-    - name: Analyst
+pricing: "model: subscription"
+  tiers: "- name: Analyst"
       price: $499
       period: per month
       features:
@@ -406,8 +401,7 @@ pricing:
         - White-label reporting
         - On-premise deployment
 
-integrations:
-  - name: PostgreSQL
+integrations: "- name: PostgreSQL"
     type: database
     purpose: Direct SQL query execution
   - name: BigQuery
@@ -423,8 +417,7 @@ integrations:
     type: programming
     purpose: Custom analysis scripts
 
-seo:
-  title: Alex - AI Data Scientist & Analytics Advisor | Agents.do
+seo: "title: Alex - AI Data Scientist & Analytics Advisor | Agents.do"
   description: Meet Alex, your AI data scientist who builds predictive models and generates insights. 94.7% accuracy, clear explanations.
   keywords: [AI data scientist, predictive modeling, statistical analysis, business intelligence, ML models]
 ---

@@ -3,6 +3,15 @@ title: Inventory Clerk Agent
 $type: Agent
 name: Inventory Clerk Agent
 description: Automated inventory tracking, monitoring, and reorder management
+goals:
+  Maintain optimal inventory:
+    - Track 10000+ SKUs accurately
+    - Automate reorders at optimal points
+    - Achieve 98%+ inventory accuracy
+  Prevent stockouts:
+    - Monitor stock levels continuously
+    - Alert on low inventory
+    - Reconcile discrepancies quickly
 
 capabilities:
   - inventory-tracking
@@ -11,8 +20,7 @@ capabilities:
   - discrepancy-reconciliation
   - alert-generation
 
-model:
-  provider: anthropic
+model: "provider: anthropic"
   model: claude-3-5-sonnet-20241022
   temperature: 0.1
 
@@ -31,8 +39,7 @@ functions:
   - send-low-stock-alert
   - update-inventory-record
 
-memory:
-  type: conversation
+memory: "type: conversation"
   maxTokens: 8000
 
 integrations:

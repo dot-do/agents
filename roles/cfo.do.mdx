@@ -5,12 +5,19 @@ agentType: Role
 name: CFO.do
 description: AI Chief Financial Officer - Financial planning, analysis, tax optimization, and strategic finance leadership
 license: Proprietary
+goals:
+  Optimize financial performance:
+    - Achieve 95%+ forecast accuracy
+    - Maintain 6+ months cash reserve
+    - Close books in under 24 hours
+  Enable strategic finance:
+    - Provide real-time financial insights
+    - Identify cost optimization opportunities
+    - Support data-driven investment decisions
 
-hero:
-  headline: Your AI Chief Financial Officer
+hero: "headline: Your AI Chief Financial Officer"
   subheadline: Strategic financial leadership powered by AI. Financial planning, forecasting, tax optimization, and real-time insights - all automated.
-  codeExample:
-    language: typescript
+  codeExample: "language: typescript"
     code: |
       import { CFO } from 'cfo.do'
 
@@ -55,25 +62,20 @@ hero:
         })
       })
   cta:
-    primary:
-      text: Start Free Trial
+    primary: "text: Start Free Trial"
       url: /signup
-    secondary:
-      text: Book Demo
+    secondary: "text: Book Demo"
       url: /demo
-  badges:
-    - text: AI-Powered
+  badges: "- text: AI-Powered"
       icon: sparkles
     - text: GAAP Compliant
       icon: certification
     - text: Bank-Level Security
       icon: shield
 
-capabilities:
-  headline: What CFO.do Can Do
+capabilities: "headline: What CFO.do Can Do"
   description: Comprehensive financial leadership capabilities powered by AI
-  items:
-    - icon: chart-line
+  items: "- icon: chart-line"
       title: Financial Planning & Analysis
       description: Real-time financial modeling, forecasting, and scenario planning with AI-powered insights
       metrics:
@@ -174,7 +176,7 @@ capabilities:
 
           if (utilization > 0.8) {
             await cfo.send.slack(expense.department, {
-              text: `⚠️ Budget Alert: ${expense.category} at ${utilization * 100}% utilization`
+              text: "`⚠️ Budget Alert: ${expense.category} at ${utilization * 100}% utilization`"
             })
           }
         })
@@ -237,10 +239,8 @@ capabilities:
           })
         })
 
-features:
-  layout: grid
-  items:
-    - icon: integration
+features: "layout: grid"
+  items: "- icon: integration"
       title: Accounting Integration
       description: Native sync with QuickBooks, Xero, NetSuite, Sage
 
@@ -264,11 +264,9 @@ features:
       title: Tax Compliance
       description: Federal and state tax compliance, 1099s, W-2s
 
-useCases:
-  headline: Real-World Use Cases
+useCases: "headline: Real-World Use Cases"
   description: How finance teams use CFO.do
-  items:
-    - title: Scaling Financial Operations
+  items: "- title: Scaling Financial Operations"
       company: Series B SaaS (200 employees)
       challenge: CFO spending 60% of time on manual reporting and analysis
       solution: CFO.do automated month-end close from 10 days to 3 days
@@ -310,11 +308,9 @@ useCases:
         role: COO
         company: ProServices
 
-pricing:
-  headline: Transparent Pricing
+pricing: "headline: Transparent Pricing"
   description: Choose the plan that fits your business
-  plans:
-    - name: Starter
+  plans: "- name: Starter"
       price: $199/month
       annual: $1,990/year
       description: Perfect for startups and small businesses
@@ -356,13 +352,10 @@ pricing:
         - White-label option
       cta: Contact Sales
 
-integrations:
-  headline: Integrations
+integrations: "headline: Integrations"
   description: Works with your existing financial stack
-  categories:
-    - name: Accounting
-      tools:
-        - name: QuickBooks
+  categories: "- name: Accounting"
+      tools: "- name: QuickBooks"
           status: Native
         - name: Xero
           status: Native
@@ -370,8 +363,7 @@ integrations:
           status: Beta
 
     - name: Banking
-      tools:
-        - name: Plaid
+      tools: "- name: Plaid"
           status: Native
         - name: Mercury
           status: Native
@@ -379,8 +371,7 @@ integrations:
           status: Native
 
     - name: Payroll
-      tools:
-        - name: Gusto
+      tools: "- name: Gusto"
           status: Native
         - name: ADP
           status: Beta
@@ -388,16 +379,14 @@ integrations:
           status: Coming Soon
 
     - name: Payments
-      tools:
-        - name: Stripe
+      tools: "- name: Stripe"
           status: Native
         - name: PayPal
           status: Native
         - name: Square
           status: Beta
 
-routes:
-  - pattern: /capabilities/[capability]/readme.mdx
+routes: "- pattern: /capabilities/[capability]/readme.mdx"
     collection: capabilities
     variables:
       - name
@@ -417,8 +406,7 @@ routes:
 
       {Capability.metrics}
 
-seo:
-  title: CFO.do - AI Chief Financial Officer | Automated Financial Management
+seo: "title: CFO.do - AI Chief Financial Officer | Automated Financial Management"
   description: AI-powered CFO for financial planning, forecasting, tax optimization, and strategic finance. Real-time insights and automated reporting.
   keywords: [ai-cfo, financial-planning, tax-optimization, forecasting, budgeting, financial-reporting, fp&a]
 

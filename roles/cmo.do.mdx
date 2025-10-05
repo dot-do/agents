@@ -1,9 +1,17 @@
 ---
-hero:
-  headline: Your AI Chief Marketing Officer
+goals:
+  Accelerate revenue growth:
+    - Achieve 40%+ year-over-year growth
+    - Generate 50%+ of pipeline from marketing
+    - Maintain 3:1+ marketing ROI
+  Optimize marketing performance:
+    - Drive 8%+ engagement rates
+    - Score and nurture leads with AI
+    - Attribute revenue accurately
+
+hero: "headline: Your AI Chief Marketing Officer"
   subheadline: Accelerate growth with AI-powered campaigns, content generation, lead nurturing, and marketing attribution
-  codeExample:
-    language: typescript
+  codeExample: "language: typescript"
     code: |
       import { CMO } from 'cmo.do'
 
@@ -32,31 +40,26 @@ hero:
       console.log(`CAC: $${performance.cac}`)
       console.log(`LTV: $${performance.ltv}`)
       console.log(`ROI: ${performance.roi}x`)
-  primaryCTA:
-    text: Start Free Trial
+  primaryCTA: "text: Start Free Trial"
     href: /signup
-  secondaryCTA:
-    text: Book Demo
+  secondaryCTA: "text: Book Demo"
     href: /demo
   badges:
     - 3.8x ROI
     - 62% lower CAC
     - 94% content quality
 
-capabilities:
-  - id: campaign-optimization
+capabilities: "- id: campaign-optimization"
     name: AI-Powered Campaign Optimization
     description: Continuous campaign optimization across all channels with predictive budget allocation and A/B testing.
     icon: 📊
-    metrics:
-      - label: Campaign ROI
+    metrics: "- label: Campaign ROI"
         value: 3.8x
       - label: Conversion Rate Improvement
         value: 127%
       - label: Time to Launch
         value: 75% faster
-    codeExample:
-      language: typescript
+    codeExample: "language: typescript"
       code: |
         // AI-optimized campaign launch
         on.campaign.created(async (campaign) => {
@@ -79,7 +82,7 @@ capabilities:
 
           // Create audience segments
           const segments = await ai.segment({
-            source: await db.leads.findAll({ qualified: true }),
+            source: "await db.leads.findAll({ qualified: true }),"
             criteria: {
               demographics: true,
               behavior: true,
@@ -170,15 +173,13 @@ capabilities:
     name: AI Content Generation & Strategy
     description: Generate high-quality blog posts, social media, emails, and landing pages optimized for SEO and engagement.
     icon: ✍️
-    metrics:
-      - label: Content Quality Score
+    metrics: "- label: Content Quality Score"
         value: 94/100
       - label: SEO Performance
         value: +156%
       - label: Production Speed
         value: 10x faster
-    codeExample:
-      language: typescript
+    codeExample: "language: typescript"
       code: |
         // AI-powered content generation
         on.content.requested(async (request) => {
@@ -212,7 +213,7 @@ capabilities:
             research: research,
             style_guide: await db.styleGuide.get(),
             brand_voice: await db.brandVoice.get(),
-            examples: await db.content.findSimilar({ topic: request.topic, rating: { $gt: 4 } })
+            examples: "await db.content.findSimilar({ topic: request.topic, rating: { $gt: 4 } })"
           })
 
           // SEO optimization
@@ -256,11 +257,11 @@ capabilities:
 
           // Send for review
           await send.email(request.reviewer || 'content@company.com', {
-            subject: `Content ready for review: ${optimized.meta.title}`,
+            subject: "`Content ready for review: ${optimized.meta.title}`,"
             template: 'content-review',
             data: {
               content: created,
-              preview_url: `https://cms.company.com/preview/${created.id}`,
+              preview_url: "`https://cms.company.com/preview/${created.id}`,"
               seo_score: optimized.seo_score,
               readability: optimized.readability_score
             }
@@ -273,8 +274,8 @@ capabilities:
         every('week', async () => {
           // Analyze content gaps
           const gaps = await ai.analyze({
-            published: await db.content.findAll({ status: 'published', period: 'last-90-days' }),
-            keywords: await db.keywords.findAll({ priority: 'high', covered: false }),
+            published: "await db.content.findAll({ status: 'published', period: 'last-90-days' }),"
+            keywords: "await db.keywords.findAll({ priority: 'high', covered: false }),"
             competitors: await scrapeCompetitorContent(),
             trending: await getTrendingTopics()
           })
@@ -312,15 +313,13 @@ capabilities:
     name: Intelligent Lead Nurturing
     description: Personalized, multi-touch nurture campaigns with predictive send time optimization and dynamic content.
     icon: 🌱
-    metrics:
-      - label: Lead-to-MQL Conversion
+    metrics: "- label: Lead-to-MQL Conversion"
         value: +185%
       - label: Email Engagement
         value: +94%
       - label: Sales Accepted Leads
         value: +67%
-    codeExample:
-      language: typescript
+    codeExample: "language: typescript"
       code: |
         // Intelligent lead nurturing
         on.lead.captured(async (lead) => {
@@ -416,7 +415,7 @@ capabilities:
                 })
 
                 await send.slack('#sales', {
-                  text: `🔥 Hot lead: ${lead.name} (${lead.company}) is highly engaged`
+                  text: "`🔥 Hot lead: ${lead.name} (${lead.company}) is highly engaged`"
                 })
               }
             }
@@ -427,15 +426,13 @@ capabilities:
     name: Multi-Touch Attribution & Analytics
     description: AI-powered attribution modeling across all touchpoints with ROI tracking and predictive CAC/LTV.
     icon: 📈
-    metrics:
-      - label: Attribution Accuracy
+    metrics: "- label: Attribution Accuracy"
         value: 96%
       - label: CAC Reduction
         value: 62%
       - label: Marketing ROI Visibility
         value: 100%
-    codeExample:
-      language: typescript
+    codeExample: "language: typescript"
       code: |
         // Multi-touch attribution analysis
         every('day', async () => {
@@ -486,8 +483,8 @@ capabilities:
 
           // Generate attribution report
           const report = await ai.analyze({
-            attributions: await db.attributions.findAll({ period: 'last-30-days' }),
-            campaigns: await db.campaigns.findAll({ status: 'active' }),
+            attributions: "await db.attributions.findAll({ period: 'last-30-days' }),"
+            campaigns: "await db.campaigns.findAll({ status: 'active' }),"
             analyze: {
               channel_performance: true,
               campaign_roi: true,
@@ -514,15 +511,13 @@ capabilities:
     name: AI Brand Management & Monitoring
     description: Monitor brand mentions, sentiment, and reputation across all channels with automated response recommendations.
     icon: 🎨
-    metrics:
-      - label: Brand Sentiment
+    metrics: "- label: Brand Sentiment"
         value: +28%
       - label: Response Time
         value: 94% faster
       - label: Crisis Prevention
         value: 87%
-    codeExample:
-      language: typescript
+    codeExample: "language: typescript"
       code: |
         // Real-time brand monitoring
         every('15-minutes', async () => {
@@ -577,7 +572,7 @@ capabilities:
                 blocks: [
                   {
                     type: 'section',
-                    text: `*${mention.platform}* - ${mention.author}`
+                    text: "`*${mention.platform}* - ${mention.author}`"
                   },
                   {
                     type: 'section',
@@ -585,7 +580,7 @@ capabilities:
                   },
                   {
                     type: 'section',
-                    text: `*Recommended response:*\n${response.text}`
+                    text: "`*Recommended response:*\n${response.text}`"
                   },
                   {
                     type: 'actions',
@@ -638,8 +633,7 @@ capabilities:
           }
         })
 
-features:
-  - title: Campaign Management
+features: "- title: Campaign Management"
     description: Launch and optimize campaigns across email, social, paid, and organic channels from one platform
     icon: 🚀
   - title: Content Studio
@@ -658,13 +652,11 @@ features:
     description: Seamless sync with Salesforce, HubSpot, and 50+ marketing platforms
     icon: 🔗
 
-useCases:
-  - company: B2B SaaS Startup
+useCases: "- company: B2B SaaS Startup"
     industry: Software
     challenge: $450 CAC with 2.3x LTV and 18-month payback period making growth unsustainable
     solution: Implemented CMO.do for campaign optimization, content generation, and attribution modeling
-    results:
-      - metric: CAC reduced to $170 (62% improvement)
+    results: "- metric: CAC reduced to $170 (62% improvement)"
       - metric: LTV increased to 4.1x (+78%)
       - metric: Payback period down to 7 months
       - metric: Marketing ROI improved to 3.8x
@@ -678,8 +670,7 @@ useCases:
     industry: Consumer Retail
     challenge: Managing 50+ campaigns across 8 channels with inconsistent performance and unclear attribution
     solution: Deployed CMO.do for multi-channel campaign management, optimization, and attribution
-    results:
-      - metric: Campaign ROI up to 4.2x (+127%)
+    results: "- metric: Campaign ROI up to 4.2x (+127%)"
       - metric: Conversion rates improved 94%
       - metric: Marketing team productivity 5x
       - metric: Attribution accuracy 96%
@@ -693,8 +684,7 @@ useCases:
     industry: Consulting
     challenge: Content production bottleneck limiting thought leadership and inbound lead generation
     solution: Implemented CMO.do for AI content generation, SEO optimization, and lead nurturing
-    results:
-      - metric: Content production up 10x
+    results: "- metric: Content production up 10x"
       - metric: Organic traffic increased 156%
       - metric: Inbound leads up 312%
       - metric: Lead-to-MQL conversion +185%
@@ -705,8 +695,7 @@ useCases:
       company: Professional Services Firm
 
 pricing:
-  tiers:
-    - name: Starter
+  tiers: "- name: Starter"
       price: $499
       period: per month
       description: For growing marketing teams launching their first campaigns
@@ -719,8 +708,7 @@ pricing:
         - Standard analytics
         - Email support
         - 99.5% uptime SLA
-      cta:
-        text: Start Free Trial
+      cta: "text: Start Free Trial"
         href: /signup?plan=starter
 
     - name: Professional
@@ -740,8 +728,7 @@ pricing:
         - Priority support
         - 99.9% uptime SLA
         - Dedicated growth advisor
-      cta:
-        text: Start Free Trial
+      cta: "text: Start Free Trial"
         href: /signup?plan=professional
 
     - name: Enterprise
@@ -760,16 +747,13 @@ pricing:
         - 24/7 phone support
         - 99.95% uptime SLA
         - Dedicated technical team
-      cta:
-        text: Contact Sales
+      cta: "text: Contact Sales"
         href: /contact-sales
 
 integrations:
-  categories:
-    - name: Marketing Automation
+  categories: "- name: Marketing Automation"
       description: Sync with marketing automation platforms
-      integrations:
-        - name: HubSpot
+      integrations: "- name: HubSpot"
           logo: /logos/hubspot.svg
           docs: /integrations/hubspot
         - name: Marketo
@@ -784,8 +768,7 @@ integrations:
 
     - name: Advertising Platforms
       description: Connect with paid advertising channels
-      integrations:
-        - name: Google Ads
+      integrations: "- name: Google Ads"
           logo: /logos/google-ads.svg
           docs: /integrations/google-ads
         - name: Facebook Ads
@@ -800,8 +783,7 @@ integrations:
 
     - name: Analytics & Attribution
       description: Track performance and attribute revenue
-      integrations:
-        - name: Google Analytics
+      integrations: "- name: Google Analytics"
           logo: /logos/google-analytics.svg
           docs: /integrations/google-analytics
         - name: Segment
@@ -816,8 +798,7 @@ integrations:
 
     - name: Social Media
       description: Manage social media presence
-      integrations:
-        - name: Twitter
+      integrations: "- name: Twitter"
           logo: /logos/twitter.svg
           docs: /integrations/twitter
         - name: LinkedIn
@@ -831,11 +812,9 @@ integrations:
           docs: /integrations/instagram
 
 routes:
-  collections:
-    - name: capabilities
+  collections: "- name: capabilities"
       pattern: /capabilities/[capability]/readme.mdx
-      data:
-        - capability: campaign-optimization
+      data: "- capability: campaign-optimization"
           title: AI-Powered Campaign Optimization
           description: Continuous optimization across all channels
         - capability: content-generation
@@ -853,8 +832,7 @@ routes:
 
     - name: integrations
       pattern: /integrations/[integration]/readme.mdx
-      data:
-        - integration: hubspot
+      data: "- integration: hubspot"
           title: HubSpot Integration
           category: Marketing Automation
         - integration: google-ads
@@ -864,8 +842,7 @@ routes:
           title: Google Analytics Integration
           category: Analytics & Attribution
 
-seo:
-  title: CMO.do - Your AI Chief Marketing Officer for Growth Acceleration
+seo: "title: CMO.do - Your AI Chief Marketing Officer for Growth Acceleration"
   description: Accelerate growth with AI-powered campaigns, content generation, lead nurturing, and marketing attribution. 3.8x ROI, 62% lower CAC, 94% content quality.
   keywords:
     - AI Chief Marketing Officer
@@ -880,8 +857,7 @@ seo:
     - Brand monitoring
 
 analytics:
-  events:
-    - name: cmo_demo_requested
+  events: "- name: cmo_demo_requested"
       description: User requested a demo
     - name: cmo_trial_started
       description: User started free trial

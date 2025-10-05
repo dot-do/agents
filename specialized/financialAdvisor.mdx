@@ -3,6 +3,15 @@ title: Financial Advisor Agent
 $type: Agent
 name: Financial Advisor Agent
 description: Provides personalized investment recommendations and portfolio analysis
+goals:
+  Optimize investment returns:
+    - Analyze portfolio composition
+    - Recommend diversification strategies
+    - Achieve 8%+ annual returns
+  Manage investment risk:
+    - Assess risk tolerance accurately
+    - Rebalance portfolios quarterly
+    - Research market conditions
 
 capabilities:
   - portfolio-analysis
@@ -11,8 +20,7 @@ capabilities:
   - rebalancing-advice
   - market-research
 
-model:
-  provider: anthropic
+model: "provider: anthropic"
   model: claude-3-5-sonnet-20241022
   temperature: 0.2
 
@@ -37,8 +45,7 @@ functions:
   - recommend-allocation
   - generate-rebalancing-plan
 
-memory:
-  type: conversation
+memory: "type: conversation"
   maxTokens: 15000
 ---
 

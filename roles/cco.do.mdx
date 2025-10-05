@@ -1,9 +1,17 @@
 ---
-hero:
-  headline: Your AI Chief Customer Officer
+goals:
+  Maximize customer lifetime value:
+    - Maintain 95%+ retention rate
+    - Achieve 4.8/5 satisfaction score
+    - Drive 30%+ net revenue retention
+  Prevent churn proactively:
+    - Score customer health continuously
+    - Intervene before churn signals
+    - Personalize onboarding journeys
+
+hero: "headline: Your AI Chief Customer Officer"
   subheadline: Maximize customer lifetime value with AI-powered success management, churn prevention, and proactive engagement
-  codeExample:
-    language: typescript
+  codeExample: "language: typescript"
     code: |
       import { CCO } from 'cco.do'
 
@@ -29,31 +37,26 @@ hero:
       // Optimize customer journey
       const journey = await cco.journey.optimize()
       console.log(`Onboarding completion: ${journey.completion}%`)
-  primaryCTA:
-    text: Start Free Trial
+  primaryCTA: "text: Start Free Trial"
     href: /signup
-  secondaryCTA:
-    text: Book Demo
+  secondaryCTA: "text: Book Demo"
     href: /demo
   badges:
     - 92% retention rate
     - 38% less churn
     - 3.1x lifetime value
 
-capabilities:
-  - id: health-monitoring
+capabilities: "- id: health-monitoring"
     name: Customer Health Monitoring
     description: AI-powered health scores with real-time risk detection, engagement tracking, and predictive churn analysis.
     icon: 💚
-    metrics:
-      - label: Churn Reduction
+    metrics: "- label: Churn Reduction"
         value: 38%
       - label: Early Warning
         value: 21 days avg
       - label: Retention Rate
         value: 92%
-    codeExample:
-      language: typescript
+    codeExample: "language: typescript"
       code: |
         // Continuous customer health monitoring
         every('hour', async () => {
@@ -65,18 +68,18 @@ capabilities:
               customer: customer,
               signals: {
                 product_usage: {
-                  logins: await db.sessions.count({ customerId: customer.id, period: 'last-30-days' }),
-                  features: await db.featureUsage.analyze({ customerId: customer.id }),
+                  logins: "await db.sessions.count({ customerId: customer.id, period: 'last-30-days' }),"
+                  features: "await db.featureUsage.analyze({ customerId: customer.id }),"
                   adoption: await calculateAdoptionScore(customer.id)
                 },
                 engagement: {
-                  support_tickets: await db.tickets.count({ customerId: customer.id, status: 'open' }),
+                  support_tickets: "await db.tickets.count({ customerId: customer.id, status: 'open' }),"
                   nps_score: customer.lastNPS,
                   response_rate: await calculateResponseRate(customer.id),
                   last_contact: customer.lastContactDate
                 },
                 commercial: {
-                  payment_history: await db.invoices.analyze({ customerId: customer.id }),
+                  payment_history: "await db.invoices.analyze({ customerId: customer.id }),"
                   contract_value: customer.arr,
                   renewal_date: customer.renewalDate,
                   expansion_potential: await calculateExpansionScore(customer.id)
@@ -112,19 +115,19 @@ capabilities:
               await triggerIntervention(customer, health)
 
               await send.slack('#customer-success', {
-                text: `⚠️ Customer at risk: ${customer.name}`,
+                text: "`⚠️ Customer at risk: ${customer.name}`,"
                 blocks: [
                   {
                     type: 'section',
-                    text: `*${customer.name}* (${customer.arr}/year)`
+                    text: "`*${customer.name}* (${customer.arr}/year)`"
                   },
                   {
                     type: 'section',
-                    text: `Health: ${Math.round(health.score * 100)}% (${health.trend})`
+                    text: "`Health: ${Math.round(health.score * 100)}% (${health.trend})`"
                   },
                   {
                     type: 'section',
-                    text: `*Risk factors:*\n${health.risks.map(r => `• ${r.description}`).join('\n')}`
+                    text: "`*Risk factors:*\n${health.risks.map(r => `• ${r.description}`).join('\n')}`"
                   }
                 ]
               })
@@ -135,7 +138,7 @@ capabilities:
               await db.customers.tag(customer.id, 'expansion-ready')
 
               await send.email(customer.csm.email, {
-                subject: `Expansion opportunity: ${customer.name}`,
+                subject: "`Expansion opportunity: ${customer.name}`,"
                 template: 'expansion-opportunity',
                 data: {
                   customer,
@@ -151,22 +154,20 @@ capabilities:
     name: Proactive Churn Prevention
     description: ML-powered churn prediction with automated intervention playbooks and personalized win-back campaigns.
     icon: 🛡️
-    metrics:
-      - label: Churn Prediction Accuracy
+    metrics: "- label: Churn Prediction Accuracy"
         value: 89%
       - label: Successful Interventions
         value: 73%
       - label: MRR Saved
         value: $840K/year
-    codeExample:
-      language: typescript
+    codeExample: "language: typescript"
       code: |
         // Predictive churn prevention
         every('day', async () => {
           // Predict churn risk for all customers
           const predictions = await ai.predict({
             model: 'churn-prediction',
-            customers: await db.customers.findAll({ status: 'active' }),
+            customers: "await db.customers.findAll({ status: 'active' }),"
             features: {
               usage_metrics: true,
               engagement_metrics: true,
@@ -188,7 +189,7 @@ capabilities:
               prompt: 'Create a personalized churn prevention plan',
               customer: customer,
               prediction: prediction,
-              playbooks: await db.playbooks.findAll({ type: 'churn-prevention' })
+              playbooks: "await db.playbooks.findAll({ type: 'churn-prevention' })"
             })
 
             // Create intervention workflow
@@ -207,8 +208,8 @@ capabilities:
                 type: 'executive-call',
                 customerId: customer.id,
                 assignedTo: 'executive-team',
-                title: `Emergency call: ${customer.name}`,
-                description: `High-value customer at ${Math.round(prediction.churnProbability * 100)}% churn risk`,
+                title: "`Emergency call: ${customer.name}`,"
+                description: "`High-value customer at ${Math.round(prediction.churnProbability * 100)}% churn risk`,"
                 dueDate: addDays(new Date(), 2),
                 priority: 'critical'
               })
@@ -253,15 +254,13 @@ capabilities:
     name: Intelligent Onboarding Automation
     description: Personalized onboarding journeys with milestone tracking, proactive guidance, and time-to-value optimization.
     icon: 🚀
-    metrics:
-      - label: Time to First Value
+    metrics: "- label: Time to First Value"
         value: 60% faster
       - label: Onboarding Completion
         value: 87%
       - label: Early Churn Reduction
         value: 54%
-    codeExample:
-      language: typescript
+    codeExample: "language: typescript"
       code: |
         // Personalized onboarding automation
         on.customer.created(async (customer) => {
@@ -282,7 +281,7 @@ capabilities:
             prompt: 'Create a personalized onboarding journey',
             profile: profile,
             templates: await db.onboardingTemplates.findAll(),
-            best_practices: await db.playbooks.findOne({ type: 'onboarding' })
+            best_practices: "await db.playbooks.findOne({ type: 'onboarding' })"
           })
 
           // Create onboarding workflow
@@ -307,7 +306,7 @@ capabilities:
           // Send welcome email with first steps
           await send.email(customer.primaryContact.email, {
             from: customer.csm.email,
-            subject: `Welcome to ${process.env.PRODUCT_NAME}!`,
+            subject: "`Welcome to ${process.env.PRODUCT_NAME}!`,"
             template: 'onboarding-welcome',
             data: {
               customer,
@@ -338,7 +337,7 @@ capabilities:
                 prompt: 'Why is this customer not completing onboarding?',
                 customer,
                 progress,
-                activity: await db.activities.findAll({ customerId: customer.id })
+                activity: "await db.activities.findAll({ customerId: customer.id })"
               })
 
               // Proactive outreach
@@ -360,15 +359,13 @@ capabilities:
     name: Revenue Expansion Management
     description: AI-powered upsell and cross-sell identification with usage-based triggers and account mapping.
     icon: 📈
-    metrics:
-      - label: Net Revenue Retention
+    metrics: "- label: Net Revenue Retention"
         value: 125%
       - label: Expansion Rate
         value: 38%
       - label: Upsell Conversion
         value: 42%
-    codeExample:
-      language: typescript
+    codeExample: "language: typescript"
       code: |
         // Automated expansion opportunity detection
         every('week', async () => {
@@ -381,7 +378,7 @@ capabilities:
             // Analyze usage and identify expansion signals
             const analysis = await ai.analyze({
               customer: customer,
-              usage: await db.usage.aggregate({ customerId: customer.id, period: 'last-90-days' }),
+              usage: "await db.usage.aggregate({ customerId: customer.id, period: 'last-90-days' }),"
               signals: {
                 seat_usage: true, // Near plan limits?
                 feature_adoption: true, // Using advanced features?
@@ -397,7 +394,7 @@ capabilities:
               analysis: analysis,
               customer: customer,
               catalog: await db.products.findAll(),
-              similar: await db.customers.findSimilar(customer.id, { expanded: true })
+              similar: "await db.customers.findSimilar(customer.id, { expanded: true })"
             })
 
             if (opportunities.length > 0) {
@@ -414,7 +411,7 @@ capabilities:
 
               // Notify CSM
               await send.email(customer.csm.email, {
-                subject: `Expansion opportunity: ${customer.name}`,
+                subject: "`Expansion opportunity: ${customer.name}`,"
                 template: 'expansion-play',
                 data: {
                   customer,
@@ -460,15 +457,13 @@ capabilities:
     name: Customer Feedback Intelligence
     description: Aggregate and analyze feedback from support tickets, NPS surveys, product usage, and conversations.
     icon: 💬
-    metrics:
-      - label: NPS Score
+    metrics: "- label: NPS Score"
         value: +18 points
       - label: Feature Request Velocity
         value: 3x faster
       - label: Support Ticket Reduction
         value: 32%
-    codeExample:
-      language: typescript
+    codeExample: "language: typescript"
       code: |
         // Continuous feedback analysis and routing
         on.feedback.received(async (feedback) => {
@@ -500,11 +495,11 @@ capabilities:
           // Route critical feedback immediately
           if (analysis.urgency === 'critical') {
             await send.slack('#customer-success', {
-              text: `🚨 Critical feedback: ${feedback.customer.name}`,
+              text: "`🚨 Critical feedback: ${feedback.customer.name}`,"
               blocks: [
                 {
                   type: 'section',
-                  text: `*${feedback.customer.name}*\nSentiment: ${analysis.sentiment}\nCategory: ${analysis.category}`
+                  text: "`*${feedback.customer.name}*\nSentiment: ${analysis.sentiment}\nCategory: ${analysis.category}`"
                 },
                 {
                   type: 'section',
@@ -526,7 +521,7 @@ capabilities:
           // Aggregate feedback into product insights
           every('week', async () => {
             const insights = await ai.analyze({
-              feedback: await db.feedback.findAll({ period: 'last-week' }),
+              feedback: "await db.feedback.findAll({ period: 'last-week' }),"
               aggregate: {
                 themes: true,
                 feature_requests: true,
@@ -561,8 +556,7 @@ capabilities:
           })
         })
 
-features:
-  - title: Unified Customer View
+features: "- title: Unified Customer View"
     description: 360° customer view with health scores, usage data, support history, and engagement metrics
     icon: 👁️
   - title: Predictive Analytics
@@ -581,13 +575,11 @@ features:
     description: Customer portal with resources, training, community, and support
     icon: 🏠
 
-useCases:
-  - company: SaaS Growth Platform
+useCases: "- company: SaaS Growth Platform"
     industry: B2B SaaS
     challenge: 18% annual churn rate costing $3.2M ARR with reactive customer success approach
     solution: Implemented CCO.do for health monitoring, churn prevention, and proactive engagement
-    results:
-      - metric: Churn rate reduced to 8% (44% improvement)
+    results: "- metric: Churn rate reduced to 8% (44% improvement)"
       - metric: $1.8M ARR saved through interventions
       - metric: Net Revenue Retention increased to 118%
       - metric: Customer satisfaction up 23 points
@@ -601,8 +593,7 @@ useCases:
     industry: Data & Analytics
     challenge: 45-day onboarding process with 32% drop-off rate and inconsistent customer experience
     solution: Deployed CCO.do for automated onboarding with personalized journeys and milestone tracking
-    results:
-      - metric: Onboarding time reduced to 18 days (60% faster)
+    results: "- metric: Onboarding time reduced to 18 days (60% faster)"
       - metric: Completion rate increased to 87%
       - metric: Time-to-value improved 3.2x
       - metric: Early churn reduced 54%
@@ -616,8 +607,7 @@ useCases:
     industry: Cloud Infrastructure
     challenge: Managing 1,200 enterprise customers with 8-person CS team, missing expansion opportunities
     solution: Implemented CCO.do for health monitoring, expansion management, and workflow automation
-    results:
-      - metric: Net Revenue Retention up to 132%
+    results: "- metric: Net Revenue Retention up to 132%"
       - metric: Expansion rate increased 38%
       - metric: CS team productivity up 4.2x
       - metric: $4.8M incremental ARR from expansion
@@ -628,8 +618,7 @@ useCases:
       company: Enterprise CloudOps
 
 pricing:
-  tiers:
-    - name: Starter
+  tiers: "- name: Starter"
       price: $399
       period: per month
       description: For growing teams managing their first 100 customers
@@ -641,8 +630,7 @@ pricing:
         - Email support
         - Standard integrations
         - 99.5% uptime SLA
-      cta:
-        text: Start Free Trial
+      cta: "text: Start Free Trial"
         href: /signup?plan=starter
 
     - name: Professional
@@ -661,8 +649,7 @@ pricing:
         - Priority support
         - 99.9% uptime SLA
         - Dedicated CSM
-      cta:
-        text: Start Free Trial
+      cta: "text: Start Free Trial"
         href: /signup?plan=professional
 
     - name: Enterprise
@@ -681,16 +668,13 @@ pricing:
         - 99.95% uptime SLA
         - Dedicated technical team
         - On-premise option
-      cta:
-        text: Contact Sales
+      cta: "text: Contact Sales"
         href: /contact-sales
 
 integrations:
-  categories:
-    - name: Customer Success Platforms
+  categories: "- name: Customer Success Platforms"
       description: Sync with CS and account management platforms
-      integrations:
-        - name: Gainsight
+      integrations: "- name: Gainsight"
           logo: /logos/gainsight.svg
           docs: /integrations/gainsight
         - name: ChurnZero
@@ -705,8 +689,7 @@ integrations:
 
     - name: Support & Helpdesk
       description: Connect with customer support tools
-      integrations:
-        - name: Zendesk
+      integrations: "- name: Zendesk"
           logo: /logos/zendesk.svg
           docs: /integrations/zendesk
         - name: Intercom
@@ -721,8 +704,7 @@ integrations:
 
     - name: Product Analytics
       description: Track product usage and engagement
-      integrations:
-        - name: Amplitude
+      integrations: "- name: Amplitude"
           logo: /logos/amplitude.svg
           docs: /integrations/amplitude
         - name: Mixpanel
@@ -737,8 +719,7 @@ integrations:
 
     - name: Billing & Payments
       description: Integrate with billing systems
-      integrations:
-        - name: Stripe
+      integrations: "- name: Stripe"
           logo: /logos/stripe.svg
           docs: /integrations/stripe
         - name: Chargebee
@@ -752,11 +733,9 @@ integrations:
           docs: /integrations/zuora
 
 routes:
-  collections:
-    - name: capabilities
+  collections: "- name: capabilities"
       pattern: /capabilities/[capability]/readme.mdx
-      data:
-        - capability: health-monitoring
+      data: "- capability: health-monitoring"
           title: Customer Health Monitoring
           description: Real-time health scores and risk detection
         - capability: churn-prevention
@@ -774,8 +753,7 @@ routes:
 
     - name: integrations
       pattern: /integrations/[integration]/readme.mdx
-      data:
-        - integration: gainsight
+      data: "- integration: gainsight"
           title: Gainsight Integration
           category: Customer Success Platforms
         - integration: zendesk
@@ -788,8 +766,7 @@ routes:
           title: Stripe Integration
           category: Billing & Payments
 
-seo:
-  title: CCO.do - Your AI Chief Customer Officer for Customer Success
+seo: "title: CCO.do - Your AI Chief Customer Officer for Customer Success"
   description: Maximize lifetime value with AI-powered health monitoring, churn prevention, onboarding automation, and expansion management. 92% retention, 38% less churn.
   keywords:
     - AI Chief Customer Officer
@@ -804,8 +781,7 @@ seo:
     - CS operations
 
 analytics:
-  events:
-    - name: cco_demo_requested
+  events: "- name: cco_demo_requested"
       description: User requested a demo
     - name: cco_trial_started
       description: User started free trial

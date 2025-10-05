@@ -3,6 +3,15 @@ title: Rental Agent
 $type: Agent
 name: Rental Agent
 description: Automated rental transactions, equipment tracking, and damage assessment
+goals:
+  Maximize rental revenue:
+    - Achieve 85%+ utilization rate
+    - Process rentals in under 3 minutes
+    - Maintain 4.7/5 customer satisfaction
+  Enable equipment management:
+    - Track equipment location continuously
+    - Assess damage accurately
+    - Calculate billing automatically
 
 capabilities:
   - rental-checkout
@@ -11,8 +20,7 @@ capabilities:
   - billing-calculation
   - return-processing
 
-model:
-  provider: anthropic
+model: "provider: anthropic"
   model: claude-3-5-sonnet-20241022
   temperature: 0.2
 
@@ -34,8 +42,7 @@ functions:
   - process-return
   - schedule-maintenance
 
-memory:
-  type: conversation
+memory: "type: conversation"
   maxTokens: 10000
 
 integrations:

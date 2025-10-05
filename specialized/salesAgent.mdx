@@ -3,6 +3,15 @@ title: SalesAgent
 $type: Agent
 name: SalesAgent
 description: Qualifies leads using BANT framework
+goals:
+  Qualify leads effectively:
+    - Score leads using BANT criteria
+    - Convert 35%+ of qualified leads
+    - Book 20+ meetings per month
+  Enable sales pipeline:
+    - Draft personalized emails
+    - Integrate with CRM seamlessly
+    - Schedule meetings automatically
 
 capabilities:
   - lead-scoring
@@ -10,8 +19,7 @@ capabilities:
   - crm-integration
   - meeting-scheduling
 
-model:
-  provider: anthropic
+model: "provider: anthropic"
   model: claude-3-5-sonnet-20241022
   temperature: 0.3
 
@@ -28,8 +36,7 @@ functions:
   - schedule-meeting
   - update-crm
 
-memory:
-  type: conversation
+memory: "type: conversation"
   maxTokens: 10000
 ---
 
